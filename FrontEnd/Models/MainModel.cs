@@ -1,32 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
-namespace DataLogger
+namespace DataLogger.Models
 {
-    public class MainModel : ILogger , INotifyPropertyChanged
+    public class MainModel : ILogger
     {
 
         private List<ExerciseLog> exerciseLogs = new();
-        private List<string> exercises = new();
+        private ObservableCollection<string> exercises = new();
 
-        List<ExerciseLog> ILogger.ExerciseLogs {  get { return exerciseLogs; } }
+        List<ExerciseLog> ILogger.ExerciseLogs { get { return exerciseLogs; } }
 
-        List<string> ILogger.Exercises { get { return exercises; } }
+        ObservableCollection<string> ILogger.Exercises { get { return exercises; } }
 
         void ILogger.AddNewExercise(string exercise)
         {
             if (!exercises.Contains(exercise) && exercise != "")
             {
                 exercises.Add(exercise);
-                MessageBox.Show(exercise);
-                OnPropertyChanged("exercises");
+                OnPropertyChanged(nameof(exercise));
             }
-                
         }
 
         void ILogger.AddNewLog(ExerciseLog log)
@@ -34,17 +28,16 @@ namespace DataLogger
             if (LogIsValid(log))
             {
                 exerciseLogs.Add(log);
-                MessageBox.Show(log.Exercise + log.Date + log.Value);
-                OnPropertyChanged("exerciseLogs");
+                OnPropertyChanged(nameof(exerciseLogs));
             }
-                
+
             else
                 throw new NotImplementedException();
         }
 
         private bool LogIsValid(ExerciseLog log)
         {
-            return (log != null && exercises.Contains(log.Exercise));
+            return log != null && exercises.Contains(log.Exercise);
         }
 
         #region INotifyPropertyChanged Members

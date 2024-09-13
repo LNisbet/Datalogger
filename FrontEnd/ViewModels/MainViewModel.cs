@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using System.ComponentModel;
+using DataLogger.Models;
 
-namespace DataLogger
+namespace DataLogger.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
         public ILogger MainModel = new MainModel();
 
         public string Exercise { get; set; }
 
-        public List<string> Exercises { get { return MainModel.Exercises; } }
+        public ObservableCollection<string> Exercises { get { return MainModel.Exercises; } }
 
         public bool SpecifyDate { get; set; }
 
@@ -25,7 +21,8 @@ namespace DataLogger
         public float Value { get; set; }
 
 
-        public MainViewModel() {
+        public MainViewModel()
+        {
             Exercise = "test";
             MainModel.AddNewExercise("Curls");
             MainModel.AddNewExercise("Deadhang");
@@ -33,25 +30,47 @@ namespace DataLogger
             SpecifyDate = false;
             Date = DateOnly.FromDateTime(DateTime.Now);
             Value = 0;
+
+            MainModel.PropertyChanged += (sender, args) => OnPropertyChanged(args.PropertyName);
         }
 
+        #region INotifyPropertyChanged Members
 
-        private ICommand? addNewExercise;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        private ICommand addNewExercise;
         public ICommand AddNewExerciseCommand
         {
             get
             {
+                MessageBox.Show("AddNewExerciseCommand");
                 if (addNewExercise == null)
                 {
                     addNewExercise = new RelayCommand(
                         p => true,
-                        p => MainModel.AddNewExercise(Exercise));
+                        p => AddNewExercise());
                 }
                 return addNewExercise;
             }
         }
 
-        private ICommand? addNewLog;
+        public void AddNewExercise()
+        {
+            MainModel.AddNewExercise(Exercise);
+        }
+
+
+        private ICommand addNewLog;
         public ICommand AddNewLogCommand
         {
             get
@@ -74,34 +93,6 @@ namespace DataLogger
                 log = new ExerciseLog(Exercise, Value);
 
             MainModel.AddNewLog(log);
-        }
-    }
-
-    public class RelayCommand : ICommand
-    {
-        private readonly Predicate<object> _canExecute;
-        private readonly Action<object> _execute;
-
-        public RelayCommand(Predicate<object> canExecute, Action<object> execute)
-        {
-            _canExecute = canExecute;
-            _execute = execute;
-        }
-
-        public event EventHandler CanExecuteChanged
-        {
-            add => CommandManager.RequerySuggested += value;
-            remove => CommandManager.RequerySuggested -= value;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute(parameter);
-        }
-
-        public void Execute(object parameter)
-        {
-            _execute(parameter);
         }
     }
 }

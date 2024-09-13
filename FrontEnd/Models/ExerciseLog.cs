@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataLogger
+﻿
+namespace DataLogger.Models
 {
     public class ExerciseLog
     {
@@ -12,7 +7,7 @@ namespace DataLogger
         public string Exercise { get; }
         public float Value { get; }
 
-        public ExerciseLog(DateOnly date, string exercise, float value) 
+        public ExerciseLog(DateOnly date, string exercise, float value)
         {
             Date = date;
             Exercise = exercise;
