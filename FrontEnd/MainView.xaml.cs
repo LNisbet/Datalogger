@@ -14,12 +14,12 @@ namespace DataLogger
     public partial class MainView : Window
     {
 
-        public MainViewModel ViewModel
+        /*public MainViewModel ViewModel
         {
             set { DataContext = value; }
             get { return (MainViewModel)DataContext; }
         }
-
+        */
         public MainView()
         {
             InitializeComponent();

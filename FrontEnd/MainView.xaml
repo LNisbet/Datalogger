@@ -11,7 +11,7 @@
             <TextBlock Text="Exercise" />
             <ComboBox x:Name="CBOX_Exercise" ItemsSource="{Binding Exercises}" Width="100"/>
             <TextBox x:Name="TBOX_Exercise" Text="{Binding Exercise}" Width="100"/>
-            <Button x:Name="PB_NewExercise" Width="100" Content="Add New Exercise" Command="{Binding AddNewExercise}"/>
+            <Button x:Name="PB_NewExercise" Width="100" Content="Add New Exercise" Command="{Binding Path=AddNewExerciseCommand}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBox Text="Date"/>
@@ -22,6 +22,6 @@
             <TextBox Text="Value"/>
             <TextBox x:Name="TBOX_Value" Text="{Binding Value}" Width="100"/>
         </StackPanel>
-        <Button x:Name="PB_NewLog" Width="100" Content="Add New Log" Command="{Binding AddNewLog}"/>
+        <Button x:Name="PB_NewLog" Width="100" Content="Add New Log" Command="{Binding Path=AddNewLogCommand}"/>
     </StackPanel>
 </Window>
