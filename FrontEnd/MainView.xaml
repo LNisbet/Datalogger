@@ -1,0 +1,27 @@
+﻿<Window x:Class="DataLogger.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataLogger"
+        mc:Ignorable="d"
+        Title="MainView" Height="450" Width="800">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Exercise" />
+            <ComboBox x:Name="CBOX_Exercise" ItemsSource="{Binding Exercises}" Width="100"/>
+            <TextBox x:Name="TBOX_Exercise" Text="{Binding Exercise}" Width="100"/>
+            <Button x:Name="PB_NewExercise" Width="100" Content="Add New Exercise" Command="{Binding AddNewExercise}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBox Text="Date"/>
+            <RadioButton x:Name="RB_Date"/>
+            <TextBox x:Name="TBOX_Date" Text="{Binding Date}" Width="100"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBox Text="Value"/>
+            <TextBox x:Name="TBOX_Value" Text="{Binding Value}" Width="100"/>
+        </StackPanel>
+        <Button x:Name="PB_NewLog" Width="100" Content="Add New Log" Command="{Binding AddNewLog}"/>
+    </StackPanel>
+</Window>

@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace FrontEnd
+namespace DataLogger
 {
     /// <summary>
     /// Interaction logic for App.xaml
