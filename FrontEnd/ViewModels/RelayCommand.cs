@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace DataLogger.ViewModels
 {
@@ -17,6 +12,12 @@ namespace DataLogger.ViewModels
             _canExecute = canExecute;
             _execute = execute;
         }
+        public RelayCommand( Action<object> execute)
+        {
+            _canExecute = param => true;
+            _execute = execute;
+        }
+
 
         public event EventHandler CanExecuteChanged
         {

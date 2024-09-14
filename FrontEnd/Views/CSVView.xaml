@@ -1,0 +1,18 @@
+﻿<Page x:Class="DataLogger.Views.CSVView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DataLogger.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="CSVView">
+
+    <StackPanel>
+        <TextBox Text="{Binding Path}"/>
+        <Button Width="100" Content="Import Logs" Command="{Binding Path=ImportLogsCommand}"/>
+        <Button Width="100" Content="Export Logs" Command="{Binding Path=ExportLogsCommand}"/>
+        <Button Width="100" Content="Import Exercises" Command="{Binding Path=ImportExercisesCommand}"/>
+        <Button Width="100" Content="Export Exercises" Command="{Binding Path=ExportExercisesCommand}"/>
+    </StackPanel>
+</Page>

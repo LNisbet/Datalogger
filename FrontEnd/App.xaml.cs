@@ -1,7 +1,5 @@
-﻿using System.ComponentModel;
+﻿using DataLogger.Views;
 using System.Windows;
-using DataLogger.Models;
-using DataLogger.ViewModels;
 
 namespace DataLogger
 {
@@ -13,9 +11,7 @@ namespace DataLogger
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            MainView view = new MainView();
-            MainViewModel VM = new MainViewModel();
-            view.DataContext = VM;
+            var view = new MainWindow_V();
             view.Show();
         }
     }

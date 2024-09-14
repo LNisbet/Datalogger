@@ -1,24 +1,22 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using CsvHelper;
 
 namespace DataLogger.Models
 {
-    public class MainModel : ILogger
+    public class Logger : ILogger
     {
 
-        private List<ExerciseLog> exerciseLogs = new();
-        private ObservableCollection<string> exercises = new();
+        List<ExerciseLog> ILogger.ExerciseLogs { get { return Database.ExerciseLogs; } }
 
-        List<ExerciseLog> ILogger.ExerciseLogs { get { return exerciseLogs; } }
-
-        ObservableCollection<string> ILogger.Exercises { get { return exercises; } }
+        ObservableCollection<string> ILogger.Exercises { get { return Database.Exercises; } }
 
         void ILogger.AddNewExercise(string exercise)
         {
-            if (!exercises.Contains(exercise) && exercise != "")
+            if (!Database.Exercises.Contains(exercise) && exercise != "")
             {
-                exercises.Add(exercise);
+                Database.Exercises.Add(exercise);
                 OnPropertyChanged(nameof(exercise));
             }
         }
@@ -27,8 +25,8 @@ namespace DataLogger.Models
         {
             if (LogIsValid(log))
             {
-                exerciseLogs.Add(log);
-                OnPropertyChanged(nameof(exerciseLogs));
+                Database.ExerciseLogs.Add(log);
+                OnPropertyChanged(nameof(Database.ExerciseLogs));
             }
 
             else
@@ -37,11 +35,10 @@ namespace DataLogger.Models
 
         private bool LogIsValid(ExerciseLog log)
         {
-            return log != null && exercises.Contains(log.Exercise);
+            return log != null && Database.Exercises.Contains(log.Exercise);
         }
 
         #region INotifyPropertyChanged Members
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
@@ -51,7 +48,7 @@ namespace DataLogger.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
         #endregion
+       
     }
 }
