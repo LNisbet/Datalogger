@@ -15,8 +15,8 @@ namespace DataLogger.Models
 
 
 
-        static private ObservableCollection<string> exercises = new ObservableCollection<string>() { "pullup", "pushup", "curl", "hang" };
+        static private ObservableCollection<Exercise> exercises = new ObservableCollection<Exercise>() { new Exercise("pullup"), new Exercise("pushup"),new Exercise("curl"),new Exercise("hang") };
 
-        static public ObservableCollection<string> Exercises { get => exercises; set => exercises = value; }
+        static public ObservableCollection<Exercise> Exercises { get => exercises; set => exercises = value; }
     }
 }

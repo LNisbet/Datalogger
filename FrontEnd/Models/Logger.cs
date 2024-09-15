@@ -10,11 +10,11 @@ namespace DataLogger.Models
 
         List<ExerciseLog> ILogger.ExerciseLogs { get { return Database.ExerciseLogs; } }
 
-        ObservableCollection<string> ILogger.Exercises { get { return Database.Exercises; } }
+        ObservableCollection<Exercise> ILogger.Exercises { get { return Database.Exercises; } }
 
-        void ILogger.AddNewExercise(string exercise)
+        void ILogger.AddNewExercise(Exercise exercise)
         {
-            if (!Database.Exercises.Contains(exercise) && exercise != "")
+            if (!Database.Exercises.Contains(exercise) && exercise.Name != "")
             {
                 Database.Exercises.Add(exercise);
                 OnPropertyChanged(nameof(exercise));

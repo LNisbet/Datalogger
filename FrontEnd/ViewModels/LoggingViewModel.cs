@@ -13,7 +13,8 @@ namespace DataLogger.ViewModels
 
         public string SelectedExercise { get; set; }
 
-        public ObservableCollection<string> Exercises { get { return Logger.Exercises; } }
+        public ObservableCollection<string> ExerciseNames { get { return new ObservableCollection<string>(Logger.Exercises.Select(exercise => exercise.Name)); } }
+
 
         public bool SpecifyDate { get; set; }
 
@@ -63,7 +64,7 @@ namespace DataLogger.ViewModels
 
         public void AddNewExercise()
         {
-            Logger.AddNewExercise(NewExercise);
+            Logger.AddNewExercise(new Exercise(NewExercise));
         }
         #endregion
 
@@ -85,38 +86,13 @@ namespace DataLogger.ViewModels
         {
             ExerciseLog log;
             if (dateSpecified)
-                log = new ExerciseLog(Date, SelectedExercise, Value);
+                log = new ExerciseLog(Date, new Exercise(SelectedExercise), Value);
             else
-                log = new ExerciseLog(SelectedExercise, Value);
+                log = new ExerciseLog(new Exercise(SelectedExercise), Value);
 
             Logger.AddNewLog(log);
         }
         #endregion
 
-        #region ExportLogsToCSV
-        private ICommand exportLogsCommand;
-        public ICommand ExportLogsCommand
-        {
-            get
-            {
-                if (exportLogsCommand == null)
-                {
-                    exportLogsCommand = new RelayCommand(
-                        p => Database.ExerciseLogs.Count > 0,
-                        p => ExportLogs());
-                }
-                return exportLogsCommand;
-            }
-        }
-
-        public void ExportLogs()
-        {
-            ICSV CSVHelper = new CSVHelper();
-
-            string Path = "C:\\Users\\luken\\OneDrive\\Desktop\\TestFolder";
-
-            CSVHelper.WrirteToCSV(Path + "\\logs.csv", Database.ExerciseLogs);
-        }
-        #endregion
     }
 }

@@ -10,7 +10,7 @@
     <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Exercise" />
-            <ComboBox x:Name="CBOX_Exercise" ItemsSource="{Binding Exercises}" SelectedValue="{Binding SelectedExercise}" Width="100"/>
+            <ComboBox x:Name="CBOX_Exercise" ItemsSource="{Binding ExerciseNames}" SelectedValue="{Binding SelectedExercise}" Width="100"/>
             <TextBox x:Name="TBOX_Exercise" Text="{Binding NewExercise}" Width="100"/>
             <Button x:Name="PB_NewExercise" Width="100" Content="Add New Exercise" Command="{Binding Path=AddNewExerciseCommand}"/>
         </StackPanel>
@@ -24,6 +24,5 @@
             <TextBox x:Name="TBOX_Value" Text="{Binding Value}" Width="100"/>
         </StackPanel>
         <Button x:Name="PB_NewLog" Width="100" Content="Add New Log" Command="{Binding Path=AddNewLogCommand}"/>
-        <Button Width="100" Content="Export Logs" Command="{Binding Path=ExportLogsCommand}"/>
     </StackPanel>
 </Page>

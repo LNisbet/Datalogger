@@ -8,22 +8,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
+using System.Collections.ObjectModel;
+using System.Collections;
 
 namespace DataLogger.Models
 {
     internal class CSVHelper : ICSV
     {
-        List<string> ICSV.ReadExercisesFromCSV(string path)
+        List<T> ICSV.ReadFromCSV<T>(string path)
         {
-            throw new NotImplementedException();
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                PrepareHeaderForMatch = args => args.Header.ToLower(),
+                HeaderValidated = null
+            };
+
+            using (var reader = new StreamReader(path))
+            using (var csv = new CsvReader(reader, config))
+            {
+                csv.Context.RegisterClassMap<ExerciseLogMap>(); // Register custom map
+                return csv.GetRecords<T>().ToList();
+            }
         }
 
-        List<ExerciseLog> ICSV.ReadLogsFromCSV(string path)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICSV.WrirteToCSV<T>(string path, List<T> list)
+        void ICSV.WriteToCSV<T>(string path, List<T> list)
         {
             using (var writer = new StreamWriter(path))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))

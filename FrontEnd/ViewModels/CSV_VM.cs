@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DataLogger.ViewModels
 {
     internal class CSV_VM
     {
+        const string ExerciseFileName = "\\exercises.csv";
+        const string LogFileName = "\\logs.csv";
+
         private string path = "C:\\Users\\luken\\OneDrive\\Desktop\\TestFolder";
         public string Path { get => path; set => path = value; }
 
@@ -32,8 +36,7 @@ namespace DataLogger.ViewModels
         public void ExportLogs()
         {
             ICSV CSVHelper = new CSVHelper();
-
-            CSVHelper.WrirteToCSV(Path + "\\logs.csv", Database.ExerciseLogs);
+            CSVHelper.WriteToCSV(Path + LogFileName, Database.ExerciseLogs);
         }
         #endregion
 
@@ -56,7 +59,7 @@ namespace DataLogger.ViewModels
         public void ExportExercises()
         {
             ICSV CSVHelper = new CSVHelper();
-            CSVHelper.WrirteToCSV(Path + "\\exercises.csv", Database.Exercises.ToList());
+            CSVHelper.WriteToCSV(Path + ExerciseFileName, new List<Exercise>(Database.Exercises));
         }
         #endregion
 
@@ -77,13 +80,20 @@ namespace DataLogger.ViewModels
 
         public void ImportLogs()
         {
-            throw new NotImplementedException();
+            ICSV CSVHelper = new CSVHelper();
+            var logs = CSVHelper.ReadFromCSV<ExerciseLog>(Path + LogFileName);
+            string allExercises = "";
+            foreach (ExerciseLog l in logs)
+            {
+                allExercises += l.Date + ", " + l.Exercise.Name + ", " + l.Value + "\n";
+            }
+            MessageBox.Show(allExercises);
         }
         #endregion
 
         #region ImportExercisesFromCSV
         private ICommand importExercisesCommand;
-        public ICommand IMportExercisesCommand
+        public ICommand ImportExercisesCommand
         {
             get
             {
@@ -98,7 +108,14 @@ namespace DataLogger.ViewModels
 
         public void ImportExercises()
         {
-            throw new NotImplementedException();
+            ICSV CSVHelper = new CSVHelper();
+            var exercises = CSVHelper.ReadFromCSV<Exercise>(Path + ExerciseFileName);
+            string allExercises = "";
+            foreach (Exercise s in exercises)
+            {
+                allExercises += s.Name + "\n";
+            }
+            MessageBox.Show(allExercises);
         }
         #endregion
     }

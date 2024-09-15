@@ -7,6 +7,17 @@
                    mc:Ignorable="d"
                    Title="MainWindow_V" Height="450" Width="800">
     <NavigationWindow.Content>
-        <local:LoggingView  />
+        <StackPanel Width="100" HorizontalAlignment="Left">
+            <Button>
+                <Hyperlink NavigateUri="LoggingView.xaml">
+                    Logger
+                </Hyperlink>
+            </Button>
+            <Button>
+                <Hyperlink NavigateUri="CSVView.xaml">
+                    CSV
+                </Hyperlink>
+            </Button>
+        </StackPanel>
     </NavigationWindow.Content>
 </NavigationWindow>

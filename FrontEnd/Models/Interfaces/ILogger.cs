@@ -7,9 +7,9 @@ namespace DataLogger.Models
     public interface ILogger : INotifyPropertyChanged
     {
         List<ExerciseLog> ExerciseLogs { get; }
-        ObservableCollection<string> Exercises { get; }
+        ObservableCollection<Exercise> Exercises { get; }
 
-        void AddNewExercise(string exercise);
+        void AddNewExercise(Exercise exercise);
         void AddNewLog(ExerciseLog log);
     }
 }
