@@ -7,7 +7,7 @@ namespace DataLogger.ViewModels
 {
     public class LoggingViewModel : INotifyPropertyChanged
     {
-        public ILogger Logger = new Logger();
+        public IDatabase Logger = new Logger();
 
         public string NewExercise { get; set; }
 
@@ -85,10 +85,12 @@ namespace DataLogger.ViewModels
         public void AddNewLog(bool dateSpecified)
         {
             ExerciseLog log;
+            var selectedExercise = Logger.Exercises.SingleOrDefault(ex => ex.Name == SelectedExercise);
+
             if (dateSpecified)
-                log = new ExerciseLog(Date, new Exercise(SelectedExercise), Value);
+                log = new ExerciseLog(Date, selectedExercise, Value);
             else
-                log = new ExerciseLog(new Exercise(SelectedExercise), Value);
+                log = new ExerciseLog(selectedExercise, Value);
 
             Logger.AddNewLog(log);
         }

@@ -1,11 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace DataLogger.Models
 {
-    internal interface IDatabase
+    public interface IDatabase : INotifyPropertyChanged
     {
-        List<ExerciseLog> ExerciseLogs { get; set; }
-        ObservableCollection<string> Exercises { get; set; }
+        ObservableCollection<ExerciseLog> ExerciseLogs { get; }
+        ObservableCollection<Exercise> Exercises { get; }
 
+        void AddNewExercise(Exercise exercise);
+        void AddNewLog(ExerciseLog exerciseLog);
     }
 }

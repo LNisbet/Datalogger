@@ -9,9 +9,9 @@ namespace DataLogger.Models
 {
     static public class Database
     {
-        static private List<ExerciseLog> exerciseLogs = new List<ExerciseLog>();
+        static private ObservableCollection<ExerciseLog> exerciseLogs = new ObservableCollection<ExerciseLog>();
 
-        static public List<ExerciseLog> ExerciseLogs { get => exerciseLogs; set => exerciseLogs = value; }
+        static public ObservableCollection<ExerciseLog> ExerciseLogs { get => exerciseLogs; set => exerciseLogs = value; }
 
 
 

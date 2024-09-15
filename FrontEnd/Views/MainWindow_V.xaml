@@ -18,6 +18,11 @@
                     CSV
                 </Hyperlink>
             </Button>
+            <Button>
+                <Hyperlink NavigateUri="LogDisplay.xaml">
+                    View Logs
+                </Hyperlink>
+            </Button>
         </StackPanel>
     </NavigationWindow.Content>
 </NavigationWindow>

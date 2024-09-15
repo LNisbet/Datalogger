@@ -5,28 +5,29 @@ using CsvHelper;
 
 namespace DataLogger.Models
 {
-    public class Logger : ILogger
+    public class Logger : IDatabase
     {
+        private ObservableCollection<ExerciseLog> exerciseLogs { get { return Database.ExerciseLogs; } }
+        ObservableCollection<ExerciseLog> IDatabase.ExerciseLogs { get => exerciseLogs;  }
 
-        List<ExerciseLog> ILogger.ExerciseLogs { get { return Database.ExerciseLogs; } }
+        ObservableCollection<Exercise> exercises { get { return Database.Exercises; } }
+        ObservableCollection<Exercise> IDatabase.Exercises { get => exercises; }
 
-        ObservableCollection<Exercise> ILogger.Exercises { get { return Database.Exercises; } }
-
-        void ILogger.AddNewExercise(Exercise exercise)
+        void IDatabase.AddNewExercise(Exercise exercise)
         {
-            if (!Database.Exercises.Contains(exercise) && exercise.Name != "")
+            if (!exercises.Contains(exercise) && exercise.Name != "")
             {
-                Database.Exercises.Add(exercise);
+                exercises.Add(exercise);
                 OnPropertyChanged(nameof(exercise));
             }
         }
 
-        void ILogger.AddNewLog(ExerciseLog log)
+        void IDatabase.AddNewLog(ExerciseLog log)
         {
-            if (LogIsValid(log))
+            if (LogIsValid(log) && LogIsUnique(log))
             {
-                Database.ExerciseLogs.Add(log);
-                OnPropertyChanged(nameof(Database.ExerciseLogs));
+                exerciseLogs.Add(log);
+                OnPropertyChanged(nameof(exerciseLogs));
             }
 
             else
@@ -35,7 +36,11 @@ namespace DataLogger.Models
 
         private bool LogIsValid(ExerciseLog log)
         {
-            return log != null && Database.Exercises.Contains(log.Exercise);
+            return log != null && exercises.Contains(log.Exercise);
+        }
+        private bool LogIsUnique(ExerciseLog log)
+        {
+            return !exerciseLogs.Contains(log);
         }
 
         #region INotifyPropertyChanged Members
