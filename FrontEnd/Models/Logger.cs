@@ -5,7 +5,7 @@ using CsvHelper;
 
 namespace DataLogger.Models
 {
-    public class Logger : IDatabase
+    public class Logger : NotifyPropertyChanged, IDatabase
     {
         private ObservableCollection<ExerciseLog> exerciseLogs { get { return Database.ExerciseLogs; } }
         ObservableCollection<ExerciseLog> IDatabase.ExerciseLogs { get => exerciseLogs;  }
@@ -47,18 +47,5 @@ namespace DataLogger.Models
         {
             return !exerciseLogs.Contains(log);
         }
-
-        #region INotifyPropertyChanged Members
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion
-
     }
 }

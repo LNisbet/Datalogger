@@ -5,7 +5,7 @@ using DataLogger.Models;
 
 namespace DataLogger.ViewModels
 {
-    public class LoggingViewModel : INotifyPropertyChanged
+    public class LoggingViewModel : NotifyPropertyChanged
     {
         public IDatabase Logger = new Logger();
 
@@ -32,20 +32,6 @@ namespace DataLogger.ViewModels
 
             Logger.PropertyChanged += (sender, args) => OnPropertyChanged(args.PropertyName);
         }
-
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
 
         #region AddNewExercise
         private ICommand addNewExercise;
