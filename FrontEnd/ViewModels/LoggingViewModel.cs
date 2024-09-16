@@ -7,14 +7,14 @@ namespace DataLogger.ViewModels
 {
     public class LoggingViewModel : NotifyPropertyChanged
     {
-        public IDatabase Logger = new Logger();
 
         public string NewExercise { get; set; }
 
+        public string NewExerciseType { get; set; }
+
         public string SelectedExercise { get; set; }
 
-        public ObservableCollection<string> ExerciseNames { get { return new ObservableCollection<string>(Logger.Exercises.Select(exercise => exercise.Name)); } }
-
+        public ObservableCollection<string> ExerciseNames { get => Model.InternalDatabase.AllExerciseNames; }
 
         public bool SpecifyDate { get; set; }
 
@@ -30,7 +30,7 @@ namespace DataLogger.ViewModels
             Date = DateOnly.FromDateTime(DateTime.Now);
             Value = 0;
 
-            Logger.PropertyChanged += (sender, args) => OnPropertyChanged(args.PropertyName);
+            Model.InternalDatabase.PropertyChanged += (sender, args) => OnPropertyChanged(args.PropertyName);
         }
 
         #region AddNewExercise
@@ -50,7 +50,8 @@ namespace DataLogger.ViewModels
 
         public void AddNewExercise()
         {
-            Logger.AddNewExercise(new Exercise(NewExercise));
+            Model.InternalDatabase.AddNewExercise(new Exercise(NewExercise, NewExerciseType));
+            OnPropertyChanged(nameof(ExerciseNames));
         }
         #endregion
 
@@ -71,14 +72,14 @@ namespace DataLogger.ViewModels
         public void AddNewLog(bool dateSpecified)
         {
             ExerciseLog log;
-            var _selectedExercise = Logger.SelectExerciseByName(SelectedExercise);
+            var _selectedExercise = Model.InternalDatabase.SelectExerciseByName(SelectedExercise);
 
             if (dateSpecified)
                 log = new ExerciseLog(Date, _selectedExercise, Value);
             else
                 log = new ExerciseLog(_selectedExercise, Value);
 
-            Logger.AddNewLog(log);
+            Model.InternalDatabase.AddNewLog(log);
         }
         #endregion
 

@@ -36,8 +36,7 @@ namespace DataLogger.ViewModels
         public void ExportLogs()
         {
             ICSV CSVHelper = new CSVHelper();
-            IDatabase Logger = new Logger();
-            CSVHelper.WriteToCSV(Path + LogFileName, new List<ExerciseLog>(Logger.ExerciseLogs));
+            CSVHelper.WriteToCSV(Path + LogFileName, new List<ExerciseLog>(Model.InternalDatabase.ExerciseLogs));
         }
         #endregion
 
@@ -49,9 +48,8 @@ namespace DataLogger.ViewModels
             {
                 if (exportExercisesCommand == null)
                 {
-                    IDatabase Logger = new Logger();
                     exportExercisesCommand = new RelayCommand(
-                        p => Logger.Exercises.Count > 0,
+                        p => Model.InternalDatabase.Exercises.Count > 0,
                         p => ExportExercises());
                 }
                 return exportExercisesCommand;
@@ -61,8 +59,7 @@ namespace DataLogger.ViewModels
         public void ExportExercises()
         {
             ICSV CSVHelper = new CSVHelper();
-            IDatabase Logger = new Logger();
-            CSVHelper.WriteToCSV(Path + ExerciseFileName, new List<Exercise>(Logger.Exercises));
+            CSVHelper.WriteToCSV(Path + ExerciseFileName, new List<Exercise>(Model.InternalDatabase.Exercises));
         }
         #endregion
 
@@ -84,11 +81,10 @@ namespace DataLogger.ViewModels
         public void ImportLogs()
         {
             ICSV CSVHelper = new CSVHelper();
-            IDatabase Logger = new Logger();
             var logs = CSVHelper.ReadFromCSV<ExerciseLog>(Path + LogFileName);
             foreach (ExerciseLog l in logs)
             {
-                Logger.AddNewLog(l);
+                Model.InternalDatabase.AddNewLog(l);
             }
         }
         #endregion
@@ -111,11 +107,10 @@ namespace DataLogger.ViewModels
         public void ImportExercises()
         {
             ICSV CSVHelper = new CSVHelper();
-            IDatabase Logger = new Logger();
             var exercises = CSVHelper.ReadFromCSV<Exercise>(Path + ExerciseFileName);
             foreach (Exercise ex in exercises)
             {
-                Logger.AddNewExercise(ex);
+                Model.InternalDatabase.AddNewExercise(ex);
             }
         }
         #endregion

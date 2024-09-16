@@ -1,4 +1,5 @@
 ﻿using DataLogger.Views;
+using DataLogger.Models;
 using System.Windows;
 
 namespace DataLogger

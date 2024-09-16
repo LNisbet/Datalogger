@@ -11,10 +11,15 @@ namespace DataLogger.Models
 {
     public class ExerciseConverter : ITypeConverter
     {
+        private IDatabase _database = Model.InternalDatabase;
+        ExerciseConverter(IDatabase database) 
+        {
+            _database = database;
+        }
+
         public object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            IDatabase Logger = new Logger();
-            return Logger.SelectExerciseByName(text);
+            return _database.SelectExerciseByName(text);
         }
 
         public string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)

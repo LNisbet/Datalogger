@@ -5,14 +5,21 @@ using CsvHelper;
 
 namespace DataLogger.Models
 {
-    public class Logger : NotifyPropertyChanged, IDatabase
+    public class InternalDatabase : NotifyPropertyChanged, IDatabase
     {
-        private ObservableCollection<ExerciseLog> exerciseLogs { get { return Database.ExerciseLogs; } }
-        ObservableCollection<ExerciseLog> IDatabase.ExerciseLogs { get => exerciseLogs;  }
+        #region Fields
+        private ObservableCollection<ExerciseLog> exerciseLogs = [];
+        ObservableCollection<ExerciseLog> IDatabase.ExerciseLogs { get => exerciseLogs; }
 
-        ObservableCollection<Exercise> exercises { get { return Database.Exercises; } }
+        private ObservableCollection<Exercise> exercises = [];
         ObservableCollection<Exercise> IDatabase.Exercises { get => exercises; }
 
+        private ObservableCollection<string> allExerciseNames { get => new ObservableCollection<string>(exercises.Select(exercise => exercise.Name)); }
+        ObservableCollection<string> IDatabase.AllExerciseNames { get => allExerciseNames; }
+
+        private ObservableCollection<string> allExerciseTypes { get => new ObservableCollection<string>(exercises.Select(exercise => exercise.Type)); }
+        ObservableCollection<string> IDatabase.AllExerciseTypes { get => allExerciseTypes; }
+        #endregion
 
         Exercise IDatabase.SelectExerciseByName(string name)
         {
@@ -21,10 +28,9 @@ namespace DataLogger.Models
 
         void IDatabase.AddNewExercise(Exercise exercise)
         {
-            if (!exercises.Contains(exercise) && exercise.Name != "")
+            if (!allExerciseNames.Contains(exercise.Name) && exercise.Name != "")
             {
                 exercises.Add(exercise);
-                OnPropertyChanged(nameof(exercise));
             }
         }
 
@@ -36,7 +42,6 @@ namespace DataLogger.Models
                 return;
 
             exerciseLogs.Add(log);
-            OnPropertyChanged(nameof(exerciseLogs));
         }
 
         private bool LogIsValid(ExerciseLog log)
@@ -47,5 +52,6 @@ namespace DataLogger.Models
         {
             return !exerciseLogs.Contains(log);
         }
+
     }
 }
