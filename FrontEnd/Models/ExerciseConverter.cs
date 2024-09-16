@@ -13,7 +13,8 @@ namespace DataLogger.Models
     {
         public object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            return new Exercise(text); // Assuming Exercise class has a constructor that accepts a string for the Name
+            IDatabase Logger = new Logger();
+            return Logger.SelectExerciseByName(text);
         }
 
         public string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)

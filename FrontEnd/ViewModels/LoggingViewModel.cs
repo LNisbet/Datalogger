@@ -85,12 +85,12 @@ namespace DataLogger.ViewModels
         public void AddNewLog(bool dateSpecified)
         {
             ExerciseLog log;
-            var selectedExercise = Logger.Exercises.SingleOrDefault(ex => ex.Name == SelectedExercise);
+            var _selectedExercise = Logger.SelectExerciseByName(SelectedExercise);
 
             if (dateSpecified)
-                log = new ExerciseLog(Date, selectedExercise, Value);
+                log = new ExerciseLog(Date, _selectedExercise, Value);
             else
-                log = new ExerciseLog(selectedExercise, Value);
+                log = new ExerciseLog(_selectedExercise, Value);
 
             Logger.AddNewLog(log);
         }

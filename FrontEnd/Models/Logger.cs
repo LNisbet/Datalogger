@@ -13,6 +13,12 @@ namespace DataLogger.Models
         ObservableCollection<Exercise> exercises { get { return Database.Exercises; } }
         ObservableCollection<Exercise> IDatabase.Exercises { get => exercises; }
 
+
+        Exercise IDatabase.SelectExerciseByName(string name)
+        {
+            return exercises.SingleOrDefault(ex => ex.Name == name);
+        }
+
         void IDatabase.AddNewExercise(Exercise exercise)
         {
             if (!exercises.Contains(exercise) && exercise.Name != "")
@@ -24,14 +30,13 @@ namespace DataLogger.Models
 
         void IDatabase.AddNewLog(ExerciseLog log)
         {
-            if (LogIsValid(log) && LogIsUnique(log))
-            {
-                exerciseLogs.Add(log);
-                OnPropertyChanged(nameof(exerciseLogs));
-            }
+            if (!LogIsValid(log))
+                throw new FailedToAddLogException("Log Is Not Valid");
+            if (!LogIsUnique(log))
+                return;
 
-            else
-                throw new NotImplementedException();
+            exerciseLogs.Add(log);
+            OnPropertyChanged(nameof(exerciseLogs));
         }
 
         private bool LogIsValid(ExerciseLog log)
@@ -54,6 +59,6 @@ namespace DataLogger.Models
             }
         }
         #endregion
-       
+
     }
 }

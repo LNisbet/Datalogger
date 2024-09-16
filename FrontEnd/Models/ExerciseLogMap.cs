@@ -12,7 +12,7 @@ namespace DataLogger.Models
         public ExerciseLogMap()
         {
             Map(m => m.Date).Name("Date").TypeConverterOption.Format("MM/dd/yyyy"); // Adjust format based on your CSV format
-            Map(m => m.Exercise).Name("Exercise").TypeConverter<ExerciseConverter>(); // Custom conversion for Exercise class
+            Map(m => m.Exercise).Name("Name").TypeConverter<ExerciseConverter>(); // Custom conversion for Exercise class
             Map(m => m.Value).Name("Value");
         }
     }
