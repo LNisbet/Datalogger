@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataLogger"
+        xmlns:VM="clr-namespace:DataLogger.ViewModels"
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
         Title="LoggingView" Height="450" Width="800">
@@ -11,8 +12,6 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Exercise" />
             <ComboBox x:Name="CBOX_Exercise" ItemsSource="{Binding ExerciseNames}" SelectedValue="{Binding SelectedExercise}" Width="100"/>
-            <TextBox x:Name="TBOX_Exercise" Text="{Binding NewExercise}" Width="100"/>
-            <Button x:Name="PB_NewExercise" Width="100" Content="Add New Exercise" Command="{Binding Path=AddNewExerciseCommand}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBox Text="Date"/>
@@ -21,8 +20,35 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBox Text="Value"/>
-            <TextBox x:Name="TBOX_Value" Text="{Binding Value}" Width="100"/>
+            <TextBox x:Name="TBOX_Value" Width="100">
+                <Binding Path="Value" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <VM:NumericValidationRule />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
         </StackPanel>
         <Button x:Name="PB_NewLog" Width="100" Content="Add New Log" Command="{Binding Path=AddNewLogCommand}"/>
+        <DataGrid ItemsSource="{Binding ExerciseLogs}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <!-- Date Column -->
+                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=MM/dd/yyyy}" />
+
+                <!-- Nested Exercise Data -->
+                <DataGridTemplateColumn Header="Exercise Details">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Exercise.Name}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding Exercise.Type}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- Value Column -->
+                <DataGridTextColumn Header="Value" Binding="{Binding Value}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </StackPanel>
 </Page>

@@ -11,11 +11,13 @@ namespace DataLogger.ViewModels
         #region Fields
         public string NewType { get; set; }
 
-        public string NewExercise { get; set; }
+        public string NewExerciseName { get; set; }
 
         public string NewExerciseType { get; set; }
 
         public string NewExerciseDescription { get; set; }
+
+        private Exercise newExercise { get => new(NewExerciseName, NewExerciseType, NewExerciseDescription); }
 
         public ObservableCollection<string> AllExerciseTypes { get => Model.InternalDatabase.AllExerciseTypes;}
 
@@ -25,8 +27,8 @@ namespace DataLogger.ViewModels
         public CreateExercise_VM()
         {
             NewType = "";
-            NewExercise = "";
-            NewExerciseType = "Default";
+            NewExerciseName = "";
+            NewExerciseType = "";
             NewExerciseDescription = "";
 
             Model.InternalDatabase.PropertyChanged += (sender, args) => OnPropertyChanged(args.PropertyName);
@@ -68,10 +70,9 @@ namespace DataLogger.ViewModels
             {
                 if (addNewExercise == null)
                 {
-                    var ex = new Exercise(NewExercise, NewExerciseType, NewExerciseDescription);
                     addNewExercise = new RelayCommand(
-                        p => ExerciseIsValid(ex),
-                        p => AddNewExercise(ex));
+                        p => ExerciseIsValid(newExercise),
+                        p => AddNewExercise(newExercise));
                 }
                 return addNewExercise;
             }
@@ -79,7 +80,6 @@ namespace DataLogger.ViewModels
 
         public void AddNewExercise(Exercise ex)
         {
-            MessageBox.Show(ex.Name + " " + ex.Type + " " + ex.Description);
             Model.InternalDatabase.AddNewExercise(ex);
             OnPropertyChanged(nameof(Exercises));
         }

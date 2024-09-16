@@ -8,10 +8,7 @@ namespace DataLogger.ViewModels
     public class LoggingViewModel : NotifyPropertyChanged
     {
         #region Fields
-        public string NewExercise { get; set; }
-
-        public string NewExerciseType { get; set; }
-
+        public ObservableCollection<ExerciseLog> ExerciseLogs { get => Model.InternalDatabase.ExerciseLogs; }
         public string SelectedExercise { get; set; }
 
         public ObservableCollection<string> ExerciseNames { get => Model.InternalDatabase.AllExerciseNames; }
@@ -25,8 +22,6 @@ namespace DataLogger.ViewModels
 
         public LoggingViewModel()
         {
-            NewExercise = "";
-            NewExerciseType = "Default";
             SelectedExercise = "";
             SpecifyDate = false;
             Date = DateOnly.FromDateTime(DateTime.Now);
@@ -34,28 +29,6 @@ namespace DataLogger.ViewModels
 
             Model.InternalDatabase.PropertyChanged += (sender, args) => OnPropertyChanged(args.PropertyName);
         }
-
-        #region AddNewExercise
-        private ICommand addNewExercise;
-        public ICommand AddNewExerciseCommand
-        {
-            get
-            {
-                if (addNewExercise == null)
-                {
-                    addNewExercise = new RelayCommand(
-                        p => AddNewExercise());
-                }
-                return addNewExercise;
-            }
-        }
-
-        public void AddNewExercise()
-        {
-            Model.InternalDatabase.AddNewExercise(new Exercise(NewExercise, NewExerciseType));
-            OnPropertyChanged(nameof(ExerciseNames));
-        }
-        #endregion
 
         #region AddNewLog
         private ICommand addNewLog;

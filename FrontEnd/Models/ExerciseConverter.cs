@@ -16,6 +16,10 @@ namespace DataLogger.Models
         {
             _database = database;
         }
+        ExerciseConverter()
+        {
+            _database = Model.InternalDatabase;
+        }
 
         public object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {

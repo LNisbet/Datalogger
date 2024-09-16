@@ -1,6 +1,7 @@
 ﻿using DataLogger.Views;
 using DataLogger.Models;
 using System.Windows;
+using System.Globalization;
 
 namespace DataLogger
 {
@@ -13,6 +14,19 @@ namespace DataLogger
         {
             base.OnStartup(e);
             var view = new MainWindow_V();
+
+            // Set the global culture for the application to use dd/MM/yyyy
+            var culture = new CultureInfo("en-GB");  // British English uses dd/MM/yyyy format.
+
+            // Apply this culture to all threads (UI and background)
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+
+            FrameworkElement.LanguageProperty.OverrideMetadata(
+                typeof(FrameworkElement),
+                new FrameworkPropertyMetadata(
+                    System.Windows.Markup.XmlLanguage.GetLanguage(culture.IetfLanguageTag)));
+
             view.Show();
         }
     }

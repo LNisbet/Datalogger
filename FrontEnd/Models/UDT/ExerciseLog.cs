@@ -19,6 +19,5 @@ namespace DataLogger.Models
             Exercise = exercise;
             Value = value;
         }
-        public ExerciseLog() { } // Add a parameterless constructor for CsvHelper to instantiate the object
     }
 }

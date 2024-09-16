@@ -10,14 +10,14 @@
     <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Add New Type" />
-            <TextBox Text="{Binding NewType , Mode=TwoWay}" Width="100"/>
+            <TextBox x:Name="TBOX_NewType" Text="{Binding NewType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
             <Button Width="100" Content="Add New Type" Command="{Binding Path=AddNewTypeCommand}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Add New Exercise" />
-            <TextBox Text="{Binding NewExercise, Mode=TwoWay}" Width="100"/>
-            <ComboBox ItemsSource="{Binding AllExerciseTypes}" SelectedValue="{Binding NewExerciseType}" Width="100"/>
-            <TextBox Text="{Binding NewExerciseDescription, Mode=TwoWay}" Width="200"/>
+            <TextBox x:Name="TBOX_NewExercise" Text="{Binding NewExerciseName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+            <ComboBox x:Name="CMB_NewExerciseType" ItemsSource="{Binding AllExerciseTypes}" SelectedValue="{Binding NewExerciseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+            <TextBox x:Name="TBOX_NewExerciseDescription" Text="{Binding NewExerciseDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
             <Button Width="100" Content="Add New Exercise" Command="{Binding Path=AddNewExerciseCommand}"/>
         </StackPanel>
         <DataGrid ItemsSource="{Binding Exercises}" AutoGenerateColumns="True" />
