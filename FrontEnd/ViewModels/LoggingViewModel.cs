@@ -7,7 +7,7 @@ namespace DataLogger.ViewModels
 {
     public class LoggingViewModel : NotifyPropertyChanged
     {
-
+        #region Fields
         public string NewExercise { get; set; }
 
         public string NewExerciseType { get; set; }
@@ -21,11 +21,13 @@ namespace DataLogger.ViewModels
         public DateOnly Date { get; set; }
 
         public float Value { get; set; }
-
+        #endregion
 
         public LoggingViewModel()
         {
             NewExercise = "";
+            NewExerciseType = "Default";
+            SelectedExercise = "";
             SpecifyDate = false;
             Date = DateOnly.FromDateTime(DateTime.Now);
             Value = 0;
@@ -82,6 +84,5 @@ namespace DataLogger.ViewModels
             Model.InternalDatabase.AddNewLog(log);
         }
         #endregion
-
     }
 }

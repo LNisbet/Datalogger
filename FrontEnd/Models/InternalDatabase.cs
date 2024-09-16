@@ -9,21 +9,29 @@ namespace DataLogger.Models
     {
         #region Fields
         private ObservableCollection<ExerciseLog> exerciseLogs = [];
-        ObservableCollection<ExerciseLog> IDatabase.ExerciseLogs { get => exerciseLogs; }
+        ObservableCollection<ExerciseLog> IDatabase.ExerciseLogs { get => exerciseLogs; set => exerciseLogs = value; }
 
         private ObservableCollection<Exercise> exercises = [];
-        ObservableCollection<Exercise> IDatabase.Exercises { get => exercises; }
+        ObservableCollection<Exercise> IDatabase.Exercises { get => exercises; set => exercises = value; }
 
         private ObservableCollection<string> allExerciseNames { get => new ObservableCollection<string>(exercises.Select(exercise => exercise.Name)); }
         ObservableCollection<string> IDatabase.AllExerciseNames { get => allExerciseNames; }
 
-        private ObservableCollection<string> allExerciseTypes { get => new ObservableCollection<string>(exercises.Select(exercise => exercise.Type)); }
+        private ObservableCollection<string> allExerciseTypes = [];
         ObservableCollection<string> IDatabase.AllExerciseTypes { get => allExerciseTypes; }
         #endregion
 
         Exercise IDatabase.SelectExerciseByName(string name)
         {
             return exercises.SingleOrDefault(ex => ex.Name == name);
+        }
+
+        void IDatabase.AddNewExerciseType(string exerciseType)
+        {
+            if (!allExerciseTypes.Contains(exerciseType) && exerciseType != "")
+            {
+                allExerciseTypes.Add(exerciseType);
+            }
         }
 
         void IDatabase.AddNewExercise(Exercise exercise)

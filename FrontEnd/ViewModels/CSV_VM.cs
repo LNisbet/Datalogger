@@ -26,7 +26,7 @@ namespace DataLogger.ViewModels
                 if (exportLogsCommand == null)
                 {
                     exportLogsCommand = new RelayCommand(
-                        p => Database.ExerciseLogs.Count > 0,
+                        p => Model.InternalDatabase.ExerciseLogs.Count > 0,
                         p => ExportLogs());
                 }
                 return exportLogsCommand;

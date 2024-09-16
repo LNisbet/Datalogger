@@ -10,6 +10,6 @@ namespace DataLogger.ViewModels
 {
     class DisplayLog_VM
     {
-        public ObservableCollection<ExerciseLog> ExerciseLogs { get => Database.ExerciseLogs; set => value = Database.ExerciseLogs; }
+        public ObservableCollection<ExerciseLog> ExerciseLogs { get => Model.InternalDatabase.ExerciseLogs; }
     }
 }

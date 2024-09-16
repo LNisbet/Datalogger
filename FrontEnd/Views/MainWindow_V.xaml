@@ -7,10 +7,15 @@
                    mc:Ignorable="d"
                    Title="MainWindow_V" Height="450" Width="800">
     <NavigationWindow.Content>
-        <StackPanel Width="100" HorizontalAlignment="Left">
+        <StackPanel Width="150" HorizontalAlignment="Left">
             <Button>
                 <Hyperlink NavigateUri="LoggingView.xaml">
                     Logger
+                </Hyperlink>
+            </Button>
+            <Button>
+                <Hyperlink NavigateUri="CreateExercise_V.xaml">
+                    Create A New Exercise
                 </Hyperlink>
             </Button>
             <Button>
