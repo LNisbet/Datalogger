@@ -18,7 +18,7 @@ namespace DataLogger.ViewModels
         public string Path { get => path; set => path = value; }
 
         #region ExportLogsToCSV
-        private ICommand exportLogsCommand;
+        private ICommand? exportLogsCommand;
         public ICommand ExportLogsCommand
         {
             get
@@ -41,7 +41,7 @@ namespace DataLogger.ViewModels
         #endregion
 
         #region ExportExercisesToCSV
-        private ICommand exportExercisesCommand;
+        private ICommand? exportExercisesCommand;
         public ICommand ExportExercisesCommand
         {
             get
@@ -64,7 +64,7 @@ namespace DataLogger.ViewModels
         #endregion
 
         #region ImportLogsFromCSV
-        private ICommand importLogsCommand;
+        private ICommand? importLogsCommand;
         public ICommand ImportLogsCommand
         {
             get
@@ -90,7 +90,7 @@ namespace DataLogger.ViewModels
         #endregion
 
         #region ImportExercisesFromCSV
-        private ICommand importExercisesCommand;
+        private ICommand? importExercisesCommand;
         public ICommand ImportExercisesCommand
         {
             get

@@ -35,7 +35,7 @@ namespace DataLogger.ViewModels
         }
 
         #region AddNewType
-        private ICommand addNewType;
+        private ICommand? addNewType;
         public ICommand AddNewTypeCommand
         {
             get
@@ -63,7 +63,7 @@ namespace DataLogger.ViewModels
         #endregion
 
         #region AddNewExercise
-        private ICommand addNewExercise;
+        private ICommand? addNewExercise;
         public ICommand AddNewExerciseCommand
         {
             get

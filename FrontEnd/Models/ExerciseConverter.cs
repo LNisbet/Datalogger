@@ -21,13 +21,15 @@ namespace DataLogger.Models
             _database = Model.InternalDatabase;
         }
 
-        public object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        public object ConvertFromString(string? text, IReaderRow row, MemberMapData memberMapData)
         {
+            ArgumentNullException.ThrowIfNull(text);
             return _database.SelectExerciseByName(text);
         }
 
-        public string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        public string ConvertToString(object? value, IWriterRow row, MemberMapData memberMapData)
         {
+            ArgumentNullException.ThrowIfNull(value);
             return ((Exercise)value).Name; // Convert back to string if you need to write it out
         }
     }

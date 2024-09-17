@@ -23,7 +23,10 @@ namespace DataLogger.Models
 
         Exercise IDatabase.SelectExerciseByName(string name)
         {
-            return exercises.SingleOrDefault(ex => ex.Name == name);
+            var ex = exercises.SingleOrDefault(ex => ex.Name == name);
+            if (ex == null)
+                throw new ExerciseNotFoundException(name);
+            return ex;
         }
 
         void IDatabase.AddNewExerciseType(string exerciseType)

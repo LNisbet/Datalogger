@@ -13,8 +13,12 @@ namespace DataLogger
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            Localisation();
             var view = new MainWindow_V();
-
+            view.Show();
+        }
+        private void Localisation()
+        {
             // Set the global culture for the application to use dd/MM/yyyy
             var culture = new CultureInfo("en-GB");  // British English uses dd/MM/yyyy format.
 
@@ -26,8 +30,7 @@ namespace DataLogger
                 typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(
                     System.Windows.Markup.XmlLanguage.GetLanguage(culture.IetfLanguageTag)));
-
-            view.Show();
         }
     }
+    
 }

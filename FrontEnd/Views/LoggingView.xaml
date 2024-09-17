@@ -32,7 +32,7 @@
         <DataGrid ItemsSource="{Binding ExerciseLogs}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <!-- Date Column -->
-                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=MM/dd/yyyy}" />
+                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=dd/MM/yyyy}" />
 
                 <!-- Nested Exercise Data -->
                 <DataGridTemplateColumn Header="Exercise Details">

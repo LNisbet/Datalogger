@@ -31,7 +31,7 @@ namespace DataLogger.ViewModels
         }
 
         #region AddNewLog
-        private ICommand addNewLog;
+        private ICommand? addNewLog;
         public ICommand AddNewLogCommand
         {
             get
