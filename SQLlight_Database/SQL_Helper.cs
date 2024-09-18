@@ -8,9 +8,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SQLight_Database
 {
-    internal class SQL_Helper
+    static internal class SQL_Helper
     {
-        public string CreatTableString(string tableName, List<ColumnDescription> columns )
+        static public string CreatTableString(string tableName, List<ColumnDescription> columns )
         {
             List<string> strings = new();
             foreach ( ColumnDescription column in columns )
@@ -20,17 +20,17 @@ namespace SQLight_Database
             return "CREATE TABLE " + tableName + CreateStringFromList(strings);
         }
 
-        public string CreatInsertDataString(string tableName, DataDescription data)
+        static public string CreatInsertDataString(string tableName, DataDescription data)
         {
             return "INSERT INTO " + tableName + CreateStringFromList(data.ColumnNames) + " VALUES" + CreateStringFromList(data.Values) + ";";
         }
 
-        public string CreatReadDataString(string tableName, string data)
+        static public string CreatReadDataString(string tableName, string data)
         {
             return "SELECT " + data + " FROM " + tableName;
         }
 
-        private string CreateStringFromList (List<string> list)
+        static private string CreateStringFromList (List<string> list)
         {
             var x = "";
             var i = 0;

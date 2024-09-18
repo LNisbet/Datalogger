@@ -35,7 +35,6 @@ namespace DataLogger.ViewModels
 
         public void ExportLogs()
         {
-            ICSV CSVHelper = new CSVHelper();
             CSVHelper.WriteToCSV(Path + LogFileName, new List<ExerciseLog>(Model.InternalDatabase.ExerciseLogs));
         }
         #endregion
@@ -58,7 +57,6 @@ namespace DataLogger.ViewModels
 
         public void ExportExercises()
         {
-            ICSV CSVHelper = new CSVHelper();
             CSVHelper.WriteToCSV(Path + ExerciseFileName, new List<Exercise>(Model.InternalDatabase.Exercises));
         }
         #endregion
@@ -80,7 +78,6 @@ namespace DataLogger.ViewModels
 
         public void ImportLogs()
         {
-            ICSV CSVHelper = new CSVHelper();
             var logs = CSVHelper.ReadFromCSV<ExerciseLog>(Path + LogFileName);
             foreach (ExerciseLog l in logs)
             {
@@ -106,7 +103,6 @@ namespace DataLogger.ViewModels
 
         public void ImportExercises()
         {
-            ICSV CSVHelper = new CSVHelper();
             var exercises = CSVHelper.ReadFromCSV<Exercise>(Path + ExerciseFileName);
             foreach (Exercise ex in exercises)
             {

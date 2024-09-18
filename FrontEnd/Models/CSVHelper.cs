@@ -13,9 +13,9 @@ using System.Collections;
 
 namespace DataLogger.Models
 {
-    internal class CSVHelper : ICSV
+    static public class CSVHelper
     {
-        List<T> ICSV.ReadFromCSV<T>(string path)
+        static public List<T> ReadFromCSV<T>(string path)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -31,7 +31,7 @@ namespace DataLogger.Models
             }
         }
 
-        void ICSV.WriteToCSV<T>(string path, List<T> list)
+        static public void WriteToCSV<T>(string path, List<T> list)
         {
             using (var writer = new StreamWriter(path))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))

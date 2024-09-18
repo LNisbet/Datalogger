@@ -12,6 +12,7 @@ namespace SQLite_Database
     {
         const string tableName = "SampleTable";
         const string tableName1 = "SampleTable1";
+        const string connectionString = "Data Source=database.db; Version = 3; New = True; Compress = True; ";
         
         static void Main(string[] args)
         {
@@ -27,7 +28,7 @@ namespace SQLite_Database
 
             SQLiteConnection sqlite_conn;
             // Create a new database connection:
-            sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Compress = True; ");
+            sqlite_conn = new SQLiteConnection(connectionString);
            // Open the connection:
          try
             {
@@ -42,20 +43,18 @@ namespace SQLite_Database
 
         static void CreateTable(SQLiteConnection conn)
         {
-            SQL_Helper sqlHelper = new();
             SQLiteCommand sqlite_cmd;
             List<ColumnDescription> columns = [new ColumnDescription("col1", "VARCHAR(20)"), new ColumnDescription("col2", "INT")];
             sqlite_cmd = conn.CreateCommand();
-            sqlite_cmd.CommandText = sqlHelper.CreatTableString(tableName, columns);
+            sqlite_cmd.CommandText = SQL_Helper.CreatTableString(tableName, columns);
             sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = sqlHelper.CreatTableString(tableName1, columns);
+            sqlite_cmd.CommandText = SQL_Helper.CreatTableString(tableName1, columns);
             sqlite_cmd.ExecuteNonQuery();
 
         }
 
         static void InsertData(SQLiteConnection conn)
         {
-            SQL_Helper sqlHelper = new();
             SQLiteCommand sqlite_cmd;
             sqlite_cmd = conn.CreateCommand();
 
@@ -65,24 +64,23 @@ namespace SQLite_Database
             List<string> values3 = ["'Test2 Text2 '", "3"];
             List<string> values4 = ["'Test3 Text3 '", "3"];
 
-            sqlite_cmd.CommandText = sqlHelper.CreatInsertDataString(tableName, new DataDescription(columnNames,values1));
+            sqlite_cmd.CommandText = SQL_Helper.CreatInsertDataString(tableName, new DataDescription(columnNames,values1));
            sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = sqlHelper.CreatInsertDataString(tableName, new DataDescription(columnNames, values2));
+            sqlite_cmd.CommandText = SQL_Helper.CreatInsertDataString(tableName, new DataDescription(columnNames, values2));
            sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = sqlHelper.CreatInsertDataString(tableName, new DataDescription(columnNames, values3));
+            sqlite_cmd.CommandText = SQL_Helper.CreatInsertDataString(tableName, new DataDescription(columnNames, values3));
            sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = sqlHelper.CreatInsertDataString(tableName, new DataDescription(columnNames, values4));
+            sqlite_cmd.CommandText = SQL_Helper.CreatInsertDataString(tableName, new DataDescription(columnNames, values4));
            sqlite_cmd.ExecuteNonQuery();
 
         }
 
         static void ReadData(SQLiteConnection conn)
         {
-            SQL_Helper sqlHelper = new();
             SQLiteDataReader sqlite_datareader;
             SQLiteCommand sqlite_cmd;
             sqlite_cmd = conn.CreateCommand();
-            sqlite_cmd.CommandText = sqlHelper.CreatReadDataString(tableName,"*");
+            sqlite_cmd.CommandText = SQL_Helper.CreatReadDataString(tableName,"*");
 
             sqlite_datareader = sqlite_cmd.ExecuteReader();
             while (sqlite_datareader.Read())
