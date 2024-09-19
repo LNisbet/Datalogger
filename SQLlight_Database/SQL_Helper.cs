@@ -10,6 +10,11 @@ namespace SQLight_Database
 {
     static internal class SQL_Helper
     {
+        static public string CreatConnectionString(string dbName, int version, bool newDb, bool compress)
+        {
+            return "Data Source=" + dbName + "; Version = " + version.ToString() + "; New = " + newDb.ToString() + "; Compress = " + compress.ToString() + "; ";
+        }
+
         static public string CreatTableString(string tableName, List<ColumnDescription> columns )
         {
             List<string> strings = new();

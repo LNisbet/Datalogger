@@ -5,28 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SQLight_Database;
-using System.Data.SQLite;
 
 namespace SQLight_Database
 {
-    public class Database : IDatabase
+    public static class Database
     {
-        const string connectionString = "Data Source=database.db; Version = 3; New = True; Compress = True; ";
+        static List<string> ColumnNames => throw new NotImplementedException();
 
-        List<string> IDatabase.columnNames => throw new NotImplementedException();
-
-        SQLiteConnection sqlite_conn;
-
-        Database()
+        static SQLiteConnection? sqlite_conn;
+        
+        public static SQLiteConnection CreateConnection(string dBName)
         {
-            sqlite_conn = CreateConnection();
-        }
+            string newConnectionString = SQL_Helper.CreatConnectionString(dBName,3,true,true);
+            string ExistingConnectionString = SQL_Helper.CreatConnectionString(dBName, 3, false, true);
 
-        private SQLiteConnection CreateConnection()
-        {
             // Create a new database connection
             if (sqlite_conn == null)
-                sqlite_conn = new SQLiteConnection(connectionString);
+                sqlite_conn = new SQLiteConnection(newConnectionString);
+            else
+                sqlite_conn = new SQLiteConnection(ExistingConnectionString);
             // Open the connection:
             try
             {
@@ -34,12 +31,13 @@ namespace SQLight_Database
             }
             catch (Exception ex)
             {
-
+                sqlite_conn = new SQLiteConnection(ExistingConnectionString);
+                sqlite_conn.Open();
             }
             return sqlite_conn;
         }
 
-        private SQLiteConnection CloseConnection()
+        public static SQLiteConnection CloseConnection(string dBName)
         {
             // close the connection:
             try
@@ -53,46 +51,43 @@ namespace SQLight_Database
             return sqlite_conn;
         }
 
-        void IDatabase.AddColumn(string columnName, string variableType)
+        public static void DeleteDatabase(string dBName)
         {
-            SQLiteCommand sqlite_cmd;
+            throw new NotImplementedException();
+        }
 
-            sqlite_cmd = sqlite_conn.CreateCommand();
+        public static void CreateTable(string tableName, List<ColumnDescription> columns)
+        {
+            SQLiteCommand sqlite_cmd = sqlite_conn.CreateCommand();
             sqlite_cmd.CommandText = SQL_Helper.CreatTableString(tableName, columns);
             sqlite_cmd.ExecuteNonQuery();
         }
 
-        void IDatabase.AddRow(List<string> values)
+        public static void AddRow(string tableName, List<string> columnNames, List<string> values)
+        {
+            SQLiteCommand sqlite_cmd;
+            sqlite_cmd = sqlite_conn.CreateCommand();
+
+            sqlite_cmd.CommandText = SQL_Helper.CreatInsertDataString(tableName, new DataDescription(columnNames, values));
+            sqlite_cmd.ExecuteNonQuery();
+        }
+
+        public static void DeleteColumn(string tableName, string columnName)
         {
             throw new NotImplementedException();
         }
 
-        void IDatabase.CreateDatabase()
+        public static void DeleteRow(string tableName, int id)
         {
             throw new NotImplementedException();
         }
 
-        void IDatabase.DeleteColumn(string columnName)
+        public static List<string> GetRowById(string tableName, int id)
         {
             throw new NotImplementedException();
         }
 
-        void IDatabase.DeleteDatabase()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IDatabase.DeleteRow(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        List<string> IDatabase.GetRowById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        List<List<string>> IDatabase.GetRowsByDataMatch(string columnName, string value)
+        public static List<List<string>> GetRowsByDataMatch(string tableName, string columnName, string value)
         {
             throw new NotImplementedException();
         }
