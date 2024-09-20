@@ -4,13 +4,13 @@
     {
         public string Name { get; }
         public string Type { get; }
-        public string Description { get; }
+        public string? Description { get; }
 
         public Exercise(string name, string type)
         {
             Name = name;
             Type = type;
-            Description = "";
+            Description = null;
         }
 
         public Exercise(string name, string type, string description)

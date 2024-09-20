@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SQLight_Database
 {
-    public class DataDescription(List<string> columnNames, List<string> values)
+    public class DataDescription(List<string> columnNames, List<string?> values)
     {
         public List<string> ColumnNames { get; set; } = columnNames;
-        public List<string> Values { get; set; } = values;
+        public List<string?> Values { get; set; } = values;
     }
 }

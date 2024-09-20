@@ -40,7 +40,7 @@ namespace SQLight_Database
             {
                 strings.Add($"{column.Name} {column.DataType} {column.Constraints}");
             }
-            return $"CREATE TABLE {tableName} {CreateStringFromList(strings)}; ";
+            return $"CREATE TABLE {tableName} {CreateStringFromList(strings,false)}; ";
         }
 
         static public string DeleteTable(string tableName)
@@ -69,9 +69,9 @@ namespace SQLight_Database
         static public string CreateIndex(string tableName, string indexName, List<string> columnNames, bool unique)
         {
             if (unique)
-                return $"CREATE UNIQUE INDEX {indexName} ON {tableName}{CreateStringFromList(columnNames)}; ";
+                return $"CREATE UNIQUE INDEX {indexName} ON {tableName}{CreateStringFromList(columnNames, false)}; ";
             else
-                return $"CREATE INDEX {indexName} ON {tableName}{CreateStringFromList(columnNames)}; ";
+                return $"CREATE INDEX {indexName} ON {tableName}{CreateStringFromList(columnNames, false)}; ";
         }
 
         static public string DeleteIndex(string tableName, string indexName)
@@ -81,12 +81,12 @@ namespace SQLight_Database
 
         static public string InsertData(string tableName, DataDescription data)
         {
-            return $"INSERT INTO {tableName}{CreateStringFromList(data.ColumnNames)} VALUES{CreateStringFromList(data.Values)}; ";
+            return $"INSERT INTO {tableName}{CreateStringFromList(data.ColumnNames, false)} VALUES{CreateStringFromList(data.Values, true)}; ";
         }
 
         static public string InsertData(string tableName, List<string> data)
         {
-            return $"INSERT INTO {tableName} VALUES{CreateStringFromList(data)}; ";
+            return $"INSERT INTO {tableName} VALUES{CreateStringFromList(data, true)}; ";
         }
 
         static public string AlterData(string tableName, string set, string condition)
@@ -154,16 +154,41 @@ namespace SQLight_Database
             AVG
         }
 
-        static private string CreateStringFromList(List<string> list)
+        static private List<string> FormatStringsInList(List<string?> list, bool singleQuotes)
+        {
+            List<string> _list = [];
+            foreach (var item in list)
+            {
+                var formattedItem = "";
+                if (item == null)
+                    formattedItem = "null";
+                else
+                    formattedItem = item;
+
+                if (singleQuotes)
+                    formattedItem = $"'{formattedItem}'";
+
+                _list.Add(formattedItem);
+            }
+                
+            return _list;
+        }
+
+        static private string CreateStringFromList(List<string?> list, bool singleQuotes)
         {
             var x = "";
             var i = 0;
-            foreach (string item in list) if (item != null)
+            var _list = FormatStringsInList(list, singleQuotes);
+
+            foreach (var item in _list)
             {
                 if (i == 0)
                     x += "(";
 
-                x += item;
+                if (item == null)
+                    x += "null";
+                else
+                    x += item;
 
                 if (i == list.Count - 1)
                     x += ")";

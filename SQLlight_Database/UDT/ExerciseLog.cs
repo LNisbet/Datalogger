@@ -13,6 +13,7 @@
             Date = date;
             Exercise = exercise;
             Value = value;
+            Note = null;
         }
         public ExerciseLog(DateOnly date, Exercise exercise, float value, string note)
         {

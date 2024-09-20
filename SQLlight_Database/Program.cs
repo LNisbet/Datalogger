@@ -13,8 +13,8 @@ namespace SQLite_Database
         static void Main(string[] args)
         {
             Model.InititiliseDatabase("User1");
-            Model.AddNewExercise(new Exercise("'ex_name1'", "'ex_type1'", "'ex_discription1'"));
-            Model.AddNewExercise(new Exercise("'ex_name2'", "'ex_type2'"));
+            Model.AddNewExercise(new Exercise("ex_name1", "ex_type1", "ex_discription1"));
+            Model.AddNewExercise(new Exercise("ex_name2", "ex_type2"));
             Model.ReadExerciseData();
             Model.CloseConnection();
         }

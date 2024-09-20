@@ -65,9 +65,7 @@ namespace SQLight_Database
 
         public static void AddNewExercise(Exercise exercise)
         {
-            List<string> dataDescription = [exercise.Name, exercise.Type];
-            if (exercise.Description != null )
-                dataDescription.Add(exercise.Description);
+            List<string> dataDescription = [exercise.Name, exercise.Type, exercise.Description];
 
             ExecuteSQLString(SQL_Strings.InsertData(ExercieseTableName, dataDescription));
         }
