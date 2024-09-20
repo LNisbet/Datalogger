@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogger.Models
+namespace SQLight_Database
 {
     public class ExerciseNotFoundException : Exception
     {

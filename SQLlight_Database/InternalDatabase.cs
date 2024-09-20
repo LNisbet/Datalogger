@@ -2,8 +2,9 @@
 using System.ComponentModel;
 using System.Windows;
 using CsvHelper;
+using SQLight_Database;
 
-namespace DataLogger.Models
+namespace SQLight_Database
 {
     public class InternalDatabase : NotifyPropertyChanged, IDatabase
     {

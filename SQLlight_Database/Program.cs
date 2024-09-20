@@ -47,9 +47,9 @@ namespace SQLite_Database
             SQLiteCommand sqlite_cmd;
             List<ColumnDescription> columns = [new ColumnDescription("col1", "VARCHAR(20)"), new ColumnDescription("col2", "INT")];
             sqlite_cmd = conn.CreateCommand();
-            sqlite_cmd.CommandText = SQL_Commands.CreatTableString(LogsTableName, columns);
+            sqlite_cmd.CommandText = SQL_Commands.CreateTableString(LogsTableName, columns);
             sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = SQL_Commands.CreatTableString(ExerciesesTableName, columns);
+            sqlite_cmd.CommandText = SQL_Commands.CreateTableString(ExerciesesTableName, columns);
             sqlite_cmd.ExecuteNonQuery();
 
         }
@@ -65,13 +65,13 @@ namespace SQLite_Database
             List<string> values3 = ["'Test2 Text2 '", "3"];
             List<string> values4 = ["'Test3 Text3 '", "3"];
 
-            sqlite_cmd.CommandText = SQL_Commands.CreatInsertDataString(LogsTableName, new DataDescription(columnNames,values1));
+            sqlite_cmd.CommandText = SQL_Commands.InsertDataString(LogsTableName, new DataDescription(columnNames,values1));
            sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = SQL_Commands.CreatInsertDataString(LogsTableName, new DataDescription(columnNames, values2));
+            sqlite_cmd.CommandText = SQL_Commands.InsertDataString(LogsTableName, new DataDescription(columnNames, values2));
            sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = SQL_Commands.CreatInsertDataString(LogsTableName, new DataDescription(columnNames, values3));
+            sqlite_cmd.CommandText = SQL_Commands.InsertDataString(LogsTableName, new DataDescription(columnNames, values3));
            sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = SQL_Commands.CreatInsertDataString(LogsTableName, new DataDescription(columnNames, values4));
+            sqlite_cmd.CommandText = SQL_Commands.InsertDataString(LogsTableName, new DataDescription(columnNames, values4));
            sqlite_cmd.ExecuteNonQuery();
 
         }
@@ -81,7 +81,7 @@ namespace SQLite_Database
             SQLiteDataReader sqlite_datareader;
             SQLiteCommand sqlite_cmd;
             sqlite_cmd = conn.CreateCommand();
-            sqlite_cmd.CommandText = SQL_Commands.CreatReadDataString(LogsTableName,"*");
+            sqlite_cmd.CommandText = SQL_Commands.ReadDataString(LogsTableName,"*", false);
 
             sqlite_datareader = sqlite_cmd.ExecuteReader();
             while (sqlite_datareader.Read())

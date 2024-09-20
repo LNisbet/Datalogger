@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 
-namespace DataLogger.Models
+namespace DataLogger.ViewModels
 {
-    public partial class NotifyPropertyChanged :INotifyPropertyChanged
+    public partial class NotifyPropertyChanged : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

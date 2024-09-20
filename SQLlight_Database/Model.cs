@@ -4,8 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLight_Database;
 
-namespace DataLogger.Models
+namespace SQLight_Database
 {
     public static class Model
     {

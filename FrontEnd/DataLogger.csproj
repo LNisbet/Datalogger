@@ -9,11 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="33.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Page Include="App.xaml" />
+	<ProjectReference Include="..\SQLlight_Database\SQLight_Database.csproj" />
   </ItemGroup>
 
 </Project>

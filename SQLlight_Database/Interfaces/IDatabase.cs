@@ -1,8 +1,9 @@
 ﻿
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using SQLight_Database;
 
-namespace DataLogger.Models
+namespace SQLight_Database
 {
     public interface IDatabase : INotifyPropertyChanged
     {

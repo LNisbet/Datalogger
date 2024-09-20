@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using DataLogger.Models;
+using SQLight_Database;
 
 namespace DataLogger.ViewModels
 {

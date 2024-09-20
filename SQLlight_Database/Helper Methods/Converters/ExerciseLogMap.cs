@@ -1,11 +1,12 @@
 ﻿using CsvHelper.Configuration;
+using SQLight_Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogger.Models
+namespace SQLight_Database
 {
     public class ExerciseLogMap : ClassMap<ExerciseLog>
     {

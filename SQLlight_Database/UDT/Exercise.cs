@@ -1,5 +1,4 @@
-﻿
-namespace DataLogger.Models
+﻿namespace SQLight_Database
 {
     public class Exercise
     {

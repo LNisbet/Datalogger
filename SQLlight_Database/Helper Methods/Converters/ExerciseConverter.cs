@@ -6,13 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLight_Database;
 
-namespace DataLogger.Models
+namespace SQLight_Database
 {
     public class ExerciseConverter : ITypeConverter
     {
         private IDatabase _database = Model.InternalDatabase;
-        ExerciseConverter(IDatabase database) 
+        ExerciseConverter(IDatabase database)
         {
             _database = database;
         }

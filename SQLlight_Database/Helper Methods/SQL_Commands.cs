@@ -15,8 +15,8 @@ namespace SQLight_Database
 
         public static SQLiteConnection CreateConnection(string dbName, SQLiteConnection conn)
         {
-            string newConnectionString = SQL_Commands.CreatConnectionString(dbName, 3, true, true);
-            string ExistingConnectionString = SQL_Commands.CreatConnectionString(dbName, 3, false, true);
+            string newConnectionString = SQL_Commands.CreateConnectionString(dbName, 3, true, true);
+            string ExistingConnectionString = SQL_Commands.CreateConnectionString(dbName, 3, false, true);
 
             // Create a new database connection
             if (conn == null)
@@ -72,12 +72,12 @@ namespace SQLight_Database
             return "BACKUP DATABASE " + dbName + " TO DISK = '" + path + "' WITH DIFFERETIAL;";
         }
 
-        static public string CreatConnectionString(string dbName, int version, bool newDb, bool compress)
+        static public string CreateConnectionString(string dbName, int version, bool newDb, bool compress)
         {
             return "Data Source=" + dbName + "; Version = " + version.ToString() + "; New = " + newDb.ToString() + "; Compress = " + compress.ToString() + "; ";
         }
 
-        static public string CreatTableString(string tableName, List<ColumnDescription> columns )
+        static public string CreateTableString(string tableName, List<ColumnDescription> columns )
         {
             List<string> strings = new();
             foreach ( ColumnDescription column in columns )
