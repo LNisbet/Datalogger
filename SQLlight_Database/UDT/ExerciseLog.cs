@@ -6,17 +6,20 @@
         public Exercise Exercise { get; set; }
         public float Value { get; set; }
 
+        public string? Note { get; set; }
+
         public ExerciseLog(DateOnly date, Exercise exercise, float value)
         {
             Date = date;
             Exercise = exercise;
             Value = value;
         }
-        public ExerciseLog(Exercise exercise, float value)
+        public ExerciseLog(DateOnly date, Exercise exercise, float value, string note)
         {
-            Date = DateOnly.FromDateTime(DateTime.Now);
+            Date = date;
             Exercise = exercise;
             Value = value;
+            Note = note;
         }
     }
 }

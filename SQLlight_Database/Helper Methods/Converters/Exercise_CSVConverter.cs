@@ -10,14 +10,14 @@ using SQLight_Database;
 
 namespace SQLight_Database
 {
-    public class ExerciseConverter : ITypeConverter
+    public class Exercise_CSVConverter : ITypeConverter
     {
         private IDatabase _database = Model.InternalDatabase;
-        ExerciseConverter(IDatabase database)
+        Exercise_CSVConverter(IDatabase database)
         {
             _database = database;
         }
-        ExerciseConverter()
+        Exercise_CSVConverter()
         {
             _database = Model.InternalDatabase;
         }
