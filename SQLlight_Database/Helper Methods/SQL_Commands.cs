@@ -34,6 +34,7 @@ namespace SQLight_Database
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Exception: {ex.Message}");
                 conn = new SQLiteConnection(ExistingConnectionString);
                 conn.Open();
             }
@@ -49,7 +50,7 @@ namespace SQLight_Database
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"Exception: {ex.Message}");
             }
             return conn;
         }
@@ -67,6 +68,23 @@ namespace SQLight_Database
             {
                 Console.WriteLine($"Exception: {ex.Message}");
             }
+        }
+        public static SQLiteDataReader? ExecuteReader(SQLiteConnection conn, string command)
+        {
+            SQLiteDataReader? sqlite_datareader = null;
+            SQLiteCommand sqlite_cmd = conn.CreateCommand();
+            sqlite_cmd.CommandText = command;
+            try
+            {
+                Console.WriteLine($"Command: {command}");
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+            }
+
+            return sqlite_datareader;
         }
     }
 }

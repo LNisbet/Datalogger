@@ -27,7 +27,7 @@ namespace DataLogger.ViewModels
                 if (exportLogsCommand == null)
                 {
                     exportLogsCommand = new RelayCommand(
-                        p => Model.InternalDatabase.ExerciseLogs.Count > 0,
+                        p => SQL_Database.Logs.Count > 0,
                         p => ExportLogs());
                 }
                 return exportLogsCommand;
@@ -36,7 +36,7 @@ namespace DataLogger.ViewModels
 
         public void ExportLogs()
         {
-            CSVHelper.WriteToCSV(Path + LogFileName, new List<ExerciseLog>(Model.InternalDatabase.ExerciseLogs));
+            CSVHelper.WriteToCSV(Path + LogFileName, new List<ExerciseLog>(SQL_Database.Logs));
         }
         #endregion
 
@@ -49,7 +49,7 @@ namespace DataLogger.ViewModels
                 if (exportExercisesCommand == null)
                 {
                     exportExercisesCommand = new RelayCommand(
-                        p => Model.InternalDatabase.Exercises.Count > 0,
+                        p => SQL_Database.Exercises.Count > 0,
                         p => ExportExercises());
                 }
                 return exportExercisesCommand;
@@ -58,7 +58,7 @@ namespace DataLogger.ViewModels
 
         public void ExportExercises()
         {
-            CSVHelper.WriteToCSV(Path + ExerciseFileName, new List<Exercise>(Model.InternalDatabase.Exercises));
+            CSVHelper.WriteToCSV(Path + ExerciseFileName, new List<Exercise>(SQL_Database.Exercises));
         }
         #endregion
 
@@ -82,7 +82,7 @@ namespace DataLogger.ViewModels
             var logs = CSVHelper.ReadFromCSV<ExerciseLog>(Path + LogFileName);
             foreach (ExerciseLog l in logs)
             {
-                Model.InternalDatabase.AddNewLog(l);
+                SQL_Database.AddNewLog(l);
             }
         }
         #endregion
@@ -107,7 +107,7 @@ namespace DataLogger.ViewModels
             var exercises = CSVHelper.ReadFromCSV<Exercise>(Path + ExerciseFileName);
             foreach (Exercise ex in exercises)
             {
-                Model.InternalDatabase.AddNewExercise(ex);
+                SQL_Database.AddNewExercise(ex);
             }
         }
         #endregion

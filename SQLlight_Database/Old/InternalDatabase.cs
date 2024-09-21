@@ -4,7 +4,7 @@ using System.Windows;
 using CsvHelper;
 using SQLight_Database;
 
-namespace SQLight_Database
+namespace SQLight_Database.old
 {
     public class InternalDatabase : NotifyPropertyChanged, IDatabase
     {

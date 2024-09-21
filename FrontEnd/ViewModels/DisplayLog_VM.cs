@@ -10,6 +10,6 @@ namespace DataLogger.ViewModels
 {
     class DisplayLog_VM
     {
-        public ObservableCollection<ExerciseLog> ExerciseLogs { get => Model.InternalDatabase.ExerciseLogs; }
+        public ObservableCollection<ExerciseLog> ExerciseLogs { get => SQL_Database.Logs; }
     }
 }

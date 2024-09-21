@@ -19,9 +19,9 @@ namespace DataLogger.ViewModels
 
         private Exercise newExercise { get => new(NewExerciseName, NewExerciseType, NewExerciseDescription); }
 
-        public ObservableCollection<string> AllExerciseTypes { get => Model.InternalDatabase.AllExerciseTypes;}
+        public ObservableCollection<string> AllExerciseTypes { get => SQL_Database.AllExerciseTypes;}
 
-        public ObservableCollection<Exercise> Exercises{ get => Model.InternalDatabase.Exercises; set => Model.InternalDatabase.Exercises = value; }
+        public ObservableCollection<Exercise> Exercises{ get => SQL_Database.Exercises; }
         #endregion
 
         public CreateExercise_VM()
@@ -31,7 +31,7 @@ namespace DataLogger.ViewModels
             NewExerciseType = "";
             NewExerciseDescription = "";
 
-            Model.InternalDatabase.PropertyChanged += (sender, args) => OnPropertyChanged(args.PropertyName);
+            //SQL_Database.InternalDatabase.PropertyChanged += (sender, args) => OnPropertyChanged(args.PropertyName);
         }
 
         #region AddNewType
@@ -52,7 +52,8 @@ namespace DataLogger.ViewModels
 
         public void AddNewExerciseType(string ty)
         {
-            Model.InternalDatabase.AddNewExerciseType(ty);
+            throw new NotImplementedException();
+            //SQL_Database.InternalDatabase.AddNewExerciseType(ty);
             OnPropertyChanged(nameof(Exercises));
         }
 
@@ -80,13 +81,13 @@ namespace DataLogger.ViewModels
 
         public void AddNewExercise(Exercise ex)
         {
-            Model.InternalDatabase.AddNewExercise(ex);
+            SQL_Database.AddNewExercise(ex);
             OnPropertyChanged(nameof(Exercises));
         }
 
         public bool ExerciseIsValid(Exercise ex)
         {
-            return AllExerciseTypes.Contains(ex.Type) && !Model.InternalDatabase.AllExerciseNames.Contains(ex.Name);
+            return AllExerciseTypes.Contains(ex.Type) && !SQL_Database.AllExerciseNames.Contains(ex.Name);
         }
         #endregion
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
@@ -40,7 +41,7 @@ namespace SQLight_Database
             {
                 strings.Add($"{column.Name} {column.DataType} {column.Constraints}");
             }
-            return $"CREATE TABLE {tableName} {CreateStringFromList(strings,false)}; ";
+            return $"CREATE TABLE {tableName} {CreateStringFromList(strings)}; ";
         }
 
         static public string DeleteTable(string tableName)
@@ -69,9 +70,9 @@ namespace SQLight_Database
         static public string CreateIndex(string tableName, string indexName, List<string> columnNames, bool unique)
         {
             if (unique)
-                return $"CREATE UNIQUE INDEX {indexName} ON {tableName}{CreateStringFromList(columnNames, false)}; ";
+                return $"CREATE UNIQUE INDEX {indexName} ON {tableName}{CreateStringFromList(columnNames)}; ";
             else
-                return $"CREATE INDEX {indexName} ON {tableName}{CreateStringFromList(columnNames, false)}; ";
+                return $"CREATE INDEX {indexName} ON {tableName}{CreateStringFromList(columnNames)}; ";
         }
 
         static public string DeleteIndex(string tableName, string indexName)
@@ -81,12 +82,12 @@ namespace SQLight_Database
 
         static public string InsertData(string tableName, DataDescription data)
         {
-            return $"INSERT INTO {tableName}{CreateStringFromList(data.ColumnNames, false)} VALUES{CreateStringFromList(data.Values, true)}; ";
+            return $"INSERT INTO {tableName}{CreateStringFromList(data.ColumnNames)} VALUES{CreateStringFromList(data.Values)}; ";
         }
 
         static public string InsertData(string tableName, List<string> data)
         {
-            return $"INSERT INTO {tableName} VALUES{CreateStringFromList(data, true)}; ";
+            return $"INSERT INTO {tableName} VALUES{CreateStringFromList(data)}; ";
         }
 
         static public string AlterData(string tableName, string set, string condition)
@@ -141,7 +142,7 @@ namespace SQLight_Database
                 case SelectDataOptions.AVG:
                     return $"SELECT AVG({inColumn}) FROM {tableName} WHERE {condition}; ";
                 default:
-                    return "";
+                    throw new NotImplementedException(selectOption.ToString());
             }
         }
 
@@ -154,41 +155,17 @@ namespace SQLight_Database
             AVG
         }
 
-        static private List<string> FormatStringsInList(List<string?> list, bool singleQuotes)
-        {
-            List<string> _list = [];
-            foreach (var item in list)
-            {
-                var formattedItem = "";
-                if (item == null)
-                    formattedItem = "null";
-                else
-                    formattedItem = item;
-
-                if (singleQuotes)
-                    formattedItem = $"'{formattedItem}'";
-
-                _list.Add(formattedItem);
-            }
-                
-            return _list;
-        }
-
-        static private string CreateStringFromList(List<string?> list, bool singleQuotes)
+        static private string CreateStringFromList(List<string> list)
         {
             var x = "";
             var i = 0;
-            var _list = FormatStringsInList(list, singleQuotes);
 
-            foreach (var item in _list)
+            foreach (var item in list)
             {
                 if (i == 0)
                     x += "(";
 
-                if (item == null)
-                    x += "null";
-                else
-                    x += item;
+                x += item;
 
                 if (i == list.Count - 1)
                     x += ")";

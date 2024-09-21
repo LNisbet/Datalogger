@@ -10,22 +10,13 @@ using SQLight_Database;
 
 namespace SQLight_Database
 {
-    public class Exercise_CSVConverter : ITypeConverter
+    public class ExerciseConverter : ITypeConverter
     {
-        private IDatabase _database = Model.InternalDatabase;
-        Exercise_CSVConverter(IDatabase database)
-        {
-            _database = database;
-        }
-        Exercise_CSVConverter()
-        {
-            _database = Model.InternalDatabase;
-        }
-
         public object ConvertFromString(string? text, IReaderRow row, MemberMapData memberMapData)
         {
             ArgumentNullException.ThrowIfNull(text);
-            return _database.SelectExerciseByName(text);
+            throw new NotImplementedException();
+            //return SQL_Database.Exercises.SelectExerciseByName(text);
         }
 
         public string ConvertToString(object? value, IWriterRow row, MemberMapData memberMapData)

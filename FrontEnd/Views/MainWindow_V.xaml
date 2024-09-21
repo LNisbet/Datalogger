@@ -7,27 +7,33 @@
                    mc:Ignorable="d"
                    Title="MainWindow_V" Height="450" Width="800">
     <NavigationWindow.Content>
-        <StackPanel Width="150" HorizontalAlignment="Left">
-            <Button>
-                <Hyperlink NavigateUri="LoggingView.xaml">
-                    Logger
-                </Hyperlink>
-            </Button>
-            <Button>
-                <Hyperlink NavigateUri="CreateExercise_V.xaml">
-                    Create A New Exercise
-                </Hyperlink>
-            </Button>
-            <Button>
-                <Hyperlink NavigateUri="CSVView.xaml">
-                    CSV
-                </Hyperlink>
-            </Button>
-            <Button>
-                <Hyperlink NavigateUri="LogDisplay.xaml">
-                    View Logs
-                </Hyperlink>
-            </Button>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Width="150" HorizontalAlignment="Left">
+                <Button>
+                    <Hyperlink NavigateUri="LoggingView.xaml">
+                        Logger
+                    </Hyperlink>
+                </Button>
+                <Button>
+                    <Hyperlink NavigateUri="CreateExercise_V.xaml">
+                        Create A New Exercise
+                    </Hyperlink>
+                </Button>
+                <Button>
+                    <Hyperlink NavigateUri="CSVView.xaml">
+                        CSV
+                    </Hyperlink>
+                </Button>
+                <Button>
+                    <Hyperlink NavigateUri="LogDisplay.xaml">
+                        View Logs
+                    </Hyperlink>
+                </Button>
+            </StackPanel>
+            <StackPanel>
+                <TextBox Width="150" Text="{Binding UserName}"/>
+                <Button Width="150" Content="Initilise" Command="{Binding Path=InitiliseDb}"/>
+            </StackPanel>
         </StackPanel>
     </NavigationWindow.Content>
 </NavigationWindow>
