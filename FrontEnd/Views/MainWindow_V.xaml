@@ -9,30 +9,25 @@
     <NavigationWindow.Content>
         <StackPanel Orientation="Horizontal">
             <StackPanel Width="150" HorizontalAlignment="Left">
-                <Button>
+                <Button IsEnabled="{Binding NavigationEnabled}">
                     <Hyperlink NavigateUri="LoggingView.xaml">
-                        Logger
+                        Logs
                     </Hyperlink>
                 </Button>
-                <Button>
+                <Button IsEnabled="{Binding NavigationEnabled}">
                     <Hyperlink NavigateUri="CreateExercise_V.xaml">
-                        Create A New Exercise
+                        Exercises
                     </Hyperlink>
                 </Button>
-                <Button>
+                <Button IsEnabled="{Binding NavigationEnabled}">
                     <Hyperlink NavigateUri="CSVView.xaml">
                         CSV
                     </Hyperlink>
                 </Button>
-                <Button>
-                    <Hyperlink NavigateUri="LogDisplay.xaml">
-                        View Logs
-                    </Hyperlink>
-                </Button>
             </StackPanel>
             <StackPanel>
-                <TextBox Width="150" Text="{Binding UserName}"/>
-                <Button Width="150" Content="Initilise" Command="{Binding Path=InitiliseDb}"/>
+                <ComboBox ItemsSource="{Binding UserNames}" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
+                <Button Width="150" Content="Log In" Command="{Binding Path=InitiliseDb}"/>
             </StackPanel>
         </StackPanel>
     </NavigationWindow.Content>

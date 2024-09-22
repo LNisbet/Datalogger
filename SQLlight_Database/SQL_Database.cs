@@ -1,47 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Data.SQLite;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using SQLight_Database;
 
 namespace SQLight_Database
 {
     public static class SQL_Database
     {
-        #region Constants
-
-        static readonly string ExercieseTableName = "Exercises";
-        static readonly List<ColumnDescription> ExerciseTableDescription =
-            [
-            new ColumnDescription("Name", "VARCHAR(20)", "PRIMARY KEY"),
-            new ColumnDescription("Type", "VARCHAR(20)", "NOT NULL"),
-            new ColumnDescription("Description", "TEXT")
-            ];
-
-        static readonly string LogsTableName = "ExerciseLogs";
-        static readonly List<ColumnDescription> LogTableDescription =
-            [
-            new ColumnDescription("Date", "DATE", "NOT NULL"),
-            new ColumnDescription("Exercise", "VARCHAR(20)", "NOT NULL"),
-            new ColumnDescription("Value", "FLOAT", "NOT NULL"),
-            new ColumnDescription("Note", "TEXT")
-            ];
-        #endregion
-
         #region Fields
         private static ObservableCollection<Exercise>? exercises = null;
         public static ObservableCollection<Exercise> Exercises 
         { 
-            get{if (exercises == null)
+            get
+            {
+                if (exercises == null)
                 {
                     exercises = [];
                     ReadAllExercises();
                 }
-                return exercises ??= [];}}
+                return exercises ??= [];
+            }
+        }
 
         private static ObservableCollection<ExerciseLog>? logs = null;
         public static ObservableCollection<ExerciseLog> Logs
@@ -57,12 +36,15 @@ namespace SQLight_Database
             }
         }
 
-        public static ObservableCollection<string> AllExerciseNames { get => new ObservableCollection<string>(Exercises.Select(exercise => exercise.Name)); }
+        public static ObservableCollection<string> AllExerciseNames {get => new ObservableCollection<string>(Exercises.Select(exercise => exercise.Name).Distinct()); }
 
-        public static ObservableCollection<string> AllExerciseTypes { get => new ObservableCollection<string>(Exercises.Select(exercise => exercise.Type)); }
+        public static ObservableCollection<string> AllExerciseTypes { get => new ObservableCollection<string>(Exercises.Select(exercise => exercise.Type).Distinct()); }
 
         private static SQLiteConnection? sqlite_conn;
+
+        //private static SQLiteTransaction? sqlite_transaction; Find out what this is for
         #endregion
+
 
         public static void InititiliseDatabase(string dbName)
         {
@@ -74,30 +56,57 @@ namespace SQLight_Database
             {
                 sqlite_conn = SQL_Commands.CreateConnection(dbName, true);
             }
-            CreateTable(ExercieseTableName, ExerciseTableDescription); //Exercise Table
-            CreateTable(LogsTableName, LogTableDescription); //Log Table
+            CreateTable(Config.ExercieseTableName, Config.ExerciseTableDescription); //Exercise Table
+            CreateTable(Config.LogsTableName, Config.LogTableDescription); //Log Table
         }
 
-        public static void CreateTable(string tableName, List<ColumnDescription> tableDescription)
+        public static void AddSingleExercise(Exercise exercise)
         {
-            ExecuteSQLString(SQL_Strings.CreateTable(tableName, tableDescription), CommandType.NonQuery);
+            if (!AllExerciseNames.Contains(exercise.Name))
+            {
+                ExecuteSQLString(SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), CommandType.NonQuery);
+                ReadAllExercises();
+            }
         }
 
-        public static void AddNewExercise(Exercise exercise)
+        public static void AddMultipleExercises(List<Exercise> exercises)
         {
-            ExecuteSQLString(SQL_Strings.InsertData(ExercieseTableName, exercise.ToSQLStringList()), CommandType.NonQuery);
+            foreach (var exercise in exercises) if (!AllExerciseNames.Contains(exercise.Name))
+                ExecuteSQLString(SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), CommandType.NonQuery);
             ReadAllExercises();
         }
 
-        public static void AddNewLog(ExerciseLog log)
+        public static void RemoveSingleExercise(Exercise exercise)
         {
-            ExecuteSQLString(SQL_Strings.InsertData(LogsTableName, log.ToSQLStringList()), CommandType.NonQuery);
+            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.ExercieseTableName,$"Name='{exercise.Name}' AND Type='{exercise.Type}'"),CommandType.NonQuery);
+            ReadAllExercises();
+        }
+
+        public static void AddSingleLog(ExerciseLog log)
+        {
+            if (!Logs.Contains(log))
+            {
+                ExecuteSQLString(SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), CommandType.NonQuery);
+                ReadAllLogs();
+            }
+        }
+
+        public static void AddMultipleLogs(List<ExerciseLog> logs)
+        {
+            foreach (var log in logs) if (!Logs.Contains(log))
+                    ExecuteSQLString(SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), CommandType.NonQuery);
+            ReadAllLogs();
+        }
+
+        public static void RemoveSingleLog(ExerciseLog log)
+        {
+            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Date='{log.Date}' AND Exercise='{log.Exercise.Name}' AND Value='{log.Value}'"), CommandType.NonQuery);
             ReadAllLogs();
         }
 
         public static void ReadAllExercises()
         {
-            var sqlite_datareader = ExecuteSQLString(SQL_Strings.ReadData(ExercieseTableName, "*", false), CommandType.Reader) as SQLiteDataReader;
+            var sqlite_datareader = ExecuteSQLString(SQL_Strings.ReadData(Config.ExercieseTableName, "*", false), CommandType.Reader) as SQLiteDataReader;
             exercises.Clear();
 
             while (sqlite_datareader != null && sqlite_datareader.Read())
@@ -114,7 +123,7 @@ namespace SQLight_Database
 
         public static void ReadAllLogs()
         {
-            var sqlite_datareader = ExecuteSQLString(SQL_Strings.ReadData(LogsTableName, "*", false), CommandType.Reader) as SQLiteDataReader;
+            var sqlite_datareader = ExecuteSQLString(SQL_Strings.ReadData(Config.LogsTableName, "*", false), CommandType.Reader) as SQLiteDataReader;
             logs.Clear();
 
             while (sqlite_datareader != null && sqlite_datareader.Read())
@@ -137,22 +146,27 @@ namespace SQLight_Database
             Reader
         }
         private static object? ExecuteSQLString(string sqlString, CommandType commandType)
-                {
-                    if (sqlite_conn == null)
-                        throw new NoOpenSQLConnection();
+        {
+            if (sqlite_conn == null)
+                throw new NoOpenSQLConnection();
 
-                    switch (commandType)
-                    {
-                        case CommandType.NonQuery:
-                            SQL_Commands.ExecuteNonQueryCommand(sqlite_conn, sqlString);
-                            return null;
-                        case CommandType.Reader:
-                            return SQL_Commands.ExecuteReader(sqlite_conn, sqlString);
-                        default:
-                            throw new NotImplementedException(commandType.ToString());
+            switch (commandType)
+            {
+                case CommandType.NonQuery:
+                    SQL_Commands.ExecuteNonQueryCommand(sqlite_conn, sqlString);
+                    return null;
+                case CommandType.Reader:
+                    return SQL_Commands.ExecuteReader(sqlite_conn, sqlString);
+                default:
+                    throw new NotImplementedException(commandType.ToString());
 
-                    }
-                }
+            }
+        }
+
+        private static void CreateTable(string tableName, List<ColumnDescription> tableDescription)
+        {
+            ExecuteSQLString(SQL_Strings.CreateTable(tableName, tableDescription), CommandType.NonQuery);
+        }
 
         #endregion
     }

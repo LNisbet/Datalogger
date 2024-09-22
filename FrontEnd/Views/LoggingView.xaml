@@ -8,47 +8,68 @@
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
         Title="LoggingView" Height="450" Width="800">
+    <Page.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Padding" Value="10,0,0,0"/>
+        </Style>
+    </Page.Resources>
     <StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Exercise" />
-            <ComboBox x:Name="CBOX_Exercise" ItemsSource="{Binding ExerciseNames}" SelectedValue="{Binding SelectedExercise}" Width="100"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBox Text="Date"/>
-            <CheckBox x:Name="CB_Date" Click="CB_Date_Clicked" IsChecked="{Binding SpecifyDate}"/>
-            <TextBox x:Name="TBOX_Date" Text="{Binding Date}" Width="100"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBox Text="Value"/>
-            <TextBox x:Name="TBOX_Value" Width="100">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="1*" MaxWidth="200"/>
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Date" Width="50"/>
+                <CheckBox x:Name="CB_Date" Click="CB_Date_Clicked" IsChecked="{Binding SpecifyDate}"/>
+            </StackPanel>
+            <TextBox x:Name="TBOX_Date" Grid.Row="1"  Text="{Binding Date}"/>
+            <TextBlock Grid.Column="1" Text="Exercise" />
+            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ExerciseNames}" SelectedValue="{Binding SelectedExercise}"/>
+            <TextBlock Grid.Column="2" Text="Value"/>
+            <TextBox  Grid.Row="1" Grid.Column="2" >
                 <Binding Path="Value" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <VM:NumericValidationRule />
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox>
+        </Grid>
+        <StackPanel Orientation="Horizontal">
+            
+            
         </StackPanel>
-        <Button x:Name="PB_NewLog" Width="100" Content="Add New Log" Command="{Binding Path=AddNewLogCommand}"/>
-        <DataGrid ItemsSource="{Binding ExerciseLogs}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <!-- Date Column -->
-                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=dd/MM/yyyy}" />
+        <StackPanel Orientation="Horizontal">
+            <Button Width="100" Content="Add New Log" Command="{Binding Path=AddNewLogCommand}"/>
+            <Button Width="100" Content="Delete Log" Command="{Binding Path=DeleteLogCommand}"/>
+        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="400">
+            <DataGrid ItemsSource="{Binding ExerciseLogs}" SelectedItem="{Binding SelectedExerciseLog}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <!-- Date Column -->
+                    <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=dd/MM/yyyy}" />
 
-                <!-- Nested Exercise Data -->
-                <DataGridTemplateColumn Header="Exercise Details">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock Text="{Binding Exercise.Name}" FontWeight="Bold" />
-                                <TextBlock Text="{Binding Exercise.Type}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    <!-- Nested Exercise Data -->
+                    <DataGridTemplateColumn Header="Exercise Details">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Exercise.Name}" FontWeight="Bold" />
+                                    <TextBlock Text="{Binding Exercise.Type}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <!-- Value Column -->
-                <DataGridTextColumn Header="Value" Binding="{Binding Value}" />
-            </DataGrid.Columns>
-        </DataGrid>
+                    <!-- Value Column -->
+                    <DataGridTextColumn Header="Value" Binding="{Binding Value}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
     </StackPanel>
 </Page>

@@ -1,16 +1,13 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows;
 using System.Windows.Input;
 using SQLight_Database;
+using System.Windows;
 
 namespace DataLogger.ViewModels
 {
     public class CreateExercise_VM : NotifyPropertyChanged
     {
         #region Fields
-        public string NewType { get; set; }
-
         public string NewExerciseName { get; set; }
 
         public string NewExerciseType { get; set; }
@@ -22,46 +19,16 @@ namespace DataLogger.ViewModels
         public ObservableCollection<string> AllExerciseTypes { get => SQL_Database.AllExerciseTypes;}
 
         public ObservableCollection<Exercise> Exercises{ get => SQL_Database.Exercises; }
+
+        public Exercise? SelectedExercise { get; set; }
         #endregion
 
         public CreateExercise_VM()
         {
-            NewType = "";
             NewExerciseName = "";
             NewExerciseType = "";
             NewExerciseDescription = "";
-
-            //SQL_Database.InternalDatabase.PropertyChanged += (sender, args) => OnPropertyChanged(args.PropertyName);
         }
-
-        #region AddNewType
-        private ICommand? addNewType;
-        public ICommand AddNewTypeCommand
-        {
-            get
-            {
-                if (addNewType == null)
-                {
-                    addNewType = new RelayCommand(
-                        p => TypeIsValid(NewType),
-                        p => AddNewExerciseType(NewType));
-                }
-                return addNewType;
-            }
-        }
-
-        public void AddNewExerciseType(string ty)
-        {
-            throw new NotImplementedException();
-            //SQL_Database.InternalDatabase.AddNewExerciseType(ty);
-            OnPropertyChanged(nameof(Exercises));
-        }
-
-        public bool TypeIsValid(string ty)
-        {
-            return !AllExerciseTypes.Contains(ty) && ty != "";
-        }
-        #endregion
 
         #region AddNewExercise
         private ICommand? addNewExercise;
@@ -81,13 +48,43 @@ namespace DataLogger.ViewModels
 
         public void AddNewExercise(Exercise ex)
         {
-            SQL_Database.AddNewExercise(ex);
+            SQL_Database.AddSingleExercise(ex);
             OnPropertyChanged(nameof(Exercises));
+            OnPropertyChanged(nameof(AllExerciseTypes));
         }
 
         public bool ExerciseIsValid(Exercise ex)
         {
-            return AllExerciseTypes.Contains(ex.Type) && !SQL_Database.AllExerciseNames.Contains(ex.Name);
+            return!SQL_Database.AllExerciseNames.Contains(ex.Name);
+        }
+        #endregion
+
+        #region DeleteExercise
+        private ICommand? deleteExerciseCommand;
+        public ICommand DeleteExerciseCommand
+        {
+            get
+            {
+                if (deleteExerciseCommand == null)
+                {
+                    deleteExerciseCommand = new RelayCommand(
+                        p => SelectedExercise != null,
+                        p => DeleteExercise(SelectedExercise));
+                }
+                return deleteExerciseCommand;
+            }
+        }
+        public void DeleteExercise(Exercise? log)
+        {
+            if (log != null)
+            {
+                SQL_Database.RemoveSingleExercise(log);
+                OnPropertyChanged(nameof(Exercises));
+                OnPropertyChanged(nameof(AllExerciseTypes));
+            }
+                
+            else
+                throw new ArgumentNullException(nameof(log));
         }
         #endregion
     }

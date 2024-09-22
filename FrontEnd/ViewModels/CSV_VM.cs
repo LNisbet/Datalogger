@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using SQLight_Database;
-using SQLight_Database.CSV;
+using CSV_Exporter;
 
 namespace DataLogger.ViewModels
 {
@@ -79,11 +73,7 @@ namespace DataLogger.ViewModels
 
         public void ImportLogs()
         {
-            var logs = CSVHelper.ReadFromCSV<ExerciseLog>(Path + LogFileName);
-            foreach (ExerciseLog l in logs)
-            {
-                SQL_Database.AddNewLog(l);
-            }
+            SQL_Database.AddMultipleLogs(CSVHelper.ReadFromCSV<ExerciseLog>(Path + LogFileName));
         }
         #endregion
 
@@ -104,11 +94,7 @@ namespace DataLogger.ViewModels
 
         public void ImportExercises()
         {
-            var exercises = CSVHelper.ReadFromCSV<Exercise>(Path + ExerciseFileName);
-            foreach (Exercise ex in exercises)
-            {
-                SQL_Database.AddNewExercise(ex);
-            }
+            SQL_Database.AddMultipleExercises(CSVHelper.ReadFromCSV<Exercise>(Path + ExerciseFileName));
         }
         #endregion
     }

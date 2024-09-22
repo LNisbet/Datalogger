@@ -1,5 +1,5 @@
 ﻿using System.Data.SQLite;
-using System.Xml.Linq;
+using SQLight_Database;
 
 namespace SQLight_Database
 {
@@ -10,6 +10,10 @@ namespace SQLight_Database
         public float Value { get; set; }
 
         public string? Note { get; set; }
+
+        public ExerciseLog()
+        {
+        }
 
         public ExerciseLog(DateOnly date, Exercise exercise, float value)
         {

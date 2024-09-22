@@ -1,7 +1,4 @@
 ﻿using System.Data.SQLite;
-using System.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using SQLight_Database;
 
 namespace SQLight_Database
 {

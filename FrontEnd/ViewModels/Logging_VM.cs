@@ -1,11 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Input;
 using SQLight_Database;
 
 namespace DataLogger.ViewModels
 {
-    public class LoggingViewModel : NotifyPropertyChanged
+    public class Logging_VM : NotifyPropertyChanged
     {
         #region Fields
         public ObservableCollection<ExerciseLog> ExerciseLogs { get => SQL_Database.Logs; }
@@ -18,30 +17,30 @@ namespace DataLogger.ViewModels
         public DateOnly Date { get; set; }
 
         public float Value { get; set; }
+
+        public ExerciseLog? SelectedExerciseLog { get; set; }
         #endregion
 
-        public LoggingViewModel()
+        public Logging_VM()
         {
             SelectedExercise = "";
             SpecifyDate = false;
             Date = DateOnly.FromDateTime(DateTime.Now);
             Value = 0;
-
-            //SQL_Database.InternalDatabase.PropertyChanged += (sender, args) => OnPropertyChanged(args.PropertyName);
         }
 
         #region AddNewLog
-        private ICommand? addNewLog;
+        private ICommand? addNewLogCommand;
         public ICommand AddNewLogCommand
         {
             get
             {
-                if (addNewLog == null)
+                if (addNewLogCommand == null)
                 {
-                    addNewLog = new RelayCommand(
+                    addNewLogCommand = new RelayCommand(
                         p => AddNewLog(SpecifyDate));
                 }
-                return addNewLog;
+                return addNewLogCommand;
             }
         }
         public void AddNewLog(bool dateSpecified)
@@ -54,7 +53,32 @@ namespace DataLogger.ViewModels
             else
                 log = new ExerciseLog(DateOnly.FromDateTime(DateTime.Now), _selectedExercise, Value);
 
-            SQL_Database.AddNewLog(log);
+            SQL_Database.AddSingleLog(log);
+        }
+        #endregion
+
+        #region DeleteLog
+        private ICommand? deleteLogCommand;
+        public ICommand DeleteLogCommand
+        {
+            get
+            {
+                if (deleteLogCommand == null)
+                {
+                    deleteLogCommand = new RelayCommand(
+                        p => SelectedExerciseLog != null,
+                        p => DeleteLog(SelectedExerciseLog));
+                }
+                return deleteLogCommand;
+            }
+        }
+        public void DeleteLog(ExerciseLog? exercise)
+        {
+            if (exercise != null)
+                SQL_Database.RemoveSingleLog(exercise);
+            else
+                throw new ArgumentNullException(nameof(exercise));
+                
         }
         #endregion
     }

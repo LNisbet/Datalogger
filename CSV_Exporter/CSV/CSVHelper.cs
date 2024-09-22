@@ -2,7 +2,7 @@
 using CsvHelper;
 using System.Globalization;
 
-namespace SQLight_Database.CSV
+namespace CSV_Exporter
 {
     static public class CSVHelper
     {

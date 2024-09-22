@@ -7,19 +7,35 @@
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
         Title="CreateExercise_V">
+    <Page.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Padding" Value="10,0,0,0"/>
+        </Style>
+    </Page.Resources>
     <StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Add New Type" />
-            <TextBox x:Name="TBOX_NewType" Text="{Binding NewType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
-            <Button Width="100" Content="Add New Type" Command="{Binding Path=AddNewTypeCommand}"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" MaxWidth="300"/>
+                <ColumnDefinition Width="1*" MaxWidth="300"/>
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
             <TextBlock Text="Add New Exercise" />
-            <TextBox x:Name="TBOX_NewExercise" Text="{Binding NewExerciseName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
-            <ComboBox x:Name="CMB_NewExerciseType" ItemsSource="{Binding AllExerciseTypes}" SelectedValue="{Binding NewExerciseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
-            <TextBox x:Name="TBOX_NewExerciseDescription" Text="{Binding NewExerciseDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+            <TextBox Grid.Row="1" Text="{Binding NewExerciseName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Grid.Column="1" Text="Type" />
+            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AllExerciseTypes}" Text="{Binding NewExerciseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
+            <TextBlock Grid.Column="2" Text="Description"/>
+            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding NewExerciseDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+        <StackPanel Orientation="Horizontal">
             <Button Width="100" Content="Add New Exercise" Command="{Binding Path=AddNewExerciseCommand}"/>
+            <Button Width="100" Content="Delete Exercise" Command="{Binding Path=DeleteExerciseCommand}"/>
         </StackPanel>
-        <DataGrid ItemsSource="{Binding Exercises}" AutoGenerateColumns="True" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="400">
+            <DataGrid ItemsSource="{Binding Exercises}" SelectedItem="{Binding SelectedExercise}" AutoGenerateColumns="True"/>
+        </ScrollViewer>
     </StackPanel>
 </Page>

@@ -1,18 +1,17 @@
 ﻿using SQLight_Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace DataLogger.ViewModels
 {
-    class MainWindow_VM
+    class MainWindow_VM : NotifyPropertyChanged
     {
+        public bool NavigationEnabled { get; set; } = false;
+
         private string userName = "User1";
         public string UserName { get => userName; set => userName = value; }
+
+        public ObservableCollection<string> UserNames { get; set; }
 
         #region Initilise
         private ICommand? initiliseDb;
@@ -31,6 +30,8 @@ namespace DataLogger.ViewModels
         public void InitiliseDataBase(string dbName)
         {
             SQL_Database.InititiliseDatabase(dbName);
+            NavigationEnabled = true;
+            OnPropertyChanged(nameof(NavigationEnabled));
         }
         #endregion
     }

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SQLight_Database
+﻿namespace SQLight_Database
 {
-    public class ColumnDescription
+    internal class ColumnDescription
     {
-        public string Name { get; set; }
-        public string DataType { get; set; }
+        internal string Name { get; set; }
+        internal string DataType { get; set; }
 
-        public string? Constraints { get; set; }
+        internal string? Constraints { get; set; }
 
         /*  NOT NULL - Ensures that a column cannot have a NULL value
          *  UNIQUE - Ensures that all values in a column are different
@@ -22,12 +16,12 @@ namespace SQLight_Database
          *  CREATE INDEX - Used to create and retrieve data from the database very quickly
          */
 
-        public ColumnDescription(string name, string dataType)
+        internal ColumnDescription(string name, string dataType)
         {
             Name = name;
             DataType = dataType;
         }
-        public ColumnDescription(string name, string dataType, string constraints)
+        internal ColumnDescription(string name, string dataType, string constraints)
         {
             Name = name;
             DataType = dataType;
