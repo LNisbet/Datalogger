@@ -9,7 +9,9 @@ namespace CSV_Exporter
         {
             Map(m => m.Date).Name("Date").TypeConverterOption.Format("MM/dd/yyyy"); // Adjust format based on your CSV format
             Map(m => m.Exercise).Name("Name").TypeConverter<ExerciseConverter>(); // Custom conversion for Exercise class
-            Map(m => m.Value).Name("Value");
+            Map(m => m.Value1).Name("Value1");
+            Map(m => m.Value2).Name("Value2");
+            Map(m => m.Value3).Name("Value3");
             Map(m => m.Note).Name("Note");
         }
     }

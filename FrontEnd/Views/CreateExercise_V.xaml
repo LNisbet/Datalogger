@@ -13,23 +13,32 @@
         </Style>
     </Page.Resources>
     <StackPanel>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" MaxWidth="300"/>
-                <ColumnDefinition Width="1*" MaxWidth="300"/>
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-            </Grid.RowDefinitions>
-            <TextBlock Text="Add New Exercise" />
-            <TextBox Grid.Row="1" Text="{Binding NewExerciseName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock Grid.Column="1" Text="Type" />
-            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AllExerciseTypes}" Text="{Binding NewExerciseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
-            <TextBlock Grid.Column="2" Text="Description"/>
-            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding NewExerciseDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        </Grid>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Width="150">
+                <TextBlock Text="Exercise Name" />
+                <TextBox Text="{Binding NewExerciseName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Width="150">
+                <TextBlock Text="Type" />
+                <ComboBox ItemsSource="{Binding AllExerciseTypes}" Text="{Binding NewExerciseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
+            </StackPanel>
+            <StackPanel Width="100">
+                <TextBlock Text="Unit1" />
+                <ComboBox x:Name="ComboBox_Unit1" Selected="{Binding SelectedUnit1}"/>
+            </StackPanel>
+            <StackPanel Width="100">
+                <TextBlock Text="Unit2" />
+                <ComboBox x:Name="ComboBox_Unit2" Selected="{Binding SelectedUnit2}"/>
+            </StackPanel>
+            <StackPanel Width="100">
+                <TextBlock Text="Unit3" />
+                <ComboBox x:Name="ComboBox_Unit3" Selected="{Binding SelectedUnit3}"/>
+            </StackPanel>
+            <StackPanel MinWidth="200">
+                <TextBlock Grid.Column="2" Text="Description"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding NewExerciseDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Button Width="100" Content="Add New Exercise" Command="{Binding Path=AddNewExerciseCommand}"/>
             <Button Width="100" Content="Delete Exercise" Command="{Binding Path=DeleteExerciseCommand}"/>

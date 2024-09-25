@@ -18,7 +18,7 @@ namespace SQLite_Database
             //SQL_Database.AddSingleLog(new ExerciseLog(date, new Exercise("ex_name2", "ex type2"), 11f,"note about something 2"));
             SQL_Database.ReadAllLogs();
 
-            foreach (var thing in SQL_Database.Logs) { Console.WriteLine($"{thing.Date} {thing.Exercise} {thing.Value} {thing.Note}"); }
+            foreach (var thing in SQL_Database.Logs) { Console.WriteLine($"{thing.Date} {thing.Exercise} {thing.Value1} {thing.Note}"); }
 
             SQL_Database.CloseConnection();
             Console.ReadLine();

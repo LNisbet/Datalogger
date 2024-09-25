@@ -100,7 +100,7 @@ namespace SQLight_Database
 
         public static void RemoveSingleLog(ExerciseLog log)
         {
-            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Date='{log.Date}' AND Exercise='{log.Exercise.Name}' AND Value='{log.Value}'"), CommandType.NonQuery);
+            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Date='{log.Date}' AND Exercise='{log.Exercise.Name}' AND Value='{log.Value1}'"), CommandType.NonQuery);
             ReadAllLogs();
         }
 
