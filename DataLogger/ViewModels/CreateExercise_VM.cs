@@ -10,13 +10,17 @@ namespace DataLogger.ViewModels
         #region Fields
         public string NewExerciseName { get; set; }
 
-        public string NewExerciseType { get; set; }
+        public List<string> NewExerciseTags { get; set; }
+        public Enums.Units NewUnit1 { get; set; }
+        public Enums.Units? NewUnit2 { get; set; }
+        public Enums.Units? NewUnit3 { get; set; }
+        public Enums.Units? NewUnit4 { get; set; }
 
-        public string NewExerciseDescription { get; set; }
+        public string? NewExerciseDescription { get; set; }
 
-        private Exercise newExercise { get => new(NewExerciseName, NewExerciseType, NewExerciseDescription); }
+        private Exercise newExercise { get => new(NewExerciseName, NewExerciseTags, NewUnit1, NewUnit2, NewUnit3, NewUnit4, NewExerciseDescription); }
 
-        public ObservableCollection<string> AllExerciseTypes { get => SQL_Database.AllExerciseTypes;}
+        public ObservableCollection<string> AllExerciseTags { get => SQL_Database.AllExerciseTags;}
 
         public ObservableCollection<Exercise> Exercises{ get => SQL_Database.Exercises; }
 
@@ -26,7 +30,7 @@ namespace DataLogger.ViewModels
         public CreateExercise_VM()
         {
             NewExerciseName = "";
-            NewExerciseType = "";
+            NewExerciseTags = [""];
             NewExerciseDescription = "";
         }
 
@@ -50,7 +54,7 @@ namespace DataLogger.ViewModels
         {
             SQL_Database.AddSingleExercise(ex);
             OnPropertyChanged(nameof(Exercises));
-            OnPropertyChanged(nameof(AllExerciseTypes));
+            OnPropertyChanged(nameof(AllExerciseTags));
         }
 
         public bool ExerciseIsValid(Exercise ex)
@@ -80,7 +84,7 @@ namespace DataLogger.ViewModels
             {
                 SQL_Database.RemoveSingleExercise(log);
                 OnPropertyChanged(nameof(Exercises));
-                OnPropertyChanged(nameof(AllExerciseTypes));
+                OnPropertyChanged(nameof(AllExerciseTags));
             }
                 
             else

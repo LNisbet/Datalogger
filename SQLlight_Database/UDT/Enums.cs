@@ -8,13 +8,27 @@ namespace SQLight_Database
 {
     public static class Enums
     {
+
+        public enum SelectDataOptions
+        {
+            MIN,
+            MAX,
+            COUNT,
+            SUM,
+            AVG
+        }
+
         public enum Units
         {
             None,
             Kg,
             N,
+            mm,
+            cm,
             Reps,
-            Sets
+            Sets,
+            Minutes,
+            Seconds
         }
     }
 }

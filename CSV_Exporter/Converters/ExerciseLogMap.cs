@@ -12,6 +12,7 @@ namespace CSV_Exporter
             Map(m => m.Value1).Name("Value1");
             Map(m => m.Value2).Name("Value2");
             Map(m => m.Value3).Name("Value3");
+            Map(m => m.Value4).Name("Value4");
             Map(m => m.Note).Name("Note");
         }
     }

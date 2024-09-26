@@ -30,7 +30,7 @@
             {
                 strings.Add($"{column.Name} {column.DataType} {column.Constraints}");
             }
-            return $"CREATE TABLE {tableName} {CreateStringFromList(strings)}; ";
+            return $"CREATE TABLE IF NOT EXISTS {tableName} {CreateStringFromList(strings)}; ";
         }
 
         static internal string DeleteTable(string tableName)
@@ -116,32 +116,23 @@
             return $"{select} {columns} FROM {tableName} WHERE {condition}; ";
         }
 
-        static internal string SelectData(string tableName, string inColumn, string condition, SelectDataOptions selectOption)
+        static internal string SelectData(string tableName, string inColumn, string condition, Enums.SelectDataOptions selectOption)
         {
             switch (selectOption)
             {
-                case SelectDataOptions.MIN:
+                case Enums.SelectDataOptions.MIN:
                     return $"SELECT MIN({inColumn}) FROM {tableName} WHERE {condition}; ";
-                case SelectDataOptions.MAX:
+                case Enums.SelectDataOptions.MAX:
                     return $"SELECT MAX({inColumn}) FROM {tableName} WHERE {condition}; ";
-                case SelectDataOptions.COUNT:
+                case Enums.SelectDataOptions.COUNT:
                     return $"SELECT COUNT({inColumn}) FROM {tableName} WHERE {condition}; ";
-                case SelectDataOptions.SUM:
+                case Enums.SelectDataOptions.SUM:
                     return $"SELECT SUM({inColumn}) FROM {tableName} WHERE {condition}; ";
-                case SelectDataOptions.AVG:
+                case Enums.SelectDataOptions.AVG:
                     return $"SELECT AVG({inColumn}) FROM {tableName} WHERE {condition}; ";
                 default:
                     throw new NotImplementedException(selectOption.ToString());
             }
-        }
-
-        internal enum SelectDataOptions
-        {
-            MIN,
-            MAX,
-            COUNT,
-            SUM,
-            AVG
         }
 
         static private string CreateStringFromList(List<string> list)

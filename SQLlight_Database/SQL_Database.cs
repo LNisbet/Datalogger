@@ -38,13 +38,13 @@ namespace SQLight_Database
 
         public static ObservableCollection<string> AllExerciseNames {get => new ObservableCollection<string>(Exercises.Select(exercise => exercise.Name).Distinct()); }
 
-        public static ObservableCollection<string> AllExerciseTypes { get => new ObservableCollection<string>(Exercises.Select(exercise => exercise.Type).Distinct()); }
+        private static ObservableCollection<string> allExerciseTags  = new();
+        public static ObservableCollection<string> AllExerciseTags { get { ReadAllExerciseTags(); return allExerciseTags; } }
 
         private static SQLiteConnection? sqlite_conn;
 
         //private static SQLiteTransaction? sqlite_transaction; Find out what this is for
         #endregion
-
 
         public static void InititiliseDatabase(string dbName)
         {
@@ -56,7 +56,10 @@ namespace SQLight_Database
             {
                 sqlite_conn = SQL_Commands.CreateConnection(dbName, true);
             }
+            CreateTable(Config.TagsTableName, Config.TagsTableDescription); //Tags Table
+            AddMultipleTags(Config.StandardTags);
             CreateTable(Config.ExercieseTableName, Config.ExerciseTableDescription); //Exercise Table
+            AddMultipleExercises(Config.StandardExercises);
             CreateTable(Config.LogsTableName, Config.LogTableDescription); //Log Table
         }
 
@@ -65,20 +68,41 @@ namespace SQLight_Database
             if (!AllExerciseNames.Contains(exercise.Name))
             {
                 ExecuteSQLString(SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), CommandType.NonQuery);
+                foreach(var tag in exercise.Tags)
+                {
+                    if (!allExerciseTags.Contains(tag))
+                        AddSingleTag(tag);
+                }
+
                 ReadAllExercises();
             }
         }
 
         public static void AddMultipleExercises(List<Exercise> exercises)
         {
-            foreach (var exercise in exercises) if (!AllExerciseNames.Contains(exercise.Name))
-                ExecuteSQLString(SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), CommandType.NonQuery);
+            foreach (var exercise in exercises) 
+                if (!AllExerciseNames.Contains(exercise.Name))
+                {
+                    ExecuteSQLString(SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), CommandType.NonQuery);
+                    foreach (var tag in exercise.Tags)
+                    {
+                        if (!allExerciseTags.Contains(tag))
+                            AddSingleTag(tag);
+                    }
+                }
+                
             ReadAllExercises();
+        }
+
+        public static void RemoveSingleTag(string tag)
+        {
+            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.TagsTableName, $"Tags='{tag}'"), CommandType.NonQuery);
+            ReadAllExerciseTags();
         }
 
         public static void RemoveSingleExercise(Exercise exercise)
         {
-            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.ExercieseTableName,$"Name='{exercise.Name}' AND Type='{exercise.Type}'"),CommandType.NonQuery);
+            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.ExercieseTableName,$"Name='{exercise.Name}'"),CommandType.NonQuery);
             ReadAllExercises();
         }
 
@@ -100,7 +124,7 @@ namespace SQLight_Database
 
         public static void RemoveSingleLog(ExerciseLog log)
         {
-            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Date='{log.Date}' AND Exercise='{log.Exercise.Name}' AND Value='{log.Value1}'"), CommandType.NonQuery);
+            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Id={log.Id}"), CommandType.NonQuery);
             ReadAllLogs();
         }
 
@@ -145,6 +169,37 @@ namespace SQLight_Database
             NonQuery,
             Reader
         }
+
+        private static void AddSingleTag(string tag)
+        {
+            if (!AllExerciseTags.Contains(tag))
+            {
+                ExecuteSQLString(SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), CommandType.NonQuery);
+                ReadAllExerciseTags();
+            }
+        }
+
+        private static void AddMultipleTags(List<string> tags)
+        {
+            foreach (var tag in tags)
+                if (!AllExerciseTags.Contains(tag))
+                    ExecuteSQLString(SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), CommandType.NonQuery);
+
+            ReadAllExerciseTags();
+        }
+
+        private static void ReadAllExerciseTags()
+        {
+            var sqlite_datareader = ExecuteSQLString(SQL_Strings.ReadData(Config.TagsTableName, "*", true), CommandType.Reader) as SQLiteDataReader;
+
+            while (sqlite_datareader != null && sqlite_datareader.Read())
+            {
+                string tag = sqlite_datareader.GetString(0);
+                if (!allExerciseTags.Contains(tag))
+                    allExerciseTags.Add(tag);
+            }
+        }
+
         private static object? ExecuteSQLString(string sqlString, CommandType commandType)
         {
             if (sqlite_conn == null)
@@ -167,7 +222,6 @@ namespace SQLight_Database
         {
             ExecuteSQLString(SQL_Strings.CreateTable(tableName, tableDescription), CommandType.NonQuery);
         }
-
         #endregion
     }
 }

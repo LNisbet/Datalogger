@@ -5,19 +5,22 @@ namespace SQLight_Database
     public class Exercise
     {
         public string Name { get; }
-        public string Unit1 { get; }
-        public string? Unit2 { get; }
-        public string? Unit3 { get; }
-        public string Type { get; }
+        public List<string> Tags { get; }
+        public Enums.Units Unit1 { get; }
+        public Enums.Units? Unit2 { get; }
+        public Enums.Units? Unit3 { get; }
+        public Enums.Units? Unit4 { get; }
+
         public string? Description { get; }
 
-        public Exercise(string name, string unit1, string type, string? unit2 = null, string? unit3 = null, string? description = null)
+        public Exercise(string name, List<string> tags, Enums.Units unit1, Enums.Units? unit2 = null, Enums.Units? unit3 = null, Enums.Units? unit4 = null,  string? description = null)
         {
             Name = name;
+            Tags = tags;
             Unit1 = unit1;
             Unit2 = unit2;
             Unit3 = unit3;
-            Type = type;
+            Unit4 = unit4;
             Description = description;
         }
 
@@ -26,23 +29,57 @@ namespace SQLight_Database
             if (sqlite_datareader != null && sqlite_datareader.HasRows && !sqlite_datareader.IsClosed)
             {
                 Name = sqlite_datareader.GetString(0);
-                Unit1 = sqlite_datareader.GetString(1);
-                Unit2 = sqlite_datareader.GetString(2);
-                Unit3 = sqlite_datareader.GetString(3);
-                Type = (string)sqlite_datareader.GetValue(4);
-                Description = (string?)sqlite_datareader.GetValue(5);
+                Tags = sqlite_datareader.GetString(1).Split(' ').ToList();
+                Unit1 = (Enums.Units)Enum.Parse(typeof(Enums.Units), sqlite_datareader.GetString(2));
+                Unit2 = GetUnitsFromDatabase(sqlite_datareader, 3);
+                Unit3 = GetUnitsFromDatabase(sqlite_datareader, 4);
+                Unit4 = GetUnitsFromDatabase(sqlite_datareader, 5);
+                Description = (string?)sqlite_datareader.GetValue(6);
             }
             else
                 throw new ArgumentNullException();
         }
 
-    public List<string> ToSQLStringList()
+        private static Enums.Units? GetUnitsFromDatabase(SQLiteDataReader sqlite_datareader, int col)
+        {
+            try
+            {
+                return (Enums.Units)Enum.Parse(typeof(Enums.Units), sqlite_datareader.GetString(col));
+            }
+            catch 
+            { 
+                return null; 
+            }
+        }
+
+        public List<string> ToSQLStringList()
         {
             var unit2 = Unit2 == null ? "'null'" : $"'{Unit2}'";
             var unit3 = Unit3 == null ? "'null'" : $"'{Unit3}'";
+            var unit4 = Unit4 == null ? "'null'" : $"'{Unit4}'";
             var description = Description == null ? "'null'" : $"'{Description}'";
 
-            return [$"'{Name}'", $"'{Unit1}'", unit2, unit3, $"'{Type}'", description];
+            return [$"'{Name}'", TagsToString(Tags), $"'{Unit1}'", unit2, unit3, unit4, description];
+        }
+
+        private static string TagsToString(List<string>? list)
+        {
+            if (list == null)
+                return "'null'";
+
+            var tagsAsAString = "'";
+            var i =0;
+            foreach (var tag in list) 
+            {
+                tagsAsAString += tag;
+                if (i < list.Count)
+                    tagsAsAString += ", ";
+
+                i++;
+            }
+            tagsAsAString += "'";
+
+            return tagsAsAString;
         }
     }
 }

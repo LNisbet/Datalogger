@@ -60,14 +60,14 @@
                             <DataTemplate>
                                 <StackPanel>
                                     <TextBlock Text="{Binding Exercise.Name}" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Exercise.Type}" />
+                                    <TextBlock Text="{Binding Exercise.Tags}" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <!-- Value Column -->
-                    <DataGridTextColumn Header="Value" Binding="{Binding Value}" />
+                    <DataGridTextColumn Header="Value" Binding="{Binding Value1}" />
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>

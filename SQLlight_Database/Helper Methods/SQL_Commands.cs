@@ -23,11 +23,11 @@ namespace SQLight_Database
             {
                 conn.Open();
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine($"Exception: {ex.Message}");
                 conn = new SQLiteConnection(ExistingConnectionString);
                 conn.Open();
+                throw;
             }
             return conn;
         }
@@ -35,14 +35,7 @@ namespace SQLight_Database
         internal static SQLiteConnection CloseConnection(SQLiteConnection conn)
         {
             // close the connection:
-            try
-            {
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception: {ex.Message}");
-            }
+            conn.Close();
             return conn;
         }
 
@@ -50,30 +43,14 @@ namespace SQLight_Database
         {
             SQLiteCommand sqlite_cmd = conn.CreateCommand();
             sqlite_cmd.CommandText = command;
-            try
-            {
-                Console.WriteLine($"Command: {command}");
-                sqlite_cmd.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception: {ex.Message}");
-            }
+            sqlite_cmd.ExecuteNonQuery();
         }
         internal static SQLiteDataReader? ExecuteReader(SQLiteConnection conn, string command)
         {
             SQLiteDataReader? sqlite_datareader = null;
             SQLiteCommand sqlite_cmd = conn.CreateCommand();
             sqlite_cmd.CommandText = command;
-            try
-            {
-                Console.WriteLine($"Command: {command}");
-                sqlite_datareader = sqlite_cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception: {ex.Message}");
-            }
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
 
             return sqlite_datareader;
         }

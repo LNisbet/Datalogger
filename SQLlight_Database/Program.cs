@@ -11,7 +11,7 @@ namespace SQLite_Database
             //SQL_Database.AddSingleExercise(new Exercise("ex_name2", "ex_type2"));
             SQL_Database.ReadAllExercises();
 
-            foreach (var thing in SQL_Database.Exercises) {Console.WriteLine($"{thing.Name} {thing.Type} {thing.Description}");}
+            foreach (var thing in SQL_Database.Exercises) {Console.WriteLine($"{thing.Name} {thing.Tags} {thing.Description}");}
 
             DateOnly date = DateOnly.FromDateTime(DateTime.Now);
             //SQL_Database.AddSingleLog(new ExerciseLog(date, new Exercise("ex_name1", "ex type1", "ex discription1"), 11f));
