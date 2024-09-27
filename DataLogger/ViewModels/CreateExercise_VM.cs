@@ -10,7 +10,7 @@ namespace DataLogger.ViewModels
         #region Fields
         public string NewExerciseName { get; set; }
 
-        public List<string> NewExerciseTags { get; set; }
+        public ObservableCollection<string> NewExerciseTags { get; set; }
         public Enums.Units NewUnit1 { get; set; }
         public Enums.Units? NewUnit2 { get; set; }
         public Enums.Units? NewUnit3 { get; set; }
@@ -18,7 +18,7 @@ namespace DataLogger.ViewModels
 
         public string? NewExerciseDescription { get; set; }
 
-        private Exercise newExercise { get => new(NewExerciseName, NewExerciseTags, NewUnit1, NewUnit2, NewUnit3, NewUnit4, NewExerciseDescription); }
+        private Exercise newExercise { get => new(NewExerciseName, NewExerciseTags.ToList(), NewUnit1, NewUnit2, NewUnit3, NewUnit4, NewExerciseDescription); }
 
         public ObservableCollection<string> AllExerciseTags { get => SQL_Database.AllExerciseTags;}
 
@@ -30,8 +30,8 @@ namespace DataLogger.ViewModels
         public CreateExercise_VM()
         {
             NewExerciseName = "";
-            NewExerciseTags = [""];
             NewExerciseDescription = "";
+            NewExerciseTags = new ObservableCollection<string>();
         }
 
         #region AddNewExercise

@@ -22,44 +22,59 @@
     </Page.Resources>
 
     <StackPanel>
-        <!-- Unit ComboBoxes Binding to Enum -->
+        <StackPanel Orientation="Horizontal">
+            <!-- Exercise Name Input -->
+            <StackPanel Width="100">
+                <TextBlock Text="Exercise Name" />
+                <TextBox Text="{Binding NewExerciseName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
 
-    <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Width="100">
-                    <TextBlock Text="Exercise Name" />
-                    <TextBox Text="{Binding NewExerciseName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-                <StackPanel Width="150">
-                    <TextBlock Text="Tags" />
-                    <ComboBox ItemsSource="{Binding AllExerciseTags}" Text="{Binding NewExerciseTags, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
-                </StackPanel>
-                <StackPanel Width="100">
-                    <TextBlock Text="Unit1" />
-                    <ComboBox ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit1, Mode=TwoWay}"/>
-                </StackPanel>
-                <StackPanel Width="100">
-                    <TextBlock Text="Unit2" />
-                    <ComboBox ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit2, Mode=TwoWay}"/>
-                </StackPanel>
-                <StackPanel Width="100">
-                    <TextBlock Text="Unit3" />
-                    <ComboBox ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit3, Mode=TwoWay}"/>
-                </StackPanel>
-                <StackPanel Width="100">
-                    <TextBlock Text="Unit4" />
-                    <ComboBox ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit4, Mode=TwoWay}"/>
-                </StackPanel>
-                <StackPanel MinWidth="200">
-                    <TextBlock Grid.Column="2" Text="Description"/>
-                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding NewExerciseDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!-- Exercise Tags ListBox (Multi-select) -->
+            <StackPanel Width="150">
+                <TextBlock Text="Tags" />
+                <ListBox ItemsSource="{Binding AllExerciseTags}"
+                         SelectionMode="Multiple"
+                         SelectionChanged="ListBox_SelectionChanged"
+                         Margin="5" />
+            </StackPanel>
+            <StackPanel Width="100">
+                <TextBlock Text="Number of Units" />
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="LessUnits_Button" Content="-" Width="50" Click="LessUnits"/>
+                    <Button x:Name="MoreUnits_Button" Content="+" Width="50" Click="MoreUnits"/>
                 </StackPanel>
             </StackPanel>
+            <StackPanel Width="100">
+                <TextBlock Text="Unit1" />
+                <ComboBox ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit1, Mode=TwoWay}"/>
+            </StackPanel>
+            <StackPanel x:Name="Unit2_SP"  Width="100">
+                <TextBlock Text="Unit2" />
+                <ComboBox x:Name="Unit2_CB" ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit2, Mode=TwoWay}"/>
+            </StackPanel>
+            <StackPanel x:Name="Unit3_SP" Width="100">
+                <TextBlock Text="Unit3" />
+                <ComboBox x:Name="Unit3_CB" ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit3, Mode=TwoWay}"/>
+            </StackPanel>
+            <StackPanel x:Name="Unit4_SP" Width="100">
+                <TextBlock Text="Unit4" />
+                <ComboBox x:Name="Unit4_CB" ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit4, Mode=TwoWay}"/>
+            </StackPanel>
         </StackPanel>
+
+        <!-- Exercise Description -->
+        <StackPanel MinWidth="200">
+            <TextBlock Text="Description" />
+            <TextBox Text="{Binding NewExerciseDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+        <!-- Commands -->
         <StackPanel Orientation="Horizontal">
             <Button Width="100" Content="Add New Exercise" Command="{Binding Path=AddNewExerciseCommand}"/>
             <Button Width="100" Content="Delete Exercise" Command="{Binding Path=DeleteExerciseCommand}"/>
         </StackPanel>
+
+        <!-- DataGrid for Exercises -->
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="400">
             <DataGrid ItemsSource="{Binding Exercises}" SelectedItem="{Binding SelectedExercise}" AutoGenerateColumns="True"/>
         </ScrollViewer>

@@ -24,6 +24,11 @@
                         CSV
                     </Hyperlink>
                 </Button>
+                <Button IsEnabled="{Binding NavigationEnabled}">
+                    <Hyperlink NavigateUri="Debug_V.xaml">
+                        Debug
+                    </Hyperlink>
+                </Button>
             </StackPanel>
             <StackPanel>
                 <ComboBox ItemsSource="{Binding UserNames}" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
