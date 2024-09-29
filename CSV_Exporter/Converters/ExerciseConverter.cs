@@ -10,7 +10,10 @@ namespace CSV_Exporter
         public object ConvertFromString(string? text, IReaderRow row, MemberMapData memberMapData)
         {
             ArgumentNullException.ThrowIfNull(text);
-            return SQL_Database.SelectExerciseByName(text);
+            Exercise exercise;
+            exercise = SQL_Database.SelectExerciseByName(text);
+
+            return exercise;
         }
 
         public string ConvertToString(object? value, IWriterRow row, MemberMapData memberMapData)

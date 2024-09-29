@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLogger", "DataLogger\DataLogger.csproj", "{BF8B059F-921A-4DBA-9EFC-820DC4EFEB37}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLight_Database", "SQLlight_Database\SQLight_Database.csproj", "{FE7080F4-F0C1-4694-9C29-EF9B91BECBD8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSV_Exporter", "CSV_Exporter\CSV_Exporter.csproj", "{3F3A3495-E112-4ECD-A8C9-A9DE838802E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLogger", "DataLogger\DataLogger.csproj", "{75CF56E9-ADA9-4DCB-9E9D-A62BD8B082E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BF8B059F-921A-4DBA-9EFC-820DC4EFEB37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF8B059F-921A-4DBA-9EFC-820DC4EFEB37}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF8B059F-921A-4DBA-9EFC-820DC4EFEB37}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF8B059F-921A-4DBA-9EFC-820DC4EFEB37}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE7080F4-F0C1-4694-9C29-EF9B91BECBD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE7080F4-F0C1-4694-9C29-EF9B91BECBD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE7080F4-F0C1-4694-9C29-EF9B91BECBD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,10 @@ Global
 		{3F3A3495-E112-4ECD-A8C9-A9DE838802E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F3A3495-E112-4ECD-A8C9-A9DE838802E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F3A3495-E112-4ECD-A8C9-A9DE838802E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75CF56E9-ADA9-4DCB-9E9D-A62BD8B082E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75CF56E9-ADA9-4DCB-9E9D-A62BD8B082E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75CF56E9-ADA9-4DCB-9E9D-A62BD8B082E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75CF56E9-ADA9-4DCB-9E9D-A62BD8B082E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

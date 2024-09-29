@@ -4,6 +4,7 @@ namespace SQLight_Database
 {
     public class Exercise
     {
+        public int? Id { get; }
         public string Name { get; }
         public List<string> Tags { get; }
         public Enums.Units Unit1 { get; }
@@ -13,8 +14,9 @@ namespace SQLight_Database
 
         public string? Description { get; }
 
-        public Exercise(string name, List<string> tags, Enums.Units unit1, Enums.Units? unit2 = null, Enums.Units? unit3 = null, Enums.Units? unit4 = null,  string? description = null)
+        public Exercise(string name, List<string> tags, Enums.Units unit1, Enums.Units? unit2 = null, Enums.Units? unit3 = null, Enums.Units? unit4 = null,  string? description = null, int? id = null)
         {
+            Id = id;
             Name = name;
             Tags = tags;
             Unit1 = unit1;
@@ -28,13 +30,14 @@ namespace SQLight_Database
         {
             if (sqlite_datareader != null && sqlite_datareader.HasRows && !sqlite_datareader.IsClosed)
             {
-                Name = sqlite_datareader.GetString(0);
-                Tags = sqlite_datareader.GetString(1).Split(' ').ToList();
-                Unit1 = (Enums.Units)Enum.Parse(typeof(Enums.Units), sqlite_datareader.GetString(2));
-                Unit2 = GetUnitsFromDatabase(sqlite_datareader, 3);
-                Unit3 = GetUnitsFromDatabase(sqlite_datareader, 4);
-                Unit4 = GetUnitsFromDatabase(sqlite_datareader, 5);
-                Description = (string?)sqlite_datareader.GetValue(6);
+                Id = sqlite_datareader.GetInt32(0);
+                Name = sqlite_datareader.GetString(1);
+                Tags = sqlite_datareader.GetString(2).Split(',').ToList();
+                Unit1 = (Enums.Units)Enum.Parse(typeof(Enums.Units), sqlite_datareader.GetString(3));
+                Unit2 = GetUnitsFromDatabase(sqlite_datareader, 4);
+                Unit3 = GetUnitsFromDatabase(sqlite_datareader, 5);
+                Unit4 = GetUnitsFromDatabase(sqlite_datareader, 6);
+                Description = (string?)sqlite_datareader.GetValue(7);
             }
             else
                 throw new ArgumentNullException();
@@ -59,7 +62,7 @@ namespace SQLight_Database
             var unit4 = Unit4 == null ? "'null'" : $"'{Unit4}'";
             var description = Description == null ? "'null'" : $"'{Description}'";
 
-            return [$"'{Name}'", TagsToString(Tags), $"'{Unit1}'", unit2, unit3, unit4, description];
+            return ["null",$"'{Name}'", TagsToString(Tags), $"'{Unit1}'", unit2, unit3, unit4, description];
         }
 
         private static string TagsToString(List<string>? list)
@@ -68,7 +71,7 @@ namespace SQLight_Database
                 return "'null'";
 
             var tagsAsAString = "'";
-            var i =0;
+            var i = 0;
             foreach (var tag in list) 
             {
                 tagsAsAString += tag;

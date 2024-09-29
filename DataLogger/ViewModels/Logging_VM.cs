@@ -8,25 +8,30 @@ namespace DataLogger.ViewModels
     {
         #region Fields
         public ObservableCollection<ExerciseLog> ExerciseLogs { get => SQL_Database.Logs; }
-        public string SelectedExercise { get; set; }
 
-        public ObservableCollection<string> ExerciseNames { get => SQL_Database.AllExerciseNames; }
+        private Exercise? selectedExercise;
+        public Exercise? SelectedExercise { get => selectedExercise; set { selectedExercise = value; OnPropertyChanged(nameof(SelectedExercise)); } }
+
+        public ObservableCollection<Exercise> Exercises { get => SQL_Database.Exercises; }
 
         public bool SpecifyDate { get; set; }
 
         public DateOnly Date { get; set; }
 
-        public float Value { get; set; }
+        public float Value1 { get; set; }
+        public float? Value2 { get; set; }
+        public float? Value3 { get; set; }
+        public float? Value4 { get; set; }
+        public string? Note { get; set; }
 
         public ExerciseLog? SelectedExerciseLog { get; set; }
         #endregion
 
         public Logging_VM()
         {
-            SelectedExercise = "";
             SpecifyDate = false;
             Date = DateOnly.FromDateTime(DateTime.Now);
-            Value = 0;
+            Value1 = 0;
         }
 
         #region AddNewLog
@@ -38,6 +43,7 @@ namespace DataLogger.ViewModels
                 if (addNewLogCommand == null)
                 {
                     addNewLogCommand = new RelayCommand(
+                        p => SelectedExercise != null,
                         p => AddNewLog(SpecifyDate));
                 }
                 return addNewLogCommand;
@@ -45,14 +51,13 @@ namespace DataLogger.ViewModels
         }
         public void AddNewLog(bool dateSpecified)
         {
-            ExerciseLog log;
-            var _selectedExercise = SQL_Database.SelectExerciseByName(SelectedExercise);
+            if (SelectedExercise == null) 
+                return;
 
-            if (dateSpecified)
-                log = new ExerciseLog(Date, _selectedExercise, Value);
-            else
-                log = new ExerciseLog(DateOnly.FromDateTime(DateTime.Now), _selectedExercise, Value);
+            if (!dateSpecified)
+                Date = DateOnly.FromDateTime(DateTime.Now);
 
+            ExerciseLog log = new(Date, SelectedExercise, Value1, Value2, Value3, Value4, Note);
             SQL_Database.AddSingleLog(log);
         }
         #endregion
@@ -74,10 +79,10 @@ namespace DataLogger.ViewModels
         }
         public void DeleteLog(ExerciseLog? exercise)
         {
-            if (exercise != null)
-                SQL_Database.RemoveSingleLog(exercise);
-            else
-                throw new ArgumentNullException(nameof(exercise));
+            ArgumentNullException.ThrowIfNull(exercise);
+
+            SQL_Database.RemoveSingleLog(exercise);
+                
                 
         }
         #endregion

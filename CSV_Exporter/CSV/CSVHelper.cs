@@ -1,6 +1,8 @@
 ﻿using CsvHelper.Configuration;
 using CsvHelper;
 using System.Globalization;
+using CSV_Exporter.Converters;
+using SQLight_Database;
 
 namespace CSV_Exporter
 {
@@ -11,12 +13,22 @@ namespace CSV_Exporter
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 PrepareHeaderForMatch = args => args.Header.ToLower(),
-                HeaderValidated = null
+                //HeaderValidated = null,
+                MissingFieldFound = null
             };
 
             using var reader = new StreamReader(path);
             using var csv = new CsvReader(reader, config);
-            csv.Context.RegisterClassMap<ExerciseLogMap>(); // Register custom map
+
+            if (typeof(T) == typeof(Exercise))
+            {
+                //csv.Context.RegisterClassMap<ExerciseMap>();
+            }
+            if (typeof(T) == typeof(ExerciseLog))
+            {
+                csv.Context.RegisterClassMap<ExerciseLogMap>();
+            }
+                
             return csv.GetRecords<T>().ToList();
         }
 
@@ -24,6 +36,16 @@ namespace CSV_Exporter
         {
             using var writer = new StreamWriter(path);
             using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+
+            if (typeof(T) == typeof(Exercise))
+            {
+                csv.Context.RegisterClassMap<ExerciseMap>();
+            }
+            if (typeof(T) == typeof(ExerciseLog))
+            {
+                csv.Context.RegisterClassMap<ExerciseLogMap>();
+            }
+
             csv.WriteRecords(list);
         }
     }

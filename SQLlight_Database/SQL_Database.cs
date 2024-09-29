@@ -63,6 +63,7 @@ namespace SQLight_Database
             CreateTable(Config.LogsTableName, Config.LogTableDescription); //Log Table
         }
 
+        #region Exerceises
         public static void AddSingleExercise(Exercise exercise)
         {
             if (!AllExerciseNames.Contains(exercise.Name))
@@ -106,6 +107,25 @@ namespace SQLight_Database
             ReadAllExercises();
         }
 
+        public static void ReadAllExercises()
+        {
+            var sqlite_datareader = ExecuteSQLString(SQL_Strings.ReadData(Config.ExercieseTableName, "*", false), CommandType.Reader) as SQLiteDataReader;
+            exercises.Clear();
+
+            while (sqlite_datareader != null && sqlite_datareader.Read())
+            {
+                exercises.Add(new Exercise(sqlite_datareader));
+            }
+        }
+
+        public static Exercise SelectExerciseByName(string name)
+        {
+            var ex = Exercises.SingleOrDefault(ex => ex.Name == name);
+            return ex ?? throw new ExerciseNotFoundException(name);
+        }
+        #endregion
+
+        #region Logs
         public static void AddSingleLog(ExerciseLog log)
         {
             if (!Logs.Contains(log))
@@ -128,23 +148,6 @@ namespace SQLight_Database
             ReadAllLogs();
         }
 
-        public static void ReadAllExercises()
-        {
-            var sqlite_datareader = ExecuteSQLString(SQL_Strings.ReadData(Config.ExercieseTableName, "*", false), CommandType.Reader) as SQLiteDataReader;
-            exercises.Clear();
-
-            while (sqlite_datareader != null && sqlite_datareader.Read())
-            {
-                exercises.Add(new Exercise(sqlite_datareader));
-            }
-        }
-
-        public static Exercise SelectExerciseByName(string name)
-        {
-            var ex = Exercises.SingleOrDefault(ex => ex.Name == name);
-            return ex == null ? throw new ExerciseNotFoundException(name) : ex;
-        }
-
         public static void ReadAllLogs()
         {
             var sqlite_datareader = ExecuteSQLString(SQL_Strings.ReadData(Config.LogsTableName, "*", false), CommandType.Reader) as SQLiteDataReader;
@@ -155,12 +158,19 @@ namespace SQLight_Database
                 logs.Add(new ExerciseLog(sqlite_datareader));
             }
         }
+        #endregion
 
         public static void CloseConnection()
         {
             if (sqlite_conn == null)
                 return;
             SQL_Commands.CloseConnection(sqlite_conn);
+        }
+
+        public static void DeleteDatabase(string dbName)
+        {
+            ExecuteSQLString(SQL_Strings.DeleteDatabase(dbName), CommandType.NonQuery);
+            CloseConnection();
         }
 
         #region Private Methods
