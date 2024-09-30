@@ -22,11 +22,11 @@ namespace CSV_Exporter
 
             if (typeof(T) == typeof(Exercise))
             {
-                //csv.Context.RegisterClassMap<ExerciseMap>();
+                csv.Context.RegisterClassMap<ExerciseFromCSVMap>();
             }
             if (typeof(T) == typeof(ExerciseLog))
             {
-                csv.Context.RegisterClassMap<ExerciseLogMap>();
+                csv.Context.RegisterClassMap<ExerciseLogFromCSVMap>();
             }
                 
             return csv.GetRecords<T>().ToList();
@@ -39,11 +39,11 @@ namespace CSV_Exporter
 
             if (typeof(T) == typeof(Exercise))
             {
-                csv.Context.RegisterClassMap<ExerciseMap>();
+                csv.Context.RegisterClassMap<ExerciseToCSVMap>();
             }
             if (typeof(T) == typeof(ExerciseLog))
             {
-                csv.Context.RegisterClassMap<ExerciseLogMap>();
+                csv.Context.RegisterClassMap<ExerciseLogToCSVMap>();
             }
 
             csv.WriteRecords(list);

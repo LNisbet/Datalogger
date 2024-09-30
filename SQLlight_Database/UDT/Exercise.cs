@@ -4,15 +4,17 @@ namespace SQLight_Database
 {
     public class Exercise
     {
-        public int? Id { get; }
-        public string Name { get; }
-        public List<string> Tags { get; }
-        public Enums.Units Unit1 { get; }
-        public Enums.Units? Unit2 { get; }
-        public Enums.Units? Unit3 { get; }
-        public Enums.Units? Unit4 { get; }
+        public int? Id { get; set; }
+        public string Name { get; set; }
+        public List<string> Tags { get; set; }
+        public Enums.Units Unit1 { get; set; }
+        public Enums.Units? Unit2 { get; set; }
+        public Enums.Units? Unit3 { get; set; }
+        public Enums.Units? Unit4 { get; set; }
 
-        public string? Description { get; }
+        public string? Description { get; set; }
+
+        public Exercise() { }
 
         public Exercise(string name, List<string> tags, Enums.Units unit1, Enums.Units? unit2 = null, Enums.Units? unit3 = null, Enums.Units? unit4 = null,  string? description = null, int? id = null)
         {
@@ -75,8 +77,8 @@ namespace SQLight_Database
             foreach (var tag in list) 
             {
                 tagsAsAString += tag;
-                if (i < list.Count)
-                    tagsAsAString += ", ";
+                if (i < list.Count - 1)
+                    tagsAsAString += ",";
 
                 i++;
             }

@@ -32,7 +32,12 @@
             </StackPanel>
             <StackPanel>
                 <ComboBox ItemsSource="{Binding UserNames}" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Setup New User: "/>
+                    <CheckBox IsChecked="{Binding IsNewUser}"/>
+                </StackPanel>
                 <Button Width="150" Content="Log In" Command="{Binding Path=InitiliseDb}"/>
+                <Button Width="150" Content="Delete Data" Command="{Binding Path=DeleteDb}"/>
             </StackPanel>
         </StackPanel>
     </NavigationWindow.Content>

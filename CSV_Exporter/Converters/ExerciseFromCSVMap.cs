@@ -8,13 +8,13 @@ using SQLight_Database;
 
 namespace CSV_Exporter.Converters
 {
-    public class ExerciseMap : ClassMap<Exercise>
+    public class ExerciseFromCSVMap : ClassMap<Exercise>
     {
-        public ExerciseMap()
+        public ExerciseFromCSVMap()
         {
             Map(m => m.Id).Optional();
             Map(m => m.Name);
-            Map(m => m.Tags).Convert(row => string.Join(",", row.Value.Tags));
+            Map(m => m.Tags).Name("Tags").Convert(row => row.Row.GetField("Tags").Split(',').ToList());
             Map(m => m.Unit1);
             Map(m => m.Unit2).Optional();
             Map(m => m.Unit3).Optional();

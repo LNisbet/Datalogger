@@ -46,7 +46,7 @@ namespace SQLight_Database
         //private static SQLiteTransaction? sqlite_transaction; Find out what this is for
         #endregion
 
-        public static void InititiliseDatabase(string dbName)
+        public static void InititiliseDatabase(string dbName, bool newDb)
         {
             try
             {
@@ -56,11 +56,14 @@ namespace SQLight_Database
             {
                 sqlite_conn = SQL_Commands.CreateConnection(dbName, true);
             }
-            CreateTable(Config.TagsTableName, Config.TagsTableDescription); //Tags Table
-            AddMultipleTags(Config.StandardTags);
-            CreateTable(Config.ExercieseTableName, Config.ExerciseTableDescription); //Exercise Table
-            AddMultipleExercises(Config.StandardExercises);
-            CreateTable(Config.LogsTableName, Config.LogTableDescription); //Log Table
+            if (newDb)
+            {
+                CreateTable(Config.TagsTableName, Config.TagsTableDescription); //Tags Table
+                AddMultipleTags(Config.StandardTags);
+                CreateTable(Config.ExercieseTableName, Config.ExerciseTableDescription); //Exercise Table
+                AddMultipleExercises(Config.StandardExercises);
+                CreateTable(Config.LogsTableName, Config.LogTableDescription); //Log Table
+            }
         }
 
         #region Exerceises
@@ -128,7 +131,7 @@ namespace SQLight_Database
         #region Logs
         public static void AddSingleLog(ExerciseLog log)
         {
-            if (!Logs.Contains(log))
+            if (IsLogUnique(log))
             {
                 ExecuteSQLString(SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), CommandType.NonQuery);
                 ReadAllLogs();
@@ -137,7 +140,7 @@ namespace SQLight_Database
 
         public static void AddMultipleLogs(List<ExerciseLog> logs)
         {
-            foreach (var log in logs) if (!Logs.Contains(log))
+            foreach (var log in logs) if (IsLogUnique(log))
                     ExecuteSQLString(SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), CommandType.NonQuery);
             ReadAllLogs();
         }
@@ -231,6 +234,16 @@ namespace SQLight_Database
         private static void CreateTable(string tableName, List<ColumnDescription> tableDescription)
         {
             ExecuteSQLString(SQL_Strings.CreateTable(tableName, tableDescription), CommandType.NonQuery);
+        }
+
+        private static bool IsLogUnique(ExerciseLog log)
+        {
+            return !(Logs.Any(l => l.Date.Equals(log.Date)) &&
+                Logs.Any(l => l.Exercise.Name.Equals(log.Exercise.Name)) &&
+                Logs.Any(l => l.Value1.Equals(log.Value1)) &&
+                Logs.Any(l => l.Value2.Equals(log.Value2)) &&
+                Logs.Any(l => l.Value3.Equals(log.Value3)) &&
+                Logs.Any(l => l.Value4.Equals(log.Value4)));
         }
         #endregion
     }

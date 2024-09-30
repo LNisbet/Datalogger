@@ -11,6 +11,8 @@ namespace DataLogger.ViewModels
         private string userName = "User1";
         public string UserName { get => userName; set => userName = value; }
 
+        public bool IsNewUser { get; set; } = false;
+
         public ObservableCollection<string> UserNames { get; set; }
 
         #region Initilise
@@ -22,15 +24,37 @@ namespace DataLogger.ViewModels
                 if (initiliseDb == null)
                 {
                     initiliseDb = new RelayCommand(
-                        p => InitiliseDataBase(userName));
+                        p => InitiliseDataBase(userName,IsNewUser));
                 }
                 return initiliseDb;
             }
         }
-        public void InitiliseDataBase(string dbName)
+        public void InitiliseDataBase(string dbName, bool isNewUser)
         {
-            SQL_Database.InititiliseDatabase(dbName);
+            SQL_Database.InititiliseDatabase(dbName, isNewUser);
             NavigationEnabled = true;
+            OnPropertyChanged(nameof(NavigationEnabled));
+        }
+        #endregion
+
+        #region Delete Database
+        private ICommand? deleteDb;
+        public ICommand DeleteDb
+        {
+            get
+            {
+                if (deleteDb == null)
+                {
+                    deleteDb = new RelayCommand(
+                        p => DeleteDataBase(userName));
+                }
+                return deleteDb;
+            }
+        }
+        public void DeleteDataBase(string dbName)
+        {
+            SQL_Database.DeleteDatabase(dbName);
+            NavigationEnabled = false;
             OnPropertyChanged(nameof(NavigationEnabled));
         }
         #endregion

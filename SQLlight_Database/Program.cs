@@ -6,7 +6,7 @@ namespace SQLite_Database
     {
         static void Main(string[] args)
         {
-            SQL_Database.InititiliseDatabase("User1");
+            //SQL_Database.InititiliseDatabase("User1");
             //SQL_Database.AddSingleExercise(new Exercise("ex_name1", "ex_type1", "ex_discription1"));
             //SQL_Database.AddSingleExercise(new Exercise("ex_name2", "ex_type2"));
             SQL_Database.ReadAllExercises();

@@ -147,10 +147,10 @@
 
                 x += item;
 
-                if (i == list.Count - 1)
+                if (i >= list.Count - 1)
                     x += ")";
                 else
-                    x += ", ";
+                    x += ",";
 
                 i++;
             }
