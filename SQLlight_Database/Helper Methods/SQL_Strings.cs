@@ -116,23 +116,13 @@
             return $"{select} {columns} FROM {tableName} WHERE {condition}; ";
         }
 
-        static internal string SelectData(string tableName, string inColumn, string condition, Enums.SelectDataOptions selectOption)
+        static internal string SelectData(string tableName, string inColumn, Enums.SelectDataOptions selectOption, string? condition = null)
         {
-            switch (selectOption)
-            {
-                case Enums.SelectDataOptions.MIN:
-                    return $"SELECT MIN({inColumn}) FROM {tableName} WHERE {condition}; ";
-                case Enums.SelectDataOptions.MAX:
-                    return $"SELECT MAX({inColumn}) FROM {tableName} WHERE {condition}; ";
-                case Enums.SelectDataOptions.COUNT:
-                    return $"SELECT COUNT({inColumn}) FROM {tableName} WHERE {condition}; ";
-                case Enums.SelectDataOptions.SUM:
-                    return $"SELECT SUM({inColumn}) FROM {tableName} WHERE {condition}; ";
-                case Enums.SelectDataOptions.AVG:
-                    return $"SELECT AVG({inColumn}) FROM {tableName} WHERE {condition}; ";
-                default:
-                    throw new NotImplementedException(selectOption.ToString());
-            }
+            var con = "";
+            if (condition != null)
+                con = $"WHERE {condition}";
+
+            return $"SELECT {selectOption}({inColumn}) FROM {tableName} {con}; ";
         }
 
         static private string CreateStringFromList(List<string> list)

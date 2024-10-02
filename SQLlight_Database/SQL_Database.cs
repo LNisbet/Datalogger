@@ -71,7 +71,7 @@ namespace SQLight_Database
         {
             if (!AllExerciseNames.Contains(exercise.Name))
             {
-                ExecuteSQLString(SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), CommandType.NonQuery);
+                SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), Enums.CommandType.NonQuery);
                 foreach(var tag in exercise.Tags)
                 {
                     if (!allExerciseTags.Contains(tag))
@@ -87,7 +87,7 @@ namespace SQLight_Database
             foreach (var exercise in exercises) 
                 if (!AllExerciseNames.Contains(exercise.Name))
                 {
-                    ExecuteSQLString(SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), CommandType.NonQuery);
+                    SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), Enums.CommandType.NonQuery);
                     foreach (var tag in exercise.Tags)
                     {
                         if (!allExerciseTags.Contains(tag))
@@ -100,19 +100,19 @@ namespace SQLight_Database
 
         public static void RemoveSingleTag(string tag)
         {
-            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.TagsTableName, $"Tags='{tag}'"), CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.DeleteFromTable(Config.TagsTableName, $"Tags='{tag}'"), Enums.CommandType.NonQuery);
             ReadAllExerciseTags();
         }
 
         public static void RemoveSingleExercise(Exercise exercise)
         {
-            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.ExercieseTableName,$"Name='{exercise.Name}'"),CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.DeleteFromTable(Config.ExercieseTableName,$"Name='{exercise.Name}'"), Enums.CommandType.NonQuery);
             ReadAllExercises();
         }
 
         public static void ReadAllExercises()
         {
-            var sqlite_datareader = ExecuteSQLString(SQL_Strings.ReadData(Config.ExercieseTableName, "*", false), CommandType.Reader) as SQLiteDataReader;
+            var sqlite_datareader = SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.ReadData(Config.ExercieseTableName, "*", false), Enums.CommandType.Reader) as SQLiteDataReader;
             exercises.Clear();
 
             while (sqlite_datareader != null && sqlite_datareader.Read())
@@ -133,7 +133,7 @@ namespace SQLight_Database
         {
             if (IsLogUnique(log))
             {
-                ExecuteSQLString(SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), CommandType.NonQuery);
+                SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), Enums.CommandType.NonQuery);
                 ReadAllLogs();
             }
         }
@@ -141,19 +141,19 @@ namespace SQLight_Database
         public static void AddMultipleLogs(List<ExerciseLog> logs)
         {
             foreach (var log in logs) if (IsLogUnique(log))
-                    ExecuteSQLString(SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), CommandType.NonQuery);
+                    SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), Enums.CommandType.NonQuery);
             ReadAllLogs();
         }
 
         public static void RemoveSingleLog(ExerciseLog log)
         {
-            ExecuteSQLString(SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Id={log.Id}"), CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Id={log.Id}"), Enums.CommandType.NonQuery);
             ReadAllLogs();
         }
 
         public static void ReadAllLogs()
         {
-            var sqlite_datareader = ExecuteSQLString(SQL_Strings.ReadData(Config.LogsTableName, "*", false), CommandType.Reader) as SQLiteDataReader;
+            var sqlite_datareader = SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.ReadData(Config.LogsTableName, "*", false), Enums.CommandType.Reader) as SQLiteDataReader;
             logs.Clear();
 
             while (sqlite_datareader != null && sqlite_datareader.Read())
@@ -172,22 +172,17 @@ namespace SQLight_Database
 
         public static void DeleteDatabase(string dbName)
         {
-            ExecuteSQLString(SQL_Strings.DeleteDatabase(dbName), CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.DeleteDatabase(dbName), Enums.CommandType.NonQuery);
             CloseConnection();
         }
 
         #region Private Methods
-        private enum CommandType
-        {
-            NonQuery,
-            Reader
-        }
 
         private static void AddSingleTag(string tag)
         {
             if (!AllExerciseTags.Contains(tag))
             {
-                ExecuteSQLString(SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), CommandType.NonQuery);
+                SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), Enums.CommandType.NonQuery);
                 ReadAllExerciseTags();
             }
         }
@@ -196,14 +191,14 @@ namespace SQLight_Database
         {
             foreach (var tag in tags)
                 if (!AllExerciseTags.Contains(tag))
-                    ExecuteSQLString(SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), CommandType.NonQuery);
+                    SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), Enums.CommandType.NonQuery);
 
             ReadAllExerciseTags();
         }
 
         private static void ReadAllExerciseTags()
         {
-            var sqlite_datareader = ExecuteSQLString(SQL_Strings.ReadData(Config.TagsTableName, "*", true), CommandType.Reader) as SQLiteDataReader;
+            var sqlite_datareader = SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.ReadData(Config.TagsTableName, "*", true), Enums.CommandType.Reader) as SQLiteDataReader;
 
             while (sqlite_datareader != null && sqlite_datareader.Read())
             {
@@ -213,27 +208,9 @@ namespace SQLight_Database
             }
         }
 
-        private static object? ExecuteSQLString(string sqlString, CommandType commandType)
-        {
-            if (sqlite_conn == null)
-                throw new NoOpenSQLConnection();
-
-            switch (commandType)
-            {
-                case CommandType.NonQuery:
-                    SQL_Commands.ExecuteNonQueryCommand(sqlite_conn, sqlString);
-                    return null;
-                case CommandType.Reader:
-                    return SQL_Commands.ExecuteReader(sqlite_conn, sqlString);
-                default:
-                    throw new NotImplementedException(commandType.ToString());
-
-            }
-        }
-
         private static void CreateTable(string tableName, List<ColumnDescription> tableDescription)
         {
-            ExecuteSQLString(SQL_Strings.CreateTable(tableName, tableDescription), CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(sqlite_conn, SQL_Strings.CreateTable(tableName, tableDescription), Enums.CommandType.NonQuery);
         }
 
         private static bool IsLogUnique(ExerciseLog log)

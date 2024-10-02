@@ -30,5 +30,11 @@ namespace SQLight_Database
             Minutes,
             Seconds
         }
+
+        internal enum CommandType
+        {
+            NonQuery,
+            Reader
+        }
     }
 }
