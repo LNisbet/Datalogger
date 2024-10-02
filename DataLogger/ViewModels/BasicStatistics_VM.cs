@@ -11,7 +11,7 @@ namespace DataLogger.ViewModels
         BasicStatistics_VM() 
         {
             BasicStatistics_AllExercises = [];
-            foreach (var exercise in SQL_Database.Exercises) 
+            foreach (var exercise in ExerciseTable.Exercises) 
             {
                 BasicStatistics_AllExercises.Add(new BasicStatistics(exercise, DateOnly.MinValue, DateOnly.MaxValue));
             }

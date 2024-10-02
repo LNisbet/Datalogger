@@ -1,4 +1,6 @@
-﻿namespace SQLight_Database
+﻿using System.Data.SQLite;
+
+namespace SQLight_Database
 {
     static internal class SQL_Strings
     {

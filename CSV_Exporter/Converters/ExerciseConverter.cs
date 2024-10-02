@@ -14,7 +14,7 @@ namespace CSV_Exporter
             var list = text.Split(',').ToList();
             try
             {
-                exercise = SQL_Database.SelectExerciseByName(list[0]);
+                exercise = ExerciseTable.SelectExerciseByName(list[0]);
             }
             catch
             {

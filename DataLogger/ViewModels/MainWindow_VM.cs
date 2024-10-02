@@ -6,7 +6,7 @@ namespace DataLogger.ViewModels
 {
     class MainWindow_VM : NotifyPropertyChanged
     {
-        public bool NavigationEnabled { get; set; } = false;
+        public bool NavigationEnabled { get; set; } = true;
 
         private string userName = "User1";
         public string UserName { get => userName; set => userName = value; }
@@ -24,14 +24,14 @@ namespace DataLogger.ViewModels
                 if (initiliseDb == null)
                 {
                     initiliseDb = new RelayCommand(
-                        p => InitiliseDataBase(userName,IsNewUser));
+                        p => InitiliseDataBase(userName));
                 }
                 return initiliseDb;
             }
         }
-        public void InitiliseDataBase(string dbName, bool isNewUser)
+        public void InitiliseDataBase(string dbName)
         {
-            SQL_Database.InititiliseDatabase(dbName, isNewUser);
+            SQL_Database.InititiliseDatabase(dbName);
             NavigationEnabled = true;
             OnPropertyChanged(nameof(NavigationEnabled));
         }

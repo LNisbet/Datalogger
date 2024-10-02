@@ -7,12 +7,12 @@ namespace DataLogger.ViewModels
     public class Logging_VM : NotifyPropertyChanged
     {
         #region Fields
-        public ObservableCollection<ExerciseLog> ExerciseLogs { get => SQL_Database.Logs; }
+        public ObservableCollection<ExerciseLog> ExerciseLogs { get => LogsTable.Logs; }
 
         private Exercise? selectedExercise;
         public Exercise? SelectedExercise { get => selectedExercise; set { selectedExercise = value; OnPropertyChanged(nameof(SelectedExercise)); } }
 
-        public ObservableCollection<Exercise> Exercises { get => SQL_Database.Exercises; }
+        public ObservableCollection<Exercise> Exercises { get => ExerciseTable.Exercises; }
 
         public bool SpecifyDate { get; set; }
 
@@ -58,7 +58,7 @@ namespace DataLogger.ViewModels
                 Date = DateOnly.FromDateTime(DateTime.Now);
 
             ExerciseLog log = new(Date, SelectedExercise, Value1, Value2, Value3, Value4, Note);
-            SQL_Database.AddSingleLog(log);
+            LogsTable.AddSingleLog(log);
         }
         #endregion
 
@@ -81,7 +81,7 @@ namespace DataLogger.ViewModels
         {
             ArgumentNullException.ThrowIfNull(exercise);
 
-            SQL_Database.RemoveSingleLog(exercise);
+            LogsTable.RemoveSingleLog(exercise);
                 
                 
         }

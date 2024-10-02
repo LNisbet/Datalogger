@@ -21,7 +21,7 @@ namespace DataLogger.ViewModels
                 if (exportLogsCommand == null)
                 {
                     exportLogsCommand = new RelayCommand(
-                        p => SQL_Database.Logs.Count > 0,
+                        p => LogsTable.Logs.Count > 0,
                         p => ExportLogs());
                 }
                 return exportLogsCommand;
@@ -30,7 +30,7 @@ namespace DataLogger.ViewModels
 
         public void ExportLogs()
         {
-            CSVHelper.WriteToCSV(Path + LogFileName, new List<ExerciseLog>(SQL_Database.Logs));
+            CSVHelper.WriteToCSV(Path + LogFileName, new List<ExerciseLog>(LogsTable.Logs));
         }
         #endregion
 
@@ -43,7 +43,7 @@ namespace DataLogger.ViewModels
                 if (exportExercisesCommand == null)
                 {
                     exportExercisesCommand = new RelayCommand(
-                        p => SQL_Database.Exercises.Count > 0,
+                        p => ExerciseTable.Exercises.Count > 0,
                         p => ExportExercises());
                 }
                 return exportExercisesCommand;
@@ -52,7 +52,7 @@ namespace DataLogger.ViewModels
 
         public void ExportExercises()
         {
-            CSVHelper.WriteToCSV(Path + ExerciseFileName, new List<Exercise>(SQL_Database.Exercises));
+            CSVHelper.WriteToCSV(Path + ExerciseFileName, new List<Exercise>(ExerciseTable.Exercises));
         }
         #endregion
 
@@ -73,7 +73,7 @@ namespace DataLogger.ViewModels
 
         public void ImportLogs()
         {
-            SQL_Database.AddMultipleLogs(CSVHelper.ReadFromCSV<ExerciseLog>(Path + LogFileName));
+            LogsTable.AddMultipleLogs(CSVHelper.ReadFromCSV<ExerciseLog>(Path + LogFileName));
         }
         #endregion
 
@@ -94,7 +94,7 @@ namespace DataLogger.ViewModels
 
         public void ImportExercises()
         {
-            SQL_Database.AddMultipleExercises(CSVHelper.ReadFromCSV<Exercise>(Path + ExerciseFileName));
+            ExerciseTable.AddMultipleExercises(CSVHelper.ReadFromCSV<Exercise>(Path + ExerciseFileName));
         }
         #endregion
     }

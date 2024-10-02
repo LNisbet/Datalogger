@@ -13,7 +13,7 @@ namespace SQLight_Database
         {
             var sql_string = SQL_Strings.SelectData(Config.LogsTableName, "Date", Enums.SelectDataOptions.MAX, $"exercise={exercise}");
 
-            if (SQL_Database.ExecuteSQLString(sql_string, SQL_Database.CommandType.Reader) is not SQLiteDataReader sqlite_datareader)
+            if (SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, sql_string, Enums.CommandType.Reader) is not SQLiteDataReader sqlite_datareader)
                 return null;
 
             return new ExerciseLog(sqlite_datareader);
@@ -23,7 +23,7 @@ namespace SQLight_Database
         {
             var sql_string = SQL_Strings.SelectData(Config.LogsTableName, "value1", Enums.SelectDataOptions.MAX, $"exercise={exercise} AND Date >={startDate} AND <={endDate}");
 
-            if (SQL_Database.ExecuteSQLString(sql_string, SQL_Database.CommandType.Reader) is not SQLiteDataReader sqlite_datareader)
+            if (SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, sql_string, Enums.CommandType.Reader) is not SQLiteDataReader sqlite_datareader)
                 return null;
 
             return new ExerciseLog(sqlite_datareader);
@@ -33,7 +33,7 @@ namespace SQLight_Database
         {
             var sql_string = SQL_Strings.SelectData(Config.LogsTableName, "value1", Enums.SelectDataOptions.MIN, $"exercise={exercise} AND Date >={startDate} AND <={endDate}");
 
-            if (SQL_Database.ExecuteSQLString(sql_string, SQL_Database.CommandType.Reader) is not SQLiteDataReader sqlite_datareader)
+            if (SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, sql_string, Enums.CommandType.Reader) is not SQLiteDataReader sqlite_datareader)
                 return null;
 
             return new ExerciseLog(sqlite_datareader);
@@ -43,7 +43,7 @@ namespace SQLight_Database
         {
             var sql_string = SQL_Strings.SelectData(Config.LogsTableName, "value1", Enums.SelectDataOptions.AVG, $"exercise={exercise} AND Date >={startDate} AND <={endDate}");
 
-            if (SQL_Database.ExecuteSQLString(sql_string, SQL_Database.CommandType.Reader) is not SQLiteDataReader sqlite_datareader)
+            if (SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, sql_string, Enums.CommandType.Reader) is not SQLiteDataReader sqlite_datareader)
                 return null;
 
             return new ExerciseLog(sqlite_datareader);

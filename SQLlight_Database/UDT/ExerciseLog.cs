@@ -35,7 +35,7 @@ namespace SQLight_Database
             {
                 Id = sqlite_datareader.GetInt32(0);
                 Date = DateOnly.Parse(sqlite_datareader.GetString(1));
-                Exercise = SQL_Database.SelectExerciseByName(sqlite_datareader.GetString(2));
+                Exercise = ExerciseTable.SelectExerciseByName(sqlite_datareader.GetString(2));
                 Value1 = (float)sqlite_datareader.GetFloat(3);
                 Value2 = GetFloatFromDatabase(sqlite_datareader,4);
                 Value3 = GetFloatFromDatabase(sqlite_datareader, 5);

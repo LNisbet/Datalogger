@@ -20,9 +20,9 @@ namespace DataLogger.ViewModels
 
         private Exercise newExercise { get => new(NewExerciseName, NewExerciseTags.ToList(), NewUnit1, NewUnit2, NewUnit3, NewUnit4, NewExerciseDescription); }
 
-        public ObservableCollection<string> AllExerciseTags { get => SQL_Database.AllExerciseTags;}
+        public ObservableCollection<string> AllExerciseTags { get => TagsTable.AllExerciseTags;}
 
-        public ObservableCollection<Exercise> Exercises{ get => SQL_Database.Exercises; }
+        public ObservableCollection<Exercise> Exercises{ get => ExerciseTable.Exercises; }
 
         public Exercise? SelectedExercise { get; set; }
         #endregion
@@ -52,14 +52,14 @@ namespace DataLogger.ViewModels
 
         public void AddNewExercise(Exercise ex)
         {
-            SQL_Database.AddSingleExercise(ex);
+            ExerciseTable.AddSingleExercise(ex);
             OnPropertyChanged(nameof(Exercises));
             OnPropertyChanged(nameof(AllExerciseTags));
         }
 
         public bool ExerciseIsValid(Exercise ex)
         {
-            return!SQL_Database.AllExerciseNames.Contains(ex.Name);
+            return!ExerciseTable.AllExerciseNames.Contains(ex.Name);
         }
         #endregion
 
@@ -82,7 +82,7 @@ namespace DataLogger.ViewModels
         {
             if (log != null)
             {
-                SQL_Database.RemoveSingleExercise(log);
+                ExerciseTable.RemoveSingleExercise(log);
                 OnPropertyChanged(nameof(Exercises));
                 OnPropertyChanged(nameof(AllExerciseTags));
             }
