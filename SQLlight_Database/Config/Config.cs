@@ -1,24 +1,45 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace SQLight_Database
 {
-    internal static class Config
+    static internal class Config
     {
-        static internal readonly string TagsTableName = "Tags";
-        static internal readonly List<ColumnDescription> TagsTableDescription =
+        #region Users Table
+        internal const string UsersTableName = "Users";
+
+        static internal List<ColumnDescription> UsersTableDescription =
+        [
+            new ColumnDescription("Id", "INTEGER PRIMARY KEY"),
+            new ColumnDescription("Name", "VARCHAR(20)", "UNIQUE"),
+            new ColumnDescription("Initilised", "BOOL", "Default(False)"),
+        ];
+
+        static internal readonly List<string> StandardUsers =
+        [
+            "Testing"
+        ];
+        #endregion
+
+        #region Tag Table
+        internal const string TagsTableName = "Tags";
+
+        static internal List<ColumnDescription> TagsTableDescription =
         [
             new ColumnDescription("Tags", "TEXT", "PRIMARY KEY")
         ];
 
         static internal readonly List<string> StandardTags = 
         [
-            "Testing", 
+            "Testing",
             "UpperBody", 
             "LowerBody",
             "Core",
@@ -29,9 +50,12 @@ namespace SQLight_Database
             "Rehab",
             "Flexibility"
         ];
+        #endregion
 
-        static internal readonly string ExercieseTableName = "Exercises";
-        static internal readonly List<ColumnDescription> ExerciseTableDescription =
+        #region Exercise Table
+        internal const string ExercieseTableName = "Exercises";
+
+        static internal List<ColumnDescription> ExerciseTableDescription =
         [
             new ColumnDescription("Id", "INTEGER PRIMARY KEY"),
             new ColumnDescription("Name", "VARCHAR(20)", "NOT NULL"),
@@ -41,19 +65,6 @@ namespace SQLight_Database
             new ColumnDescription("Unit3", "VARCHAR(20)"),
             new ColumnDescription("Unit4", "VARCHAR(20)"),
             new ColumnDescription("Description", "TEXT")
-        ];
-
-        static internal readonly string LogsTableName = "ExerciseLogs";
-        static internal readonly List<ColumnDescription> LogTableDescription =
-        [
-            new ColumnDescription("Id", "INTEGER PRIMARY KEY"),
-            new ColumnDescription("Date", "DATE", "NOT NULL"),
-            new ColumnDescription("Exercise", "VARCHAR(20)", "NOT NULL"),
-            new ColumnDescription("Value1", "FLOAT", "NOT NULL"),
-            new ColumnDescription("Value2", "FLOAT"),
-            new ColumnDescription("Value3", "FLOAT"),
-            new ColumnDescription("Value4", "FLOAT"),
-            new ColumnDescription("Note", "TEXT")
         ];
 
         static internal readonly List<Exercise> StandardExercises =
@@ -85,5 +96,22 @@ namespace SQLight_Database
             new Exercise("Max 15mm Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand in a full crimp position"),
             new Exercise("Max Pullup", ["Testing","UpperBody"], Enums.Units.Kg,Enums.Units.Reps,null,null,"Right hand in a full crimp position")
         ];
+        #endregion
+
+        #region Logs Table
+        internal const string LogsTableName = "ExerciseLogs";
+
+        static internal List<ColumnDescription> LogTableDescription =
+        [
+            new ColumnDescription("Id", "INTEGER PRIMARY KEY"),
+            new ColumnDescription("Date", "DATE", "NOT NULL"),
+            new ColumnDescription("Exercise", "VARCHAR(20)", "NOT NULL"),
+            new ColumnDescription("Value1", "FLOAT", "NOT NULL"),
+            new ColumnDescription("Value2", "FLOAT"),
+            new ColumnDescription("Value3", "FLOAT"),
+            new ColumnDescription("Value4", "FLOAT"),
+            new ColumnDescription("Note", "TEXT")
+        ];
+        #endregion
     }
 }

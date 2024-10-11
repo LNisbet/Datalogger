@@ -9,22 +9,29 @@ namespace SQLight_Database
 {
     public static class DatabaseConnection
     {
-        private static string dbName = "User1";
-        public static string DBName { get => dbName; set { dbName = value; CreateConnection(dbName); } }
+        private static User currentUser = new("User1",false);
+        public static User CurrentUser { get => currentUser; set { currentUser = value; CreateConnection(currentUser); } }
 
         private static SQLiteConnection? sqlite_conn = null;
-        internal static SQLiteConnection SQLite_conn { get { return sqlite_conn ?? (sqlite_conn = CreateConnection(DBName));  } }
+        internal static SQLiteConnection SQLite_conn { get { return sqlite_conn ?? (sqlite_conn = CreateConnection(CurrentUser)); } }
 
-        private static SQLiteConnection CreateConnection(string name)
+        private static SQLiteConnection CreateConnection(User user)
         {
+            SQLiteConnection conn;
             try
             {
-                return SQL_Commands.CreateConnection(name, false);
+                conn = SQL_Commands.CreateConnection(user.Name, false);
             }
             catch
             {
-                return SQL_Commands.CreateConnection(name, true);
+                conn = SQL_Commands.CreateConnection(user.Name, true);
             }
+            if (!user.Initilised) 
+            { 
+                SQL_Database.InititiliseDatabase();
+            }
+
+            return conn;
         }
 
         public static void CloseConnection()

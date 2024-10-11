@@ -16,12 +16,7 @@
          *  CREATE INDEX - Used to create and retrieve data from the database very quickly
          */
 
-        internal ColumnDescription(string name, string dataType)
-        {
-            Name = name;
-            DataType = dataType;
-        }
-        internal ColumnDescription(string name, string dataType, string constraints)
+        internal ColumnDescription(string name, string dataType, string? constraints = null)
         {
             Name = name;
             DataType = dataType;

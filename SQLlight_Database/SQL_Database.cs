@@ -5,29 +5,29 @@ using System.Data.SQLite;
 
 namespace SQLight_Database
 {
-    public static class SQL_Database
+    internal static class SQL_Database
     {
         
         //private static SQLiteTransaction? sqlite_transaction; Find out what this is for
 
-        public static void InititiliseDatabase(string dbName)
+        internal static void InititiliseDatabase(SQLiteConnection conn)
         {
-            CreateTable(Config.TagsTableName, Config.TagsTableDescription); //Tags Table
+            CreateTable(Config.TagsTableName, Config.TagsTableDescription, conn); //Tags Table
             TagsTable.AddMultipleTags(Config.StandardTags);
-            CreateTable(Config.ExercieseTableName, Config.ExerciseTableDescription); //Exercise Table
+            CreateTable(Config.ExercieseTableName, Config.ExerciseTableDescription, conn); //Exercise Table
             ExerciseTable.AddMultipleExercises(Config.StandardExercises);
-            CreateTable(Config.LogsTableName, Config.LogTableDescription); //Log Table
+            CreateTable(Config.LogsTableName, Config.LogTableDescription, conn); //Log Table
         }
 
-        public static void DeleteDatabase(string dbName)
+        internal static void DeleteDatabase(string dbName, SQLiteConnection conn)
         {
-            SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.DeleteDatabase(dbName), Enums.CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(conn, SQL_Strings.DeleteDatabase(dbName), Enums.CommandType.NonQuery);
             DatabaseConnection.CloseConnection();
         }
 
-        private static void CreateTable(string tableName, List<ColumnDescription> tableDescription)
+        private static void CreateTable(string tableName, List<ColumnDescription> tableDescription, SQLiteConnection conn)
         {
-            SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.CreateTable(tableName, tableDescription), Enums.CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(conn, SQL_Strings.CreateTable(tableName, tableDescription), Enums.CommandType.NonQuery);
         }
     }
 }
