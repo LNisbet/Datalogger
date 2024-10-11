@@ -6,56 +6,55 @@ namespace DataLogger.ViewModels
 {
     class MainWindow_VM : NotifyPropertyChanged
     {
-        public bool NavigationEnabled { get; set; } = true;
+        public bool NavigationEnabled { get{ return !String.IsNullOrEmpty(SelectedUserName); } }
 
-        private string userName = "User1";
-        public string UserName { get => userName; set => userName = value; }
+        private string? selectedUserName;
+        public string? SelectedUserName { get => selectedUserName; set { selectedUserName = value; OnPropertyChanged(nameof(NavigationEnabled)); }  }
 
-        public bool IsNewUser { get; set; } = false;
+        public bool IsNewUser { get; set; } = true;
 
-        public ObservableCollection<string> UserNames { get; set; }
+        public ObservableCollection<string> UserNames { get => SQLight_Database.Users.AllUserNames; }
 
-        #region Initilise
-        private ICommand? initiliseDb;
-        public ICommand InitiliseDb
+        #region LogIn
+        private ICommand? logIn;
+        public ICommand LogIn
         {
             get
             {
-                if (initiliseDb == null)
+                if (logIn == null)
                 {
-                    initiliseDb = new RelayCommand(
-                        p => InitiliseDataBase(userName));
+                    logIn = new RelayCommand(
+                        P => (!String.IsNullOrEmpty(SelectedUserName)),
+                        p => LogUserIn(new User(SelectedUserName, !IsNewUser)));
                 }
-                return initiliseDb;
+                return logIn;
             }
         }
-        public void InitiliseDataBase(string dbName)
+        public void LogUserIn(User user)
         {
-            SQL_Database.InititiliseDatabase(dbName);
-            NavigationEnabled = true;
-            OnPropertyChanged(nameof(NavigationEnabled));
+            Users.Add(user);
         }
         #endregion
 
-        #region Delete Database
-        private ICommand? deleteDb;
-        public ICommand DeleteDb
+        #region Delete User
+        private ICommand? deleteUser;
+        public ICommand DeleteUser
         {
             get
             {
-                if (deleteDb == null)
+                if (deleteUser == null)
                 {
-                    deleteDb = new RelayCommand(
-                        p => DeleteDataBase(userName));
+                    deleteUser = new RelayCommand(
+                        p => (!String.IsNullOrEmpty(SelectedUserName)),
+                        p => DeleteDataBase(new User(SelectedUserName, !IsNewUser)));
                 }
-                return deleteDb;
+                return deleteUser;
             }
         }
-        public void DeleteDataBase(string dbName)
+        public void DeleteDataBase(User dbName)
         {
-            SQL_Database.DeleteDatabase(dbName);
-            NavigationEnabled = false;
-            OnPropertyChanged(nameof(NavigationEnabled));
+            Users.Remove(dbName);
+            SelectedUserName = null;
         }
         #endregion
     }

@@ -12,7 +12,6 @@ namespace CSV_Exporter.Converters
     {
         public ExerciseToCSVMap()
         {
-            Map(m => m.Id).Optional();
             Map(m => m.Name);
             Map(m => m.Tags).Convert(row => string.Join(',', row.Value.Tags));
             Map(m => m.Unit1);

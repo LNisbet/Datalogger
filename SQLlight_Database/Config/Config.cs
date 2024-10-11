@@ -13,20 +13,8 @@ namespace SQLight_Database
 {
     static internal class Config
     {
-        #region Users Table
-        internal const string UsersTableName = "Users";
-
-        static internal List<ColumnDescription> UsersTableDescription =
-        [
-            new ColumnDescription("Id", "INTEGER PRIMARY KEY"),
-            new ColumnDescription("Name", "VARCHAR(20)", "UNIQUE"),
-            new ColumnDescription("Initilised", "BOOL", "Default(False)"),
-        ];
-
-        static internal readonly List<string> StandardUsers =
-        [
-            "Testing"
-        ];
+        #region Users File
+        internal const string UsersPathName = "users.json";
         #endregion
 
         #region Tag Table
@@ -57,8 +45,7 @@ namespace SQLight_Database
 
         static internal List<ColumnDescription> ExerciseTableDescription =
         [
-            new ColumnDescription("Id", "INTEGER PRIMARY KEY"),
-            new ColumnDescription("Name", "VARCHAR(20)", "NOT NULL"),
+            new ColumnDescription("Name", "VARCHAR(20)", "PRIMARY KEY"),
             new ColumnDescription("Tags", "TEXT", "NOT NULL"),
             new ColumnDescription("Unit1", "VARCHAR(20)", "NOT NULL"),
             new ColumnDescription("Unit2", "VARCHAR(20)"),

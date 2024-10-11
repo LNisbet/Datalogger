@@ -10,28 +10,51 @@ namespace SQLight_Database
     public static class DatabaseConnection
     {
         private static User currentUser = new("User1",false);
-        public static User CurrentUser { get => currentUser; set { currentUser = value; CreateConnection(currentUser); } }
+        public static User CurrentUser { get => currentUser; set { currentUser = value; } }
 
         private static SQLiteConnection? sqlite_conn = null;
-        internal static SQLiteConnection SQLite_conn { get { return sqlite_conn ?? (sqlite_conn = CreateConnection(CurrentUser)); } }
+        internal static SQLiteConnection SQLite_conn 
+        { 
+            get 
+            {
+                if (sqlite_conn == null)
+                {
+                    CreateConnection(CurrentUser);
+                    if (sqlite_conn == null) { throw new NullReferenceException(); }
+                    return sqlite_conn;
+                }
+                else
+                {
+                    return sqlite_conn;
+                }
+            } 
+        }
 
-        private static SQLiteConnection CreateConnection(User user)
+        private static void CreateConnection(User user)
         {
-            SQLiteConnection conn;
             try
             {
-                conn = SQL_Commands.CreateConnection(user.Name, false);
+                sqlite_conn = SQL_Commands.CreateConnection(user.Name, false);
             }
             catch
             {
-                conn = SQL_Commands.CreateConnection(user.Name, true);
-            }
-            if (!user.Initilised) 
-            { 
-                SQL_Database.InititiliseDatabase();
+                sqlite_conn = SQL_Commands.CreateConnection(user.Name, true);
             }
 
-            return conn;
+            if (!Users.AllUserNames.Contains(user.Name)) 
+            { 
+                SQL_Database.InititiliseDatabase(sqlite_conn);
+                user.Initilised = true;
+                Users.Add(user);
+            }
+            else if(!Users.AllUsers.FirstOrDefault(u => u.Name == user.Name).Initilised) 
+            {
+                SQL_Database.InititiliseDatabase(sqlite_conn);
+                user.Initilised = true;
+                Users.Modify(user);
+            }
+
+            CurrentUser = user;
         }
 
         public static void CloseConnection()

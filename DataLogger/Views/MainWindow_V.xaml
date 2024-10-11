@@ -31,13 +31,13 @@
                 </Button>
             </StackPanel>
             <StackPanel>
-                <ComboBox ItemsSource="{Binding UserNames}" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
+                <ComboBox ItemsSource="{Binding UserNames}" Text="{Binding SelectedUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Setup New User: "/>
                     <CheckBox IsChecked="{Binding IsNewUser}"/>
                 </StackPanel>
-                <Button Width="150" Content="Log In" Command="{Binding Path=InitiliseDb}"/>
-                <Button Width="150" Content="Delete Data" Command="{Binding Path=DeleteDb}"/>
+                <Button Width="150" Content="Log In" Command="{Binding Path=LogIn}"/>
+                <Button Width="150" Content="Delete User" Command="{Binding Path=DeleteUser}"/>
             </StackPanel>
         </StackPanel>
     </NavigationWindow.Content>
