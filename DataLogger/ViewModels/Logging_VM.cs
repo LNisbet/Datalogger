@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using SQLight_Database;
 
@@ -10,7 +11,7 @@ namespace DataLogger.ViewModels
         public ObservableCollection<ExerciseLog> ExerciseLogs { get => LogsTable.Logs; }
 
         private Exercise? selectedExercise;
-        public Exercise? SelectedExercise { get => selectedExercise; set { selectedExercise = value; OnPropertyChanged(nameof(SelectedExercise)); } }
+        public Exercise? SelectedExercise { get => selectedExercise; set { selectedExercise = value; OnPropertyChanged(nameof(SelectedExercise)); UpdateValues(); } }
 
         public ObservableCollection<Exercise> Exercises { get => ExerciseTable.Exercises; }
 
@@ -24,14 +25,15 @@ namespace DataLogger.ViewModels
         public float? Value4 { get; set; }
         public string? Note { get; set; }
 
-        public ExerciseLog? SelectedExerciseLog { get; set; }
+        private ExerciseLog? selectedExerciseLog;
+        public ExerciseLog? SelectedExerciseLog { get => selectedExerciseLog; set { selectedExerciseLog = value; UpdateValues(); } }
         #endregion
 
         public Logging_VM()
         {
             SpecifyDate = false;
             Date = DateOnly.FromDateTime(DateTime.Now);
-            Value1 = 0;
+            UpdateValues();
         }
 
         #region AddNewLog
@@ -86,5 +88,17 @@ namespace DataLogger.ViewModels
                 
         }
         #endregion
+
+        private void UpdateValues()
+        {
+            Value1 = 0;
+            OnPropertyChanged(nameof(Value1));
+            Value2 = (SelectedExercise == null || SelectedExercise.Unit2 == null) ? null : 0;
+            OnPropertyChanged(nameof(Value2));
+            Value3 = (SelectedExercise == null || SelectedExercise.Unit3 == null) ? null : 0;
+            OnPropertyChanged(nameof(Value3));
+            Value4 = (SelectedExercise == null || SelectedExercise.Unit4 == null) ? null : 0;
+            OnPropertyChanged(nameof(Value4));
+        }
     }
 }

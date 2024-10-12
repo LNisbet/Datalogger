@@ -100,31 +100,32 @@ namespace SQLight_Database
          * ORDER BY column1, column2, ... ASC|DESC;
          * 
          */
-        static internal string ReadData(string tableName, string columns, bool distinct)
+
+        static internal string ReadData(string tableName, string columns, bool distinct, string? condition = null)
         {
             var select = "SELECT";
             if (distinct)
                 select += " DISTINCT";
 
-            return $"{select} {columns} FROM {tableName}; ";
-        }
-
-        static internal string ReadData(string tableName, string columns, bool distinct, string condition)
-        {
-            var select = "SELECT";
-            if (distinct)
-                select += " DISTINCT";
-
-            return $"{select} {columns} FROM {tableName} WHERE {condition}; ";
-        }
-
-        static internal string SelectData(string tableName, string inColumn, Enums.SelectDataOptions selectOption, string? condition = null)
-        {
             var con = "";
             if (condition != null)
                 con = $"WHERE {condition}";
 
-            return $"SELECT {selectOption}({inColumn}) FROM {tableName} {con}; ";
+            return $"{select} {columns} FROM {tableName} {con}; ";
+        }
+
+        static internal string SelectData(string tableName, string columns, string inColumn, Enums.SelectDataOptions selectOption, string? condition = null)
+        {
+            var whereCon = "";
+            var andCon = "";
+            if (condition != null)
+            {
+                whereCon = $"WHERE {condition}";
+                andCon = $"AND {condition}";
+            }
+                
+
+            return $"SELECT {columns} FROM {tableName} WHERE {inColumn} = (SELECT {selectOption}({inColumn}) FROM {tableName} {whereCon}) {andCon} Limit 1; ";
         }
 
         static private string CreateStringFromList(List<string> list)

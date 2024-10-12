@@ -5,15 +5,15 @@ using System.Collections.ObjectModel;
 
 namespace DataLogger.ViewModels
 {
-    internal class BasicStatistics_VM
+    public class BasicStatistics_VM
     {
-        ObservableCollection<BasicStatistics> BasicStatistics_AllExercises { get; set; }
-        BasicStatistics_VM() 
+        public ObservableCollection<BasicStatistics> BasicStatisticsAllExercises { get; set; }
+        public BasicStatistics_VM() 
         {
-            BasicStatistics_AllExercises = [];
+            BasicStatisticsAllExercises = [];
             foreach (var exercise in ExerciseTable.Exercises) 
             {
-                BasicStatistics_AllExercises.Add(new BasicStatistics(exercise, DateOnly.MinValue, DateOnly.MaxValue));
+                BasicStatisticsAllExercises.Add(new BasicStatistics(exercise, DateOnly.MinValue, DateOnly.MaxValue));
             }
         }
     }

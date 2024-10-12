@@ -8,11 +8,12 @@ namespace DataLogger.Views
     /// </summary>
     public partial class CSVView : Page
     {
+        private object? dataContext = null;
         public CSVView()
         {
             InitializeComponent();
-            var VM = new CSV_VM();
-            DataContext = VM;
+            dataContext ??= new CSV_VM();
+            DataContext = dataContext;
         }
     }
 }

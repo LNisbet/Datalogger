@@ -8,11 +8,12 @@ namespace DataLogger.Views
     /// </summary>
     public partial class MainWindow_V : NavigationWindow
     {
+        private object? dataContext = null;
         public MainWindow_V()
         {
             InitializeComponent();
-            var VM = new MainWindow_VM();
-            DataContext = VM;
+            dataContext ??= new MainWindow_VM();
+            DataContext = dataContext;
         }
     }
 }

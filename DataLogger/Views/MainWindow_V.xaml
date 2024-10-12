@@ -20,6 +20,11 @@
                     </Hyperlink>
                 </Button>
                 <Button IsEnabled="{Binding NavigationEnabled}">
+                    <Hyperlink NavigateUri="BasicStatistics_V.xaml">
+                        Statistics
+                    </Hyperlink>
+                </Button>
+                <Button IsEnabled="{Binding NavigationEnabled}">
                     <Hyperlink NavigateUri="CSVView.xaml">
                         CSV
                     </Hyperlink>

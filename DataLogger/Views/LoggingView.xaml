@@ -24,7 +24,7 @@
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="Exercise" Width="100"/>
-                <ComboBox ItemsSource="{Binding Exercises}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedExercise}" SelectionChanged="ExerciseSelectionChanged"/>
+                <ComboBox ItemsSource="{Binding Exercises}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedExercise}"/>
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="Value1" Width="80"/>

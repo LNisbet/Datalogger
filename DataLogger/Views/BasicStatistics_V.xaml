@@ -9,25 +9,12 @@
       Title="BasicStatistics_V">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="400">
-        <DataGrid ItemsSource="{Binding ExerciseLogs}" SelectedItem="{Binding SelectedExerciseLog}" AutoGenerateColumns="False">
+        <DataGrid ItemsSource="{Binding BasicStatisticsAllExercises}" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <!-- Date Column -->
-                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=dd/MM/yyyy}" />
-
-                <!-- Nested Exercise Data -->
-                <DataGridTemplateColumn Header="Exercise Details">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock Text="{Binding Exercise.Name}" FontWeight="Bold" />
-                                <TextBlock Text="{Binding Exercise.Type}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <!-- Value Column -->
-                <DataGridTextColumn Header="Value" Binding="{Binding Value}" />
+                <DataGridTextColumn Header="Exercise" Binding="{Binding Exercise.Name}" />
+                <DataGridTextColumn Header="Most Recent" Binding="{Binding MostRecent.Value1}" />
+                <DataGridTextColumn Header="Max" Binding="{Binding Max.Value1}" />
+                <DataGridTextColumn Header="Min" Binding="{Binding Min.Value1}" />
             </DataGrid.Columns>
         </DataGrid>
     </ScrollViewer>

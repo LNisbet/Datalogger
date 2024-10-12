@@ -5,11 +5,13 @@ namespace DataLogger.Views
 {
     public partial class CreateExercise_V : Page
     {
+        private object? dataContext = null;
         private int unitsDisplayed;
         public CreateExercise_V()
         {
             InitializeComponent();
-            DataContext = new CreateExercise_VM();
+            dataContext ??= new CreateExercise_VM();
+            DataContext = dataContext;
             unitsDisplayed = 1;
             UpdateUnitsBoxes();
         }
