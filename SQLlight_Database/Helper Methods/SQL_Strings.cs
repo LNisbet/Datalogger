@@ -4,6 +4,11 @@ namespace SQLight_Database
 {
     static internal class SQL_Strings
     {
+        static internal string CreateConnection(string dbName, int version, bool newDb, bool compress)
+        {
+            return $"DATA SOURCE={dbName}; VERSION={version}; NEW={newDb}; COMPRESS={compress}; ";
+        }
+
         static internal string CreateDatabase(string dbName)
         {
             return $"CREATE DATABASE {dbName}";
@@ -19,16 +24,11 @@ namespace SQLight_Database
             return $"BACKUP DATABASE {dbName} TO DISK='{path}' WITH DIFFERETIAL;";
         }
 
-        static internal string CreateConnection(string dbName, int version, bool newDb, bool compress)
-        {
-            return $"DATA SOURCE={dbName}; VERSION={version}; NEW={newDb}; COMPRESS={compress}; ";
-        }
-
         static internal string CreateTable(string tableName, List<ColumnDescription> columns )
         {
-            List<string> strings = new();
+            List<string> strings = [];
 
-            foreach ( ColumnDescription column in columns )
+            foreach (ColumnDescription column in columns)
             {
                 strings.Add($"{column.Name} {column.DataType} {column.Constraints}");
             }
@@ -40,16 +40,16 @@ namespace SQLight_Database
             return $"DROP TABLE {tableName}; ";
         }
 
-        static internal string AlterTable(string tableName, ColumnDescription column) //Add
+        static internal string AddColumnToTable(string tableName, ColumnDescription column)
         {
             return $"ALTER TABLE {tableName} ADD {column.Name} {column.DataType}; ";
         }
-        static internal string AlterTable(string tableName, string columnName) //Delete
+        static internal string DeleteColumnFromTable(string tableName, string columnName)
         {
             return $"ALTER TABLE {tableName} DROP COLUMN {columnName}; ";
         }
 
-        static internal string AlterTable(string tableName, string oldColumnName, string newColumnName) //Rename
+        static internal string RenameColumnInTable(string tableName, string oldColumnName, string newColumnName)
         {
             return $"ALTER TABLE {tableName} RENAME COLUMN {oldColumnName} TO {newColumnName}; ";
         }
@@ -86,14 +86,13 @@ namespace SQLight_Database
             return $"UPDATE {tableName} SET {set} WHERE {condition}; ";
         }
 
-        static internal string DeleteFromTable(string tableName, string condition)
+        static internal string DeleteFromTable(string tableName, string? condition = null)
         {
-            return $"DELETE FROM {tableName} WHERE {condition}; ";
-        }
+            var con = "";
+            if (condition != null)
+                con = $"WHERE {condition}";
 
-        static internal string DeleteFromTable(string tableName)
-        {
-            return $"DELETE FROM {tableName}; ";
+            return $"DELETE FROM {tableName} {con}; ";
         }
 
         /* Not Implemented read commands
@@ -123,7 +122,6 @@ namespace SQLight_Database
                 whereCon = $"WHERE {condition}";
                 andCon = $"AND {condition}";
             }
-                
 
             return $"SELECT {columns} FROM {tableName} WHERE {inColumn} = (SELECT {selectOption}({inColumn}) FROM {tableName} {whereCon}) {andCon} Limit 1; ";
         }

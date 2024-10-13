@@ -12,6 +12,7 @@
         <Style TargetType="TextBlock">
             <Setter Property="Padding" Value="10,0,0,0"/>
         </Style>
+        <VM:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     </Page.Resources>
     <StackPanel>
         <StackPanel Orientation="Horizontal">
@@ -33,24 +34,24 @@
                     <TextBlock Text="{Binding SelectedExercise.Unit1}"/>
                 </StackPanel>
             </StackPanel>
-            <StackPanel x:Name="Value2_SP" Width="80">
+            <StackPanel Width="80" Visibility="{Binding Value2, Converter={StaticResource NullToVisibilityConverter}}">
                 <TextBlock Text="Value2"/>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="Value2_TB" Text="{Binding Value2}" Width="25"/>
+                    <TextBox Text="{Binding Value2}" Width="25"/>
                     <TextBlock Text="{Binding SelectedExercise.Unit2}"/>
                 </StackPanel>
             </StackPanel>
-            <StackPanel x:Name="Value3_SP" Width="80">
+            <StackPanel Width="80" Visibility="{Binding Value3, Converter={StaticResource NullToVisibilityConverter}}">
                 <TextBlock Text="Value3"/>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="Value3_TB" Text="{Binding Value3}" Width="25"/>
+                    <TextBox Text="{Binding Value3}" Width="25"/>
                     <TextBlock Text="{Binding SelectedExercise.Unit3}"/>
                 </StackPanel>
             </StackPanel>
-            <StackPanel x:Name="Value4_SP" Width="80">
+            <StackPanel Width="80" Visibility="{Binding Value4, Converter={StaticResource NullToVisibilityConverter}}">
                 <TextBlock Text="Value4"/>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="Value4_TB" Text="{Binding Value4}" Width="25"/>
+                    <TextBox Text="{Binding Value4}" Width="25"/>
                     <TextBlock Text="{Binding SelectedExercise.Unit4}"/>
                 </StackPanel>
             </StackPanel>

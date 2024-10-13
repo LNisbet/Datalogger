@@ -59,16 +59,16 @@ namespace SQLight_Database
 
         private static void ExecuteNonQueryCommand(SQLiteConnection conn, string command)
         {
-            SQLiteCommand sqlite_cmd = conn.CreateCommand();
+            using SQLiteCommand sqlite_cmd = conn.CreateCommand();
             sqlite_cmd.CommandText = command;
             sqlite_cmd.ExecuteNonQuery();
+
         }
         private static SQLiteDataReader? ExecuteReader(SQLiteConnection conn, string command)
         {
-            SQLiteDataReader? sqlite_datareader = null;
-            SQLiteCommand sqlite_cmd = conn.CreateCommand();
+            using SQLiteCommand sqlite_cmd = conn.CreateCommand();
             sqlite_cmd.CommandText = command;
-            sqlite_datareader = sqlite_cmd.ExecuteReader();
+            SQLiteDataReader? sqlite_datareader = sqlite_cmd.ExecuteReader();
 
             return sqlite_datareader;
         }

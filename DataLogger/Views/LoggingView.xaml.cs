@@ -13,7 +13,6 @@ namespace DataLogger.Views
             TBOX_Date.Visibility = Visibility.Hidden;
             dataContext ??= new Logging_VM();
             DataContext = dataContext;
-
         }
 
         private void CB_Date_Clicked(object sender, RoutedEventArgs e)

@@ -29,7 +29,10 @@ namespace SQLight_Database
 
         public static ExerciseLog? Max(Exercise exercise, DateOnly startDate, DateOnly endDate)
         {
-            var sql_string = SQL_Strings.SelectData(Config.LogsTableName, "*", "value1", Enums.SelectDataOptions.MAX, $"Exercise='{exercise.Name}' AND Date >={startDate} AND Date <={endDate}");
+            var _startDate = startDate.ToString("yyyy-MM-dd");
+            var _endDate = endDate.ToString("yyyy-MM-dd");
+
+            var sql_string = SQL_Strings.SelectData(Config.LogsTableName, "*", "value1", Enums.SelectDataOptions.MAX, $"Exercise='{exercise.Name}' AND Date >='{_startDate}' AND Date <='{_endDate}'");
 
             if (SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, sql_string, Enums.CommandType.Reader) is not SQLiteDataReader sqlite_datareader)
                 return null;
@@ -47,7 +50,10 @@ namespace SQLight_Database
 
         public static ExerciseLog? Min(Exercise exercise, DateOnly startDate, DateOnly endDate)
         {
-            var sql_string = SQL_Strings.SelectData(Config.LogsTableName, "*", "value1", Enums.SelectDataOptions.MIN, $"Exercise='{exercise.Name}' AND Date >={startDate} AND Date <={endDate}");
+            var _startDate = startDate.ToString("yyyy-MM-dd");
+            var _endDate = endDate.ToString("yyyy-MM-dd");
+
+            var sql_string = SQL_Strings.SelectData(Config.LogsTableName, "*", "value1", Enums.SelectDataOptions.MIN, $"Exercise='{exercise.Name}' AND Date >='{_startDate}' AND Date <='{_endDate}'");
 
             if (SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, sql_string, Enums.CommandType.Reader) is not SQLiteDataReader sqlite_datareader)
                 return null;
@@ -65,7 +71,10 @@ namespace SQLight_Database
 
         public static ExerciseLog? Average(Exercise exercise, DateOnly startDate, DateOnly endDate)
         {
-            var sql_string = SQL_Strings.SelectData(Config.LogsTableName, "*", "value1", Enums.SelectDataOptions.AVG, $"Exercise='{exercise.Name}' AND Date >={startDate} AND Date <={endDate}");
+            var _startDate = startDate.ToString("yyyy-MM-dd");
+            var _endDate = endDate.ToString("yyyy-MM-dd");
+
+            var sql_string = SQL_Strings.SelectData(Config.LogsTableName, "*", "value1", Enums.SelectDataOptions.AVG, $"Exercise='{exercise.Name}' AND Date >='{_startDate}' AND Date <='{_endDate}'");
 
             if (SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, sql_string, Enums.CommandType.Reader) is not SQLiteDataReader sqlite_datareader)
                 return null;
