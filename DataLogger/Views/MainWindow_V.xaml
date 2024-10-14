@@ -36,14 +36,8 @@
                     </Hyperlink>
                 </Button>
             </StackPanel>
-            <StackPanel>
+            <StackPanel MinWidth="100">
                 <ComboBox ItemsSource="{Binding UserNames}" Text="{Binding SelectedUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Setup New User: "/>
-                    <CheckBox IsChecked="{Binding IsNewUser}"/>
-                </StackPanel>
-                <Button Width="150" Content="Log In" Command="{Binding Path=LogIn}"/>
-                <Button Width="150" Content="Delete User" Command="{Binding Path=DeleteUser}"/>
             </StackPanel>
         </StackPanel>
     </NavigationWindow.Content>
