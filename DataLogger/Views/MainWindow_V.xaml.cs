@@ -15,5 +15,14 @@ namespace DataLogger.Views
             dataContext ??= new MainWindow_VM();
             DataContext = dataContext;
         }
+
+        private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Retrieve the ViewModel and trigger the ClosingCommand
+            if (DataContext is MainWindow_VM viewModel && viewModel.CloseApp.CanExecute(null))
+            {
+                viewModel.CloseApp.Execute(null);
+            }
+        }
     }
 }

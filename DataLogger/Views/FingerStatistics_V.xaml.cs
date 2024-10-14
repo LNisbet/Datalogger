@@ -1,5 +1,4 @@
-﻿using DataLogger.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,16 +16,13 @@ using System.Windows.Shapes;
 namespace DataLogger.Views
 {
     /// <summary>
-    /// Interaction logic for Debug_V.xaml
+    /// Interaction logic for FingerStatistics_V.xaml
     /// </summary>
-    public partial class Debug_V : Page
+    public partial class FingerStatistics_V : Page
     {
-        private object? dataContext = null;
-        public Debug_V()
+        public FingerStatistics_V()
         {
             InitializeComponent();
-            dataContext ??= this;
-            DataContext = dataContext;
         }
     }
 }
