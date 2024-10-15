@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace DataLogger.ViewModels
 {
-    internal class Debug_VM
+    internal class Debug_VM : Base_VM
     {
         public bool IsNewUser { get; set; } = true;
         public string CurrentUserName => DatabaseConnection.CurrentUser.Name;

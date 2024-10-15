@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace DataLogger.ViewModels
 {
-    public class BasicStatistics_VM
+    public class BasicStatistics_VM : Base_VM
     {
         public ObservableCollection<BasicStatistics> BasicStatisticsAllExercises { get; set; }
         public BasicStatistics_VM() 

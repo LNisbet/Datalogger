@@ -1,4 +1,4 @@
-﻿<Page x:Class="DataLogger.Views.LoggingView"
+﻿<Page x:Class="DataLogger.Views.Logging_V"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         xmlns:VM="clr-namespace:DataLogger.ViewModels"
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
-        Title="LoggingView" Height="450" Width="800">
+        Title="Logging_V" Height="450" Width="800">
     <Page.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Padding" Value="10,0,0,0"/>

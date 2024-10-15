@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace DataLogger.ViewModels
 {
-    public class CreateExercise_VM : NotifyPropertyChanged
+    public class CreateExercise_VM : Base_VM
     {
         #region Fields
         public string NewExerciseName { get; set; }

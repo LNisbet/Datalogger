@@ -4,7 +4,7 @@ using CSV_Exporter;
 
 namespace DataLogger.ViewModels
 {
-    internal class CSV_VM
+    internal class CSV_VM : Base_VM
     {
         const string ExerciseFileName = "\\exercises.csv";
         const string LogFileName = "\\logs.csv";

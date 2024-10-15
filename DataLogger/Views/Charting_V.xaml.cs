@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataLogger.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,11 +19,14 @@ namespace DataLogger.Views
     /// <summary>
     /// Interaction logic for Graphs_V.xaml
     /// </summary>
-    public partial class Graphs_V : Page
+    public partial class Charting_V : Page
     {
-        public Graphs_V()
+        private object? dataContext = null;
+        public Charting_V()
         {
             InitializeComponent();
+            dataContext ??= new Charting_VM();
+            DataContext = dataContext;
         }
     }
 }

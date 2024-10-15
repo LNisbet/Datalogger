@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace DataLogger.ViewModels
 {
-    class MainWindow_VM : NotifyPropertyChanged
+    class MainWindow_VM : Base_VM
     {
         public bool NavigationEnabled { get{ return !String.IsNullOrEmpty(SelectedUserName); } }
 

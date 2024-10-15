@@ -2,7 +2,7 @@
 
 namespace DataLogger.ViewModels
 {
-    public partial class NotifyPropertyChanged : INotifyPropertyChanged
+    public partial class Base_VM : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

@@ -5,7 +5,7 @@ using SQLight_Database;
 
 namespace DataLogger.ViewModels
 {
-    public class Logging_VM : NotifyPropertyChanged
+    public class Logging_VM : Base_VM
     {
         #region Fields
         public ObservableCollection<ExerciseLog> ExerciseLogs { get => LogsTable.Logs; }

@@ -20,6 +20,11 @@
                     Finger Statistics
                 </Hyperlink>
             </Button>
+            <Button>
+                <Hyperlink NavigateUri="Charting_V.xaml">
+                    Charts
+                </Hyperlink>
+            </Button>
         </StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="400">
             <DataGrid ItemsSource="{Binding BasicStatisticsAllExercises}" AutoGenerateColumns="False">

@@ -5,13 +5,13 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:local="clr-namespace:DataLogger.Views"
                    mc:Ignorable="d"
-                   Title="MainWindow_V" Height="450" Width="800"
+                   Title="MainWindow" Height="450" Width="800"
                    Closing="WindowClosing">
     <NavigationWindow.Content>
         <StackPanel Orientation="Horizontal">
             <StackPanel Width="150" HorizontalAlignment="Left">
                 <Button IsEnabled="{Binding NavigationEnabled}">
-                    <Hyperlink NavigateUri="LoggingView.xaml">
+                    <Hyperlink NavigateUri="Logging_V.xaml">
                         Logs
                     </Hyperlink>
                 </Button>
@@ -26,7 +26,7 @@
                     </Hyperlink>
                 </Button>
                 <Button IsEnabled="{Binding NavigationEnabled}">
-                    <Hyperlink NavigateUri="CSVView.xaml">
+                    <Hyperlink NavigateUri="CSV_V.xaml">
                         CSV
                     </Hyperlink>
                 </Button>

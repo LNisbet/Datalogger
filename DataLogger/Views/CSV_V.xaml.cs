@@ -3,13 +3,10 @@ using System.Windows.Controls;
 
 namespace DataLogger.Views
 {
-    /// <summary>
-    /// Interaction logic for CSVView.xaml
-    /// </summary>
-    public partial class CSVView : Page
+    public partial class CSV_V : Page
     {
         private object? dataContext = null;
-        public CSVView()
+        public CSV_V()
         {
             InitializeComponent();
             dataContext ??= new CSV_VM();

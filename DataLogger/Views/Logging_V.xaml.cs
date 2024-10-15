@@ -4,10 +4,10 @@ using System.Windows.Controls;
 
 namespace DataLogger.Views
 {
-    public partial class LoggingView : Page
+    public partial class Logging_V : Page
     {
         private object? dataContext = null;
-        public LoggingView()
+        public Logging_V()
         {
             InitializeComponent();
             TBOX_Date.Visibility = Visibility.Hidden;

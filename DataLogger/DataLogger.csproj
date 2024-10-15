@@ -19,6 +19,10 @@
 	<ProjectReference Include="..\CSV_Exporter\CSV_Exporter.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc3.3" />
+	</ItemGroup>
+
   <ItemGroup>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
