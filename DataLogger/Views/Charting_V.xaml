@@ -6,39 +6,17 @@
       xmlns:local="clr-namespace:DataLogger.Views"
       xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="1000"
       Title="Charting_V">
-
-    <StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Button>
-                <Hyperlink NavigateUri="BasicStatistics_V.xaml">
-                    Basic Statistics
-                </Hyperlink>
-            </Button>
-            <Button>
-                <Hyperlink NavigateUri="FingerStatistics_V.xaml">
-                    Finger Statistics
-                </Hyperlink>
-            </Button>
-            <Button>
-                <Hyperlink NavigateUri="Charting_V.xaml">
-                    Charts
-                </Hyperlink>
-            </Button>
-        </StackPanel>
-
-        <!-- Cartesian Chart with X and Y Axes -->
-        <lvc:CartesianChart Series="{Binding Series}">
-            <!-- X Axis (Date Axis) -->
-            <lvc:CartesianChart.XAxes>
-                <lvc:Axis LabelsRotation="15" Labeler="{Binding DateFormatter}" />
-            </lvc:CartesianChart.XAxes>
-
-            <!-- Y Axis (Exercise Values Axis) -->
-            <lvc:CartesianChart.YAxes>
-                <lvc:Axis />
-            </lvc:CartesianChart.YAxes>
+        
+    <StackPanel Orientation="Horizontal">
+        <local:Navigation_Control/>
+        <lvc:CartesianChart 
+            Series="{Binding Series}" 
+            XAxes="{Binding XAxes}" 
+            YAxes="{Binding YAxes}" 
+            Width="800" 
+            LegendPosition="Right">
         </lvc:CartesianChart>
     </StackPanel>
 </Page>

@@ -7,17 +7,19 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Debug_V">
-
-    <StackPanel HorizontalAlignment="Left">
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Current User: "/>
-            <TextBlock Text="{Binding CurrentUserName}"/>
+    <StackPanel Orientation="Horizontal">
+        <local:Navigation_Control/>
+        <StackPanel HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Current User: "/>
+                <TextBlock Text="{Binding CurrentUserName}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Setup New User: "/>
+                <CheckBox IsChecked="{Binding IsNewUser}"/>
+            </StackPanel>
+            <Button Width="150" Content="Log In" Command="{Binding Path=LogIn}"/>
+            <Button Width="150" Content="Delete User" Command="{Binding Path=DeleteUser}"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Setup New User: "/>
-            <CheckBox IsChecked="{Binding IsNewUser}"/>
-        </StackPanel>
-        <Button Width="150" Content="Log In" Command="{Binding Path=LogIn}"/>
-        <Button Width="150" Content="Delete User" Command="{Binding Path=DeleteUser}"/>
     </StackPanel>
 </Page>

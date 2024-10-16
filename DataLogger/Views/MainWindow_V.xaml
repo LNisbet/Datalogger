@@ -9,33 +9,7 @@
                    Closing="WindowClosing">
     <NavigationWindow.Content>
         <StackPanel Orientation="Horizontal">
-            <StackPanel Width="150" HorizontalAlignment="Left">
-                <Button IsEnabled="{Binding NavigationEnabled}">
-                    <Hyperlink NavigateUri="Logging_V.xaml">
-                        Logs
-                    </Hyperlink>
-                </Button>
-                <Button IsEnabled="{Binding NavigationEnabled}">
-                    <Hyperlink NavigateUri="CreateExercise_V.xaml">
-                        Exercises
-                    </Hyperlink>
-                </Button>
-                <Button IsEnabled="{Binding NavigationEnabled}">
-                    <Hyperlink NavigateUri="BasicStatistics_V.xaml">
-                        Statistics
-                    </Hyperlink>
-                </Button>
-                <Button IsEnabled="{Binding NavigationEnabled}">
-                    <Hyperlink NavigateUri="CSV_V.xaml">
-                        CSV
-                    </Hyperlink>
-                </Button>
-                <Button IsEnabled="{Binding NavigationEnabled}">
-                    <Hyperlink NavigateUri="Debug_V.xaml">
-                        Debug
-                    </Hyperlink>
-                </Button>
-            </StackPanel>
+            <local:Navigation_Control/>
             <StackPanel MinWidth="100">
                 <ComboBox ItemsSource="{Binding UserNames}" Text="{Binding SelectedUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
             </StackPanel>

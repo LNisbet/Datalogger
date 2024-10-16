@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DataLogger"
+        xmlns:local="clr-namespace:DataLogger.Views"
         xmlns:VM="clr-namespace:DataLogger.ViewModels"
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
@@ -14,74 +14,77 @@
         </Style>
         <VM:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     </Page.Resources>
-    <StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Date" Width="50"/>
-                    <CheckBox x:Name="CB_Date" Click="CB_Date_Clicked" IsChecked="{Binding SpecifyDate}"/>
+    <StackPanel Orientation="Horizontal">
+        <local:Navigation_Control/>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Date" Width="50"/>
+                        <CheckBox x:Name="CB_Date" Click="CB_Date_Clicked" IsChecked="{Binding SpecifyDate}"/>
+                    </StackPanel>
+                    <TextBox x:Name="TBOX_Date" Grid.Row="1"  Text="{Binding Date}"/>
                 </StackPanel>
-                <TextBox x:Name="TBOX_Date" Grid.Row="1"  Text="{Binding Date}"/>
-            </StackPanel>
-            <StackPanel>
-                <TextBlock Text="Exercise" Width="100"/>
-                <ComboBox ItemsSource="{Binding Exercises}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedExercise}"/>
-            </StackPanel>
-            <StackPanel>
-                <TextBlock Text="Value1" Width="80"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Text="{Binding Value1}" Width="25"/>
-                    <TextBlock Text="{Binding SelectedExercise.Unit1}"/>
+                <StackPanel>
+                    <TextBlock Text="Exercise" Width="100"/>
+                    <ComboBox ItemsSource="{Binding Exercises}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedExercise}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Value1" Width="80"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding Value1}" Width="25"/>
+                        <TextBlock Text="{Binding SelectedExercise.Unit1}"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Width="80" Visibility="{Binding Value2, Converter={StaticResource NullToVisibilityConverter}}">
+                    <TextBlock Text="Value2"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding Value2}" Width="25"/>
+                        <TextBlock Text="{Binding SelectedExercise.Unit2}"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Width="80" Visibility="{Binding Value3, Converter={StaticResource NullToVisibilityConverter}}">
+                    <TextBlock Text="Value3"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding Value3}" Width="25"/>
+                        <TextBlock Text="{Binding SelectedExercise.Unit3}"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Width="80" Visibility="{Binding Value4, Converter={StaticResource NullToVisibilityConverter}}">
+                    <TextBlock Text="Value4"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding Value4}" Width="25"/>
+                        <TextBlock Text="{Binding SelectedExercise.Unit4}"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Width="80" Visibility="{Binding Value2, Converter={StaticResource NullToVisibilityConverter}}">
-                <TextBlock Text="Value2"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Text="{Binding Value2}" Width="25"/>
-                    <TextBlock Text="{Binding SelectedExercise.Unit2}"/>
-                </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Width="100" Content="Add New Log" Command="{Binding Path=AddNewLogCommand}"/>
+                <Button Width="100" Content="Delete Log" Command="{Binding Path=DeleteLogCommand}"/>
             </StackPanel>
-            <StackPanel Width="80" Visibility="{Binding Value3, Converter={StaticResource NullToVisibilityConverter}}">
-                <TextBlock Text="Value3"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Text="{Binding Value3}" Width="25"/>
-                    <TextBlock Text="{Binding SelectedExercise.Unit3}"/>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Width="80" Visibility="{Binding Value4, Converter={StaticResource NullToVisibilityConverter}}">
-                <TextBlock Text="Value4"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Text="{Binding Value4}" Width="25"/>
-                    <TextBlock Text="{Binding SelectedExercise.Unit4}"/>
-                </StackPanel>
-            </StackPanel>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Button Width="100" Content="Add New Log" Command="{Binding Path=AddNewLogCommand}"/>
-            <Button Width="100" Content="Delete Log" Command="{Binding Path=DeleteLogCommand}"/>
-        </StackPanel>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="400">
-            <DataGrid ItemsSource="{Binding ExerciseLogs}" SelectedItem="{Binding SelectedExerciseLog}" AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <!-- Date Column -->
-                    <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=dd/MM/yyyy}" />
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="400">
+                <DataGrid ItemsSource="{Binding ExerciseLogs}" SelectedItem="{Binding SelectedExerciseLog}" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <!-- Date Column -->
+                        <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=dd/MM/yyyy}" />
 
-                    <!-- Nested Exercise Data -->
-                    <DataGridTemplateColumn Header="Exercise Details">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Exercise.Name}" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Exercise.Tags}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                        <!-- Nested Exercise Data -->
+                        <DataGridTemplateColumn Header="Exercise Details">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Exercise.Name}" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Exercise.Tags}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                    <!-- Value Column -->
-                    <DataGridTextColumn Header="Value" Binding="{Binding Value1}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </ScrollViewer>
+                        <!-- Value Column -->
+                        <DataGridTextColumn Header="Value" Binding="{Binding Value1}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </StackPanel>
     </StackPanel>
 </Page>

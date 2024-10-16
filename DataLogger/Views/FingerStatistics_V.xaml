@@ -7,37 +7,39 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="FingerStatistics_V">
-
-    <StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Button>
-                <Hyperlink NavigateUri="BasicStatistics_V.xaml">
-                    Basic Statistics
-                </Hyperlink>
-            </Button>
-            <Button>
-                <Hyperlink NavigateUri="FingerStatistics_V.xaml">
-                    Finger Statistics
-                </Hyperlink>
-            </Button>
-            <Button>
-                <Hyperlink NavigateUri="Charting_V.xaml">
-                    Charts
-                </Hyperlink>
-            </Button>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Image Source="/Views/Resources/Left_Hand_Outline.png" Stretch="Uniform" MaxWidth="400"/>
-            <Image Source="/Views/Resources/Left_Hand_Outline.png" Stretch="Uniform" RenderTransformOrigin="0.5,0.5" MaxWidth="400" >
-                <Image.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleX="-1"/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Image.RenderTransform>
-            </Image>
+    <StackPanel Orientation="Horizontal">
+        <local:Navigation_Control/>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button>
+                    <Hyperlink NavigateUri="BasicStatistics_V.xaml">
+                        Basic Statistics
+                    </Hyperlink>
+                </Button>
+                <Button>
+                    <Hyperlink NavigateUri="FingerStatistics_V.xaml">
+                        Finger Statistics
+                    </Hyperlink>
+                </Button>
+                <Button>
+                    <Hyperlink NavigateUri="Charting_V.xaml">
+                        Charts
+                    </Hyperlink>
+                </Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Views/Resources/Left_Hand_Outline.png" Stretch="Uniform" MaxWidth="400"/>
+                <Image Source="/Views/Resources/Left_Hand_Outline.png" Stretch="Uniform" RenderTransformOrigin="0.5,0.5" MaxWidth="400" >
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="-1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </Page>

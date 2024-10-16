@@ -7,12 +7,14 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CSV_V">
-
-    <StackPanel>
-        <TextBox Text="{Binding Path}"/>
-        <Button Width="100" Content="Import Logs" Command="{Binding Path=ImportLogsCommand}"/>
-        <Button Width="100" Content="Export Logs" Command="{Binding Path=ExportLogsCommand}"/>
-        <Button Width="100" Content="Import Exercises" Command="{Binding Path=ImportExercisesCommand}"/>
-        <Button Width="100" Content="Export Exercises" Command="{Binding Path=ExportExercisesCommand}"/>
+    <StackPanel Orientation="Horizontal">
+        <local:Navigation_Control/>
+        <StackPanel>
+            <TextBox Text="{Binding Path}"/>
+            <Button Width="100" Content="Import Logs" Command="{Binding Path=ImportLogsCommand}"/>
+            <Button Width="100" Content="Export Logs" Command="{Binding Path=ExportLogsCommand}"/>
+            <Button Width="100" Content="Import Exercises" Command="{Binding Path=ImportExercisesCommand}"/>
+            <Button Width="100" Content="Export Exercises" Command="{Binding Path=ExportExercisesCommand}"/>
+        </StackPanel>
     </StackPanel>
 </Page>
