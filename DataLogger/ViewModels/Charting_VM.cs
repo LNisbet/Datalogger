@@ -24,7 +24,7 @@ namespace DataLogger.ViewModels
                 new Axis
                 {
                     Name = "Date",
-                    Labeler = (value) => value.ToString(),
+                    Labeler = (value) => DateTime.FromOADate(value).ToString("dd/MM/yyyy"),
                     LabelsRotation = 15,
                 }
             };
@@ -65,7 +65,7 @@ namespace DataLogger.ViewModels
                 {
                     Values = chartPoints,  // Bind the chart points to the series
                     Name = exercise.Name,   // Label the series by exercise name
-                    XToolTipLabelFormatter = point => $"{exercise.Name}: {point.PrimaryValue:N2} on {point.SecondaryValue:MM/dd/yyyy}"
+                    XToolTipLabelFormatter = point => $"{exercise.Name}: {point.PrimaryValue:N2} on {point.SecondaryValue:dd/MM/yyyy}"
                 });
             }
         }
