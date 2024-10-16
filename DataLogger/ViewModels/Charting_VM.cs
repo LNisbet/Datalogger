@@ -56,7 +56,7 @@ namespace DataLogger.ViewModels
                     .Select(log => new DateTimePoint
                     {
                         DateTime = log.Date.ToDateTime(TimeOnly.MinValue), // X-axis (date)
-                        Value = (double)log.Value1 // Y-axis (value1)
+                        Value = Math.Round((double)log.Value1,2) // Y-axis (value1)
                     })
                     .ToList();
 
@@ -65,7 +65,7 @@ namespace DataLogger.ViewModels
                 {
                     Values = chartPoints,  // Bind the chart points to the series
                     Name = exercise.Name,   // Label the series by exercise name
-                    XToolTipLabelFormatter = point => $"{exercise.Name}: {point.PrimaryValue:N2} on {point.SecondaryValue:dd/MM/yyyy}"
+                    XToolTipLabelFormatter = point => $"{exercise.Name}: {point.Coordinate.PrimaryValue} on {point.Coordinate.SecondaryValue}"
                 });
             }
         }
