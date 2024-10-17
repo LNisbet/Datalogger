@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:DataLogger.Views"
       xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="1000"
+      d:DesignHeight="450" d:DesignWidth="800"
       Title="Charting_V">
         
     <StackPanel Orientation="Horizontal">
@@ -15,8 +15,13 @@
             Series="{Binding Series}" 
             XAxes="{Binding XAxes}" 
             YAxes="{Binding YAxes}" 
-            Width="800" 
+            Width="1000" 
             LegendPosition="Right">
         </lvc:CartesianChart>
+        <ListBox ItemsSource="{Binding ExerciseList}" 
+          SelectedItems="{Binding SelectedExercises}" 
+          SelectionMode="Multiple">
+        </ListBox>
+        <Button Content="Update Chart" Command="{Binding UpdateChartCommand}" />
     </StackPanel>
 </Page>

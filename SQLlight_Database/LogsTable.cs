@@ -20,7 +20,7 @@ namespace SQLight_Database
                     logs = [];
                     ReadAllLogs();
                 }
-                return logs ??= [];
+                return logs;
             }
         }
 

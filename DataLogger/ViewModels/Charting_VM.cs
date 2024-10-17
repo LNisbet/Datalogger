@@ -8,11 +8,15 @@ using LiveChartsCore.SkiaSharpView;
 using System.Collections.ObjectModel;
 using SQLight_Database;
 using LiveChartsCore.Defaults;
+using System.Windows.Input.Manipulations;
+using LiveChartsCore.Drawing;
+using LiveChartsCore.SkiaSharpView.Painting;
 
 namespace DataLogger.ViewModels
 {
-    internal class Charting_VM
+    internal class Charting_VM : Base_VM
     {
+        public ObservableCollection<string> SelectedExercises { get; set; }
         public ObservableCollection<ISeries> Series { get; set; }
         public ObservableCollection<Axis> XAxes { get; set; }
         public ObservableCollection<Axis> YAxes { get; set; }
@@ -21,10 +25,9 @@ namespace DataLogger.ViewModels
             
             XAxes = new ObservableCollection<Axis>
             {
-                new Axis
+                new DateTimeAxis(TimeSpan.MinValue,date => DateOnly.FromDateTime(date).ToString())
                 {
                     Name = "Date",
-                    Labeler = (value) => DateTime.FromOADate(value).ToString("dd/MM/yyyy"),
                     LabelsRotation = 15,
                 }
             };
@@ -53,9 +56,10 @@ namespace DataLogger.ViewModels
                 // Map the logs into X (Date) and Y (Value1)
                 var chartPoints = LogsTable.Logs
                     .Where(log => log.Exercise == exercise)  // Filter by exercise
+                    .OrderByDescending(log => log.Date)
                     .Select(log => new DateTimePoint
                     {
-                        DateTime = log.Date.ToDateTime(TimeOnly.MinValue), // X-axis (date)
+                        DateTime = log.Date.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc), // X-axis (date)
                         Value = Math.Round((double)log.Value1,2) // Y-axis (value1)
                     })
                     .ToList();
@@ -65,9 +69,40 @@ namespace DataLogger.ViewModels
                 {
                     Values = chartPoints,  // Bind the chart points to the series
                     Name = exercise.Name,   // Label the series by exercise name
+                    Fill = new SolidColorPaint(),
                     XToolTipLabelFormatter = point => $"{exercise.Name}: {point.Coordinate.PrimaryValue} on {point.Coordinate.SecondaryValue}"
                 });
             }
         }
-    }
+        public void UpdateSeries()
+        {
+            Series.Clear(); // Clear existing series
+
+            foreach (var exercise in ExerciseTable.Exercises)
+            {
+                // Only include selected exercises
+                if (SelectedExercises.Contains(exercise.Name))
+                {
+                    // Map the logs into X (Date) and Y (Value1)
+                    var chartPoints = LogsTable.Logs
+                        .Where(log => log.Exercise == exercise)  // Filter by exercise
+                        .OrderByDescending(log => log.Date)
+                        .Select(log => new DateTimePoint
+                        {
+                            DateTime = log.Date.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc), // X-axis (date)
+                            Value = Math.Round((double)log.Value1, 2) // Y-axis (value1)
+                        })
+                        .ToList();
+
+                    // Create a new line series for the exercise
+                    Series.Add(new LineSeries<DateTimePoint>
+                    {
+                        Values = chartPoints,  // Bind the chart points to the series
+                        Name = exercise.Name,   // Label the series by exercise name
+                        Fill = new SolidColorPaint(),
+                        XToolTipLabelFormatter = point => $"{exercise.Name}: {point.Coordinate.PrimaryValue} on {point.Coordinate.SecondaryValue}"
+                    });
+                }
+            }
+        }
 }

@@ -20,7 +20,7 @@ namespace SQLight_Database
                     exercises = [];
                     ReadAllExercises();
                 }
-                return exercises ??= [];
+                return exercises;
             }
         }
 
