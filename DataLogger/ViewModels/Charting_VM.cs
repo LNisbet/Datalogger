@@ -11,6 +11,8 @@ using LiveChartsCore.Defaults;
 using System.Windows.Input.Manipulations;
 using LiveChartsCore.Drawing;
 using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.Kernel;
+using Newtonsoft.Json.Linq;
 
 namespace DataLogger.ViewModels
 {
@@ -21,8 +23,8 @@ namespace DataLogger.ViewModels
         public ObservableCollection<string> SelectedExercises { get; set; }
 
         public ObservableCollection<ISeries> Series { get; set; }
-        public ObservableCollection<Axis> XAxes { get; set; }
-        public ObservableCollection<Axis> YAxes { get; set; }
+        public List<Axis> XAxes { get; set; }
+        public List<Axis> YAxes { get; set; }
 
         private ObservableCollection<Enums.Units> yAxisLabels = []; 
         public Charting_VM()
@@ -31,14 +33,14 @@ namespace DataLogger.ViewModels
             SelectedExercises = [];
             SelectedExercises.CollectionChanged += (s, e) => UpdateSeries();
 
-            XAxes = new ObservableCollection<Axis>
-            {
-                new DateTimeAxis(TimeSpan.MinValue,date => DateOnly.FromDateTime(date).ToString())
+            XAxes = [
+                new DateTimeAxis(TimeSpan.MinValue, date => date.ToString("dd/MM/yyyy"))
                 {
                     Name = "Date",
                     LabelsRotation = 15,
-                }
-            };
+                    UnitWidth = TimeSpan.FromDays(1).TotalSeconds,  // Set the unit width to 1 day
+                    MinStep = TimeSpan.FromDays(1).TotalSeconds,    // Minimum step size as 1 day
+                }];
 
             YAxes = [];
             foreach (var unit in (Enums.Units[])Enum.GetValues(typeof(Enums.Units)))
@@ -78,7 +80,8 @@ namespace DataLogger.ViewModels
                         Values = chartPoints,  // Bind the chart points to the series
                         Name = exercise.Name,   // Label the series by exercise name
                         Fill = new SolidColorPaint(),
-                        XToolTipLabelFormatter = point => $"{exercise.Name}: {point.Coordinate.PrimaryValue} on {point.Coordinate.SecondaryValue}"
+                        XToolTipLabelFormatter = point => $"{exercise.Name}: {point.Coordinate.PrimaryValue} on {point.Coordinate.SecondaryValue.AsDate().Date.ToShortDateString()}",
+                        ScalesYAt = YAxes.FindIndex(axis => axis.Name == exercise.Unit1.ToString()),
                     });
 
                     if (!yAxisLabels.Contains(exercise.Unit1))
