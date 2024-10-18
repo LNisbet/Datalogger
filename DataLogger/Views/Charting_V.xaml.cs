@@ -28,5 +28,18 @@ namespace DataLogger.Views
             dataContext ??= new Charting_VM();
             DataContext = dataContext;
         }
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var listBox = sender as ListBox;
+            var viewModel = DataContext as Charting_VM;
+
+            // Clear and update NewExerciseTags based on selected items
+            viewModel.SelectedExercises.Clear();
+            foreach (string selectedItem in listBox.SelectedItems)
+            {
+                viewModel.SelectedExercises.Add(selectedItem);
+            }
+            viewModel.OnPropertyChanged(nameof(viewModel.SelectedExercises));
+        }
     }
 }

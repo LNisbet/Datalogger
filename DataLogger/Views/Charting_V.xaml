@@ -18,10 +18,6 @@
             Width="1000" 
             LegendPosition="Right">
         </lvc:CartesianChart>
-        <ListBox ItemsSource="{Binding ExerciseList}" 
-          SelectedItems="{Binding SelectedExercises}" 
-          SelectionMode="Multiple">
-        </ListBox>
-        <Button Content="Update Chart" Command="{Binding UpdateChartCommand}" />
+        <ListBox ItemsSource="{Binding ExerciseList}" SelectionChanged="ListBox_SelectionChanged" SelectionMode="Multiple"/>
     </StackPanel>
 </Page>

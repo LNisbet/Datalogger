@@ -16,13 +16,19 @@ namespace DataLogger.ViewModels
 {
     internal class Charting_VM : Base_VM
     {
+        public ObservableCollection<string> ExerciseList => ExerciseTable.AllExerciseNames;
+
         public ObservableCollection<string> SelectedExercises { get; set; }
+
         public ObservableCollection<ISeries> Series { get; set; }
         public ObservableCollection<Axis> XAxes { get; set; }
         public ObservableCollection<Axis> YAxes { get; set; }
         public Charting_VM()
         {
-            
+            Series = [];
+            SelectedExercises = [];
+            SelectedExercises.CollectionChanged += (s, e) => UpdateSeries();
+
             XAxes = new ObservableCollection<Axis>
             {
                 new DateTimeAxis(TimeSpan.MinValue,date => DateOnly.FromDateTime(date).ToString())
@@ -31,6 +37,7 @@ namespace DataLogger.ViewModels
                     LabelsRotation = 15,
                 }
             };
+
             YAxes = new ObservableCollection<Axis>
             {
                 new Axis
@@ -50,31 +57,10 @@ namespace DataLogger.ViewModels
                 }
             };
 
-            Series = [];
-            foreach (var exercise in ExerciseTable.Exercises)
-            {
-                // Map the logs into X (Date) and Y (Value1)
-                var chartPoints = LogsTable.Logs
-                    .Where(log => log.Exercise == exercise)  // Filter by exercise
-                    .OrderByDescending(log => log.Date)
-                    .Select(log => new DateTimePoint
-                    {
-                        DateTime = log.Date.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc), // X-axis (date)
-                        Value = Math.Round((double)log.Value1,2) // Y-axis (value1)
-                    })
-                    .ToList();
-
-                // Create a new line series for the exercise
-                Series.Add(new LineSeries<DateTimePoint>
-                {
-                    Values = chartPoints,  // Bind the chart points to the series
-                    Name = exercise.Name,   // Label the series by exercise name
-                    Fill = new SolidColorPaint(),
-                    XToolTipLabelFormatter = point => $"{exercise.Name}: {point.Coordinate.PrimaryValue} on {point.Coordinate.SecondaryValue}"
-                });
-            }
+            UpdateSeries();
         }
-        public void UpdateSeries()
+
+        private void UpdateSeries()
         {
             Series.Clear(); // Clear existing series
 
@@ -105,4 +91,5 @@ namespace DataLogger.ViewModels
                 }
             }
         }
+    }
 }
