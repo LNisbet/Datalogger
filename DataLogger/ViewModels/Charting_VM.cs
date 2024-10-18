@@ -23,6 +23,8 @@ namespace DataLogger.ViewModels
         public ObservableCollection<ISeries> Series { get; set; }
         public ObservableCollection<Axis> XAxes { get; set; }
         public ObservableCollection<Axis> YAxes { get; set; }
+
+        private ObservableCollection<Enums.Units> yAxisLabels = []; 
         public Charting_VM()
         {
             Series = [];
@@ -38,31 +40,21 @@ namespace DataLogger.ViewModels
                 }
             };
 
-            YAxes = new ObservableCollection<Axis>
+            YAxes = [];
+            foreach (var unit in (Enums.Units[])Enum.GetValues(typeof(Enums.Units)))
             {
-                new Axis
+                YAxes.Add(new Axis 
                 {
-                    Name = "Value1",
-                    // Now the Y axis we will display labels as currency
-                    // LiveCharts provides some common formatters
-                    // in this case we are using the currency formatter.
-                    //Labeler = Labelers.Currency 
-
-                    // you could also build your own currency formatter
-                    // for example:
-                    // Labeler = (value) => value.ToString("C")
-
-                    // But the one that LiveCharts provides creates shorter labels when
-                    // the amount is in millions or trillions
-                }
-            };
-
+                    Name = unit.ToString(),
+                });
+            }
             UpdateSeries();
         }
 
         private void UpdateSeries()
         {
-            Series.Clear(); // Clear existing series
+            Series.Clear();
+            yAxisLabels.Clear();
 
             foreach (var exercise in ExerciseTable.Exercises)
             {
@@ -88,7 +80,22 @@ namespace DataLogger.ViewModels
                         Fill = new SolidColorPaint(),
                         XToolTipLabelFormatter = point => $"{exercise.Name}: {point.Coordinate.PrimaryValue} on {point.Coordinate.SecondaryValue}"
                     });
+
+                    if (!yAxisLabels.Contains(exercise.Unit1))
+                        yAxisLabels.Add(exercise.Unit1);
                 }
+            }
+            UpdateYAxis();
+        }
+
+        private void UpdateYAxis()
+        {
+            foreach (var axis in YAxes)
+            {
+                if (!Enum.TryParse(axis.Name, out Enums.Units unit) || !yAxisLabels.Contains(unit))
+                    axis.IsVisible = false;
+                else
+                    axis.IsVisible = true;
             }
         }
     }
