@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:DataLogger.Views"
         xmlns:VM="clr-namespace:DataLogger.ViewModels"
         mc:Ignorable="d"
-        d:DesignHeight="450" d:DesignWidth="800"
-        Title="Logging_V" Height="450" Width="800">
+        d:DesignHeight="600" d:DesignWidth="1200"
+        Title="Logging_V" Height="600" Width="1200">
     <Page.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Padding" Value="10,0,0,0"/>
@@ -23,7 +23,7 @@
                         <TextBlock Text="Date" Width="50"/>
                         <CheckBox x:Name="CB_Date" Click="CB_Date_Clicked" IsChecked="{Binding SpecifyDate}"/>
                     </StackPanel>
-                    <TextBox x:Name="TBOX_Date" Grid.Row="1"  Text="{Binding Date}"/>
+                    <TextBox x:Name="TBOX_Date" Text="{Binding Date}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="Exercise" Width="100"/>
@@ -62,13 +62,10 @@
                 <Button Width="100" Content="Add New Log" Command="{Binding Path=AddNewLogCommand}"/>
                 <Button Width="100" Content="Delete Log" Command="{Binding Path=DeleteLogCommand}"/>
             </StackPanel>
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="400">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="500">
                 <DataGrid ItemsSource="{Binding ExerciseLogs}" SelectedItem="{Binding SelectedExerciseLog}" AutoGenerateColumns="False">
                     <DataGrid.Columns>
-                        <!-- Date Column -->
                         <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=dd/MM/yyyy}" />
-
-                        <!-- Nested Exercise Data -->
                         <DataGridTemplateColumn Header="Exercise Details">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -79,9 +76,11 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-
-                        <!-- Value Column -->
-                        <DataGridTextColumn Header="Value" Binding="{Binding Value1}" />
+                        <DataGridTextColumn Header="Value1" Binding="{Binding Value1}" />
+                        <DataGridTextColumn Header="Value2" Binding="{Binding Value2}" />
+                        <DataGridTextColumn Header="Value3" Binding="{Binding Value3}" />
+                        <DataGridTextColumn Header="Value4" Binding="{Binding Value4}" />
+                        <DataGridTextColumn Header="Note" Binding="{Binding Note}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>
