@@ -70,7 +70,7 @@ namespace DataLogger.ViewModels
                         .Select(log => new DateTimePoint
                         {
                             DateTime = log.Date.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc), // X-axis (date)
-                            Value = Math.Round((double)log.Value1, 2) // Y-axis (value1)
+                            Value = (double)log.Value1 // Y-axis (value1)
                         })
                         .ToList();
 
@@ -80,8 +80,8 @@ namespace DataLogger.ViewModels
                         Values = chartPoints,  // Bind the chart points to the series
                         Name = exercise.Name,   // Label the series by exercise name
                         Fill = new SolidColorPaint(),
-                        XToolTipLabelFormatter = point => $"{exercise.Name}: {point.Coordinate.PrimaryValue} on {point.Coordinate.SecondaryValue.AsDate().Date.ToShortDateString()}",
-                        ScalesYAt = YAxes.FindIndex(axis => axis.Name == exercise.Unit1.ToString()),
+                        YToolTipLabelFormatter = point => $": {point.Coordinate.PrimaryValue:N2}",
+                        ScalesYAt = YAxes.FindIndex(axis => axis.Name == exercise.Unit1.ToString())
                     });
 
                     if (!yAxisLabels.Contains(exercise.Unit1))

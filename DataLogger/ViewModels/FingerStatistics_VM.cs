@@ -14,6 +14,8 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.Kernel;
 using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
+using System.Xml.Linq;
+using SkiaSharp;
 
 namespace DataLogger.ViewModels
 {
@@ -27,26 +29,35 @@ namespace DataLogger.ViewModels
 
         public FingerStatistics_VM()
         {
-            LeftHalfCrimp_Series = CreatePieSeries(Hand.Left, Crimp.Half);
-            LeftOpenCrimp_Series = CreatePieSeries(Hand.Left, Crimp.Open);
-            RightHalfCrimp_Series = CreatePieSeries(Hand.Right, Crimp.Half);
-            RightOpenCrimp_Series = CreatePieSeries(Hand.Right, Crimp.Open);
+            LeftHalfCrimp_Series = CreatePieChartSeries(Hand.Left, Crimp.Half);
+            LeftOpenCrimp_Series = CreatePieChartSeries(Hand.Left, Crimp.Open);
+            RightHalfCrimp_Series = CreatePieChartSeries(Hand.Right, Crimp.Half);
+            RightOpenCrimp_Series = CreatePieChartSeries(Hand.Right, Crimp.Open);
         }
 
-        private ObservableCollection<ISeries> CreatePieSeries(Hand hand, Crimp crimp)
+        private ObservableCollection<ISeries> CreatePieChartSeries(Hand hand, Crimp crimp)
         {
             return new ObservableCollection<ISeries>
             {
-                new PieSeries<float> {Values = new float[] { SelectValueFromMostRecentLog($"Max {hand} Little {crimp}") } },
-                new PieSeries<float> {Values = new float[] { SelectValueFromMostRecentLog($"Max {hand} Ring {crimp}") } },
-                new PieSeries<float> {Values = new float[] { SelectValueFromMostRecentLog($"Max {hand} Middle {crimp}") } },
-                new PieSeries<float> {Values = new float[] { SelectValueFromMostRecentLog($"Max {hand} Index {crimp}") } }
+                CreatePieSeries($"Max {hand} Little {crimp}"),
+                CreatePieSeries($"Max {hand} Ring {crimp}"),
+                CreatePieSeries($"Max {hand} Middle {crimp}"),
+                CreatePieSeries($"Max {hand} Index {crimp}")
             };
         }
 
-        private float SelectValueFromMostRecentLog(string exerciseName)
+        private PieSeries<float> CreatePieSeries(string exerciseName)
         {
-            return Statistics.MostRecent(ExerciseTable.SelectExerciseByName(exerciseName)).Value1;
+            return new PieSeries<float> 
+            { 
+                Values = new float[] { Statistics.MostRecent(ExerciseTable.SelectExerciseByName(exerciseName)).Value1 },
+                Name = exerciseName,
+                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                DataLabelsSize = 10,
+                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+                DataLabelsFormatter = segment => $"{segment.Coordinate.PrimaryValue:N2}Kg",
+                ToolTipLabelFormatter = segment => $"{segment.Context.DataSource}%",
+            };
         }
 
         private enum Hand

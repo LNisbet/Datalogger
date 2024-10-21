@@ -16,7 +16,8 @@
             XAxes="{Binding XAxes}" 
             YAxes="{Binding YAxes}" 
             Width="1000" 
-            LegendPosition="Right">
+            LegendPosition="Right"
+            TooltipFindingStrategy="CompareAllTakeClosest">
         </lvc:CartesianChart>
         <ListBox ItemsSource="{Binding ExerciseList}" SelectionChanged="ListBox_SelectionChanged" SelectionMode="Multiple"/>
     </StackPanel>

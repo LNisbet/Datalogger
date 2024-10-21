@@ -13,14 +13,14 @@
         <StackPanel>
             <StackPanel Orientation="Horizontal">
                 <StackPanel>
-                    <!--<Image Source="/Views/Resources/Left_Hand_Outline.png" Stretch="Uniform" MaxWidth="600"/>-->
-                    <StackPanel Orientation="Horizontal" Height="100" Width="200">
-                        <lvc:PieChart Series="{Binding LeftHalfCrimp_Series}" Height="100"/>
-                        <lvc:PieChart Series="{Binding LeftOpenCrimp_Series}" Height="100"/>
+                    <Image Source="/Views/Resources/Left_Hand_Outline.png" Stretch="Uniform" MaxWidth="600"/>
+                    <StackPanel Orientation="Horizontal">
+                        <lvc:PieChart Series="{Binding LeftHalfCrimp_Series}" MinWidth="410" MinHeight="200" TooltipTextSize="10" LegendPosition="left"/>
+                        <lvc:PieChart Series="{Binding LeftOpenCrimp_Series}" MinWidth="200" MinHeight="200" TooltipTextSize="10"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel>
-                    <!--<Image Source="/Views/Resources/Left_Hand_Outline.png" Stretch="Uniform" RenderTransformOrigin="0.5,0.5" MaxWidth="600" >
+                    <Image Source="/Views/Resources/Left_Hand_Outline.png" Stretch="Uniform" RenderTransformOrigin="0.5,0.5" MaxWidth="600" >
                         <Image.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform ScaleX="-1"/>
@@ -29,10 +29,10 @@
                                 <TranslateTransform/>
                             </TransformGroup>
                         </Image.RenderTransform>
-                    </Image>-->
-                    <StackPanel Orientation="Horizontal" Height="100" Width="200">
-                        <lvc:PieChart Series="{Binding RightHalfCrimp_Series}" Height="100"/>
-                        <lvc:PieChart Series="{Binding RightOpenCrimp_Series}" Height="100"/>
+                    </Image>
+                    <StackPanel Orientation="Horizontal">
+                        <lvc:PieChart Series="{Binding RightOpenCrimp_Series}" MinWidth="200" MinHeight="200" TooltipTextSize="10"/>
+                        <lvc:PieChart Series="{Binding RightHalfCrimp_Series}" MinWidth="200" MinHeight="200" TooltipTextSize="10"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
