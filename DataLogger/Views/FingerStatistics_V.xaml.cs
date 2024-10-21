@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataLogger.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,12 @@ namespace DataLogger.Views
     /// </summary>
     public partial class FingerStatistics_V : Page
     {
+        private object? dataContext = null;
         public FingerStatistics_V()
         {
             InitializeComponent();
+            dataContext ??= new FingerStatistics_VM();
+            DataContext = dataContext;
         }
     }
 }
