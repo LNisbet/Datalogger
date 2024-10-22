@@ -10,7 +10,11 @@
       Title="FingerStatistics_V">
     <StackPanel Orientation="Horizontal">
         <local:Navigation_Control/>
-        <StackPanel>
+        <StackPanel >
+            <ComboBox Width="150" ItemsSource="{Binding Path=SelectedOption, Converter={local:EnumToCollectionConverter}, Mode=OneTime}"
+          SelectedValuePath="Value"
+          DisplayMemberPath="Description"
+          SelectedValue="{Binding Path=SelectedOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <StackPanel Orientation="Horizontal">
                 <StackPanel>
                     <Image Source="/Views/Resources/Left_Hand_Outline.png" Stretch="Uniform" MaxWidth="600"/>

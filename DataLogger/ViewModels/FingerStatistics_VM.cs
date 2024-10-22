@@ -16,12 +16,17 @@ using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 using SkiaSharp;
+using System.ComponentModel;
 
 namespace DataLogger.ViewModels
 {
     internal class FingerStatistics_VM : Base_VM
     {
+        private Options selectedOption = Options.MostRecent;
+        public Options SelectedOption { get { return selectedOption; } set { selectedOption = value; UpdatePieCharts(); } }
+
         public ObservableCollection<ISeries> LeftHalfCrimp_Series { get; set; }
+        private int leftHalfCrimpFullValue;
         public ObservableCollection<ISeries> LeftOpenCrimp_Series { get; set; }
         public ObservableCollection<ISeries> RightHalfCrimp_Series { get; set; }
         public ObservableCollection<ISeries> RightOpenCrimp_Series { get; set; }
@@ -29,10 +34,23 @@ namespace DataLogger.ViewModels
 
         public FingerStatistics_VM()
         {
+            LeftHalfCrimp_Series = [];
+            LeftOpenCrimp_Series = [];
+            RightHalfCrimp_Series = [];
+            RightOpenCrimp_Series = [];
+            UpdatePieCharts();
+        }
+
+        private void UpdatePieCharts()
+        {
             LeftHalfCrimp_Series = CreatePieChartSeries(Hand.Left, Crimp.Half);
+            OnPropertyChanged(nameof(LeftHalfCrimp_Series));
             LeftOpenCrimp_Series = CreatePieChartSeries(Hand.Left, Crimp.Open);
+            OnPropertyChanged(nameof(LeftOpenCrimp_Series));
             RightHalfCrimp_Series = CreatePieChartSeries(Hand.Right, Crimp.Half);
+            OnPropertyChanged(nameof(RightHalfCrimp_Series));
             RightOpenCrimp_Series = CreatePieChartSeries(Hand.Right, Crimp.Open);
+            OnPropertyChanged(nameof(RightOpenCrimp_Series));
         }
 
         private ObservableCollection<ISeries> CreatePieChartSeries(Hand hand, Crimp crimp)
@@ -50,7 +68,7 @@ namespace DataLogger.ViewModels
         {
             return new PieSeries<float> 
             { 
-                Values = new float[] { Statistics.MostRecent(ExerciseTable.SelectExerciseByName(exerciseName)).Value1 },
+                Values = GetPieChartValues(exerciseName, SelectedOption),
                 Name = exerciseName,
                 DataLabelsPaint = new SolidColorPaint(SKColors.Black),
                 DataLabelsSize = 10,
@@ -58,6 +76,27 @@ namespace DataLogger.ViewModels
                 DataLabelsFormatter = segment => $"{segment.Coordinate.PrimaryValue:N2}Kg",
                 ToolTipLabelFormatter = segment => $"{segment.Context.DataSource}%",
             };
+        }
+
+        private float[] GetPieChartValues(string exerciseName, Options option)
+        {
+            switch (option)
+            {
+                case Options.MostRecent:
+                    return [Statistics.MostRecent(ExerciseTable.SelectExerciseByName(exerciseName)).Value1];
+                case Options.Max:
+                    return [Statistics.Max(ExerciseTable.SelectExerciseByName(exerciseName),DateOnly.MinValue,DateOnly.MaxValue).Value1];
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        public enum Options
+        {
+            [Description("Most Recent")]
+            MostRecent,
+            [Description("Maximum")]
+            Max
         }
 
         private enum Hand
@@ -72,4 +111,5 @@ namespace DataLogger.ViewModels
             Open
         }
     }
+
 }
