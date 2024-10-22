@@ -57,10 +57,10 @@ namespace DataLogger.ViewModels
         {
             return new ObservableCollection<ISeries>
             {
-                CreatePieSeries($"Max {hand} Little {crimp}"),
-                CreatePieSeries($"Max {hand} Ring {crimp}"),
-                CreatePieSeries($"Max {hand} Middle {crimp}"),
-                CreatePieSeries($"Max {hand} Index {crimp}")
+                CreatePieSeries($"{hand} Little {crimp}"),
+                CreatePieSeries($"{hand} Ring {crimp}"),
+                CreatePieSeries($"{hand} Middle {crimp}"),
+                CreatePieSeries($"{hand} Index {crimp}")
             };
         }
 

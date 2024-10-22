@@ -27,7 +27,6 @@ namespace SQLight_Database
 
         static internal readonly List<string> StandardTags = 
         [
-            "Testing",
             "UpperBody", 
             "LowerBody",
             "Core",
@@ -35,7 +34,6 @@ namespace SQLight_Database
             "Endurance",
             "Strength",
             "Power",
-            "Rehab",
             "Flexibility"
         ];
         #endregion
@@ -45,8 +43,8 @@ namespace SQLight_Database
 
         static internal List<ColumnDescription> ExerciseTableDescription =
         [
-            new ColumnDescription("Name", "VARCHAR(20)", "PRIMARY KEY"),
-            new ColumnDescription("Tags", "TEXT", "NOT NULL"),
+            new ColumnDescription("Name", "VARCHAR(32)", "PRIMARY KEY"),
+            new ColumnDescription("Tags", "TEXT"),
             new ColumnDescription("Unit1", "VARCHAR(20)", "NOT NULL"),
             new ColumnDescription("Unit2", "VARCHAR(20)"),
             new ColumnDescription("Unit3", "VARCHAR(20)"),
@@ -56,32 +54,30 @@ namespace SQLight_Database
 
         static internal readonly List<Exercise> StandardExercises =
         [
-            new Exercise("Weight", ["Testing"], Enums.Units.Kg),
-            new Exercise("Max Left Little Open", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Left hand little finger in a drag position"),
-            new Exercise("Max Left Little Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Left hand little finger in a half crimp position"),
-            new Exercise("Max Left Ring Open", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Left hand ring finger in a drag position"),
-            new Exercise("Max Left Ring Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Left hand ring finger in a half crimp position"),
-            new Exercise("Max Left Middle Open", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Left hand middle finger in a drag position"),
-            new Exercise("Max Left Middle Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Left hand middle finger in a half crimp position"),
-            new Exercise("Max Left Index Open", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Left hand index finger in a drag position"),
-            new Exercise("Max Left Index Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Left hand index finger in a half crimp position"),
-            new Exercise("Max Right Little Open", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand little finger in a drag position"),
-            new Exercise("Max Right Little Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand little finger in a half crimp position"),
-            new Exercise("Max Right Ring Open", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand ring finger in a drag position"),
-            new Exercise("Max Right Ring Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand ring finger in a half crimp position"),
-            new Exercise("Max Right Middle Open", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand middle finger in a drag position"),
-            new Exercise("Max Right Middle Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand middle finger in a half crimp position"),
-            new Exercise("Max Right Index Open", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand index finger in a drag position"),
-            new Exercise("Max Right Index Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand index finger in a half crimp position"),
-            new Exercise("Max Left Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Left hand in a half crimp position"),
-            new Exercise("Max Left Open", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Left hand in a drag position"),
-            new Exercise("Max Left Full", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Left hand in a full crimp position"),
-            new Exercise("Max Right Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand in a half crimp position"),
-            new Exercise("Max Right Open", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand in a drag position"),
-            new Exercise("Max Right Full", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand in a full crimp position"),
-            new Exercise("Max 20mm Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand in a full crimp position"),
-            new Exercise("Max 15mm Half", ["Testing","Fingers"], Enums.Units.Kg,null,null,null,"Right hand in a full crimp position"),
-            new Exercise("Max Pullup", ["Testing","UpperBody"], Enums.Units.Kg,Enums.Units.Reps,null,null,"Right hand in a full crimp position")
+            new Exercise("Weight", [], Enums.Units.Kg),
+            new Exercise("Left Little Finger Open Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Left hand little finger in a drag position"),
+            new Exercise("Left Little Finger Half Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Left hand little finger in a Half crimp position"),
+            new Exercise("Left Ring Finger Open Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Left hand ring finger in a drag position"),
+            new Exercise("Left Ring Finger Half Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Left hand ring finger in a Half crimp position"),
+            new Exercise("Left Middle Finger Open Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Left hand middle finger in a drag position"),
+            new Exercise("Left Middle Finger Half Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Left hand middle finger in a Half crimp position"),
+            new Exercise("Left Index Finger Open Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Left hand index finger in a drag position"),
+            new Exercise("Left Index Finger Half Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Left hand index finger in a half crimp position"),
+            new Exercise("Right Little Finger Open Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand little finger in a drag position"),
+            new Exercise("Right Little Finger Half Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand little finger in a half crimp position"),
+            new Exercise("Right Ring Finger Open Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand ring finger in a drag position"),
+            new Exercise("Right Ring Finger Half Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand ring finger in a half crimp position"),
+            new Exercise("Right Middle Finger Open Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand middle finger in a drag position"),
+            new Exercise("Right Middle Finger Half Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand middle finger in a half crimp position"),
+            new Exercise("Right Index Finger Open Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand index finger in a drag position"),
+            new Exercise("Right Index Finger Half Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand index finger in a half crimp position"),
+            new Exercise("Left Half Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Left hand in a half crimp position"),
+            new Exercise("Left Open Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Left hand in a drag position"),
+            new Exercise("Left Full", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Left hand in a full crimp position"),
+            new Exercise("Right Half Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand in a half crimp position"),
+            new Exercise("Right Open Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand in a drag position"),
+            new Exercise("Right Full Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand in a full crimp position"),
+            new Exercise("Pullup", ["UpperBody", "Strength"], Enums.Units.Kg,Enums.Units.Reps,null,null,"Right hand in a full crimp position")
         ];
         #endregion
 

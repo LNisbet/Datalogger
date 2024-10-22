@@ -80,7 +80,7 @@ namespace DataLogger.ViewModels
                         Values = chartPoints,  // Bind the chart points to the series
                         Name = exercise.Name,   // Label the series by exercise name
                         Fill = new SolidColorPaint(),
-                        YToolTipLabelFormatter = point => $": {point.Coordinate.PrimaryValue:N2}",
+                        YToolTipLabelFormatter = point => $": {point.Coordinate.PrimaryValue:N2}{exercise.Unit1}",
                         ScalesYAt = YAxes.FindIndex(axis => axis.Name == exercise.Unit1.ToString())
                     });
 
