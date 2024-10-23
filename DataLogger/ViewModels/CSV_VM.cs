@@ -1,16 +1,20 @@
 ﻿using System.Windows.Input;
 using SQLight_Database;
 using CSV_Exporter;
+using Newtonsoft.Json.Linq;
 
 namespace DataLogger.ViewModels
 {
-    internal class CSV_VM : Base_VM
+    public class CSV_VM : Base_VM
     {
         const string ExerciseFileName = "\\exercises.csv";
         const string LogFileName = "\\logs.csv";
+        public string Path { get; set; }
 
-        private string path = "C:\\Users\\luken\\OneDrive\\Desktop\\TestFolder";
-        public string Path { get => path; set => path = value; }
+        public CSV_VM()
+        {
+            Path = Properties.Settings.Default.LastExportFilePath;
+        }
 
         #region ExportLogsToCSV
         private ICommand? exportLogsCommand;
@@ -31,6 +35,8 @@ namespace DataLogger.ViewModels
         public void ExportLogs()
         {
             CSVHelper.WriteToCSV(Path + LogFileName, new List<ExerciseLog>(LogsTable.Logs));
+            Properties.Settings.Default.LastExportFilePath = System.IO.Path.GetDirectoryName(Path);
+            Properties.Settings.Default.Save();
         }
         #endregion
 
@@ -53,6 +59,8 @@ namespace DataLogger.ViewModels
         public void ExportExercises()
         {
             CSVHelper.WriteToCSV(Path + ExerciseFileName, new List<Exercise>(ExerciseTable.Exercises));
+            Properties.Settings.Default.LastExportFilePath = System.IO.Path.GetDirectoryName(Path);
+            Properties.Settings.Default.Save();
         }
         #endregion
 
@@ -74,6 +82,8 @@ namespace DataLogger.ViewModels
         public void ImportLogs()
         {
             LogsTable.AddMultipleLogs(CSVHelper.ReadFromCSV<ExerciseLog>(Path + LogFileName));
+            Properties.Settings.Default.LastExportFilePath = System.IO.Path.GetDirectoryName(Path);
+            Properties.Settings.Default.Save();
         }
         #endregion
 
@@ -95,6 +105,8 @@ namespace DataLogger.ViewModels
         public void ImportExercises()
         {
             ExerciseTable.AddMultipleExercises(CSVHelper.ReadFromCSV<Exercise>(Path + ExerciseFileName));
+            Properties.Settings.Default.LastExportFilePath = System.IO.Path.GetDirectoryName(Path);
+            Properties.Settings.Default.Save();
         }
         #endregion
     }

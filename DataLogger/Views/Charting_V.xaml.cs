@@ -30,14 +30,23 @@ namespace DataLogger.Views
         }
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var listBox = sender as ListBox;
             var viewModel = DataContext as Charting_VM;
+            var listBox = sender as ListBox;
+            if (listBox == null || viewModel == null)
+                return;
 
-            // Clear and update NewExerciseTags based on selected items
-            viewModel.SelectedExercises.Clear();
-            foreach (string selectedItem in listBox.SelectedItems)
+            foreach (var listItem in viewModel.ExerciseList)
             {
-                viewModel.SelectedExercises.Add(selectedItem);
+                if (listBox.SelectedItems.Contains(listItem) && !viewModel.SelectedExercises.Contains(listItem))
+                {
+                    viewModel.SelectedExercises.Add(listItem);
+                    break;
+                }
+                if (!listBox.SelectedItems.Contains(listItem) && viewModel.SelectedExercises.Contains(listItem))
+                {
+                    viewModel.SelectedExercises.Remove(listItem);
+                    break;
+                }
             }
             viewModel.OnPropertyChanged(nameof(viewModel.SelectedExercises));
         }

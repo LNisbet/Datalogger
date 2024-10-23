@@ -19,6 +19,10 @@
             LegendPosition="Right"
             TooltipFindingStrategy="CompareAllTakeClosest">
         </lvc:CartesianChart>
-        <ListBox ItemsSource="{Binding ExerciseList}" SelectionChanged="ListBox_SelectionChanged" SelectionMode="Multiple"/>
+        <StackPanel>
+            <ComboBox ItemsSource="{Binding ExerciseTags}" SelectedItem="{Binding SelectedExerciseTag}"/>
+            <ListBox ItemsSource="{Binding ExerciseList}" SelectionChanged="ListBox_SelectionChanged" SelectionMode="Multiple"/>
+        </StackPanel>
+        
     </StackPanel>
 </Page>

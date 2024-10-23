@@ -18,7 +18,16 @@ namespace DataLogger.ViewModels
 {
     internal class Charting_VM : Base_VM
     {
-        public ObservableCollection<string> ExerciseList => ExerciseTable.AllExerciseNames;
+        public ObservableCollection<string>? ExerciseTags => TagsTable.AllExerciseTags;
+        
+        private string? selectedExerciseTag = null;
+        public string? SelectedExerciseTag {  get => selectedExerciseTag; set { selectedExerciseTag = value; OnPropertyChanged(nameof(ExerciseList)); } }
+
+        public List<string> ExerciseList => 
+            ExerciseTable.Exercises
+            .Where(e => SelectedExerciseTag == null || e.Tags.Contains(SelectedExerciseTag))
+            .Select(e => e.Name)
+            .ToList();
 
         public ObservableCollection<string> SelectedExercises { get; set; }
 
