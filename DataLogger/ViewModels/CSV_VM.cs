@@ -2,18 +2,39 @@
 using SQLight_Database;
 using CSV_Exporter;
 using Newtonsoft.Json.Linq;
+using System.Windows.Controls;
 
 namespace DataLogger.ViewModels
 {
     public class CSV_VM : Base_VM
     {
-        const string ExerciseFileName = "\\exercises.csv";
-        const string LogFileName = "\\logs.csv";
-        public string Path { get; set; }
-
         public CSV_VM()
         {
-            Path = Properties.Settings.Default.LastExportFilePath;
+        }
+
+        private string? SelectFilePath()
+        {
+            // Create OpenFileDialog 
+            Microsoft.Win32.OpenFileDialog dlg = new()
+            {
+                // Set filter for file extension and default file extension 
+                DefaultExt = ".csv",
+                Filter = "CSV Files (*.csv)|*.csv",
+                DefaultDirectory = Properties.Settings.Default.LastExportFilePath
+            };
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                string filename = dlg.FileName;
+                Properties.Settings.Default.LastExportFilePath = filename;
+                Properties.Settings.Default.Save();
+                return filename;
+                
+            }
+            return null;
         }
 
         #region ExportLogsToCSV
@@ -34,9 +55,10 @@ namespace DataLogger.ViewModels
 
         public void ExportLogs()
         {
-            CSVHelper.WriteToCSV(Path + LogFileName, new List<ExerciseLog>(LogsTable.Logs));
-            Properties.Settings.Default.LastExportFilePath = System.IO.Path.GetDirectoryName(Path);
-            Properties.Settings.Default.Save();
+            var path = SelectFilePath();
+            if (path == null)
+                return;
+            CSVHelper.WriteToCSV(path, new List<ExerciseLog>(LogsTable.Logs));
         }
         #endregion
 
@@ -58,9 +80,10 @@ namespace DataLogger.ViewModels
 
         public void ExportExercises()
         {
-            CSVHelper.WriteToCSV(Path + ExerciseFileName, new List<Exercise>(ExerciseTable.Exercises));
-            Properties.Settings.Default.LastExportFilePath = System.IO.Path.GetDirectoryName(Path);
-            Properties.Settings.Default.Save();
+            var path = SelectFilePath();
+            if (path == null)
+                return;
+            CSVHelper.WriteToCSV(path, new List<Exercise>(ExerciseTable.Exercises));
         }
         #endregion
 
@@ -81,9 +104,10 @@ namespace DataLogger.ViewModels
 
         public void ImportLogs()
         {
-            LogsTable.AddMultipleLogs(CSVHelper.ReadFromCSV<ExerciseLog>(Path + LogFileName));
-            Properties.Settings.Default.LastExportFilePath = System.IO.Path.GetDirectoryName(Path);
-            Properties.Settings.Default.Save();
+            var path = SelectFilePath();
+            if (path == null)
+                return;
+            LogsTable.AddMultipleLogs(CSVHelper.ReadFromCSV<ExerciseLog>(path));
         }
         #endregion
 
@@ -104,9 +128,10 @@ namespace DataLogger.ViewModels
 
         public void ImportExercises()
         {
-            ExerciseTable.AddMultipleExercises(CSVHelper.ReadFromCSV<Exercise>(Path + ExerciseFileName));
-            Properties.Settings.Default.LastExportFilePath = System.IO.Path.GetDirectoryName(Path);
-            Properties.Settings.Default.Save();
+            var path = SelectFilePath();
+            if (path == null)
+                return;
+            ExerciseTable.AddMultipleExercises(CSVHelper.ReadFromCSV<Exercise>(path));
         }
         #endregion
     }
