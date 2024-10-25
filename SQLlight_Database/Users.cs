@@ -16,6 +16,13 @@ namespace SQLight_Database
 
         public static ObservableCollection<string> AllUserNames => new(AllUsers.Select(users => users.Name).Distinct());
 
+        public static User? SelectUserByName(string? name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) 
+                return null;
+            return AllUsers.FirstOrDefault(u => u.Name == name);
+        }
+
         public static void Add(User user)
         {
             allUsers ??= [];
@@ -30,8 +37,10 @@ namespace SQLight_Database
         {
             if (allUsers != null && allUsers.FirstOrDefault(u => u.Name == user.Name) != null)
             {   
-                SQL_Database.DeleteDatabase(user.Name,DatabaseConnection.SQLite_conn);
+                if (user.Initilised == true)
+                    SQL_Database.DeleteDatabase(user.Name,DatabaseConnection.SQLite_conn);
                 allUsers.Remove(allUsers.FirstOrDefault(u => u.Name == user.Name));
+                Save();
             }  
         }
 
@@ -42,11 +51,13 @@ namespace SQLight_Database
                 allUsers.Remove(allUsers.FirstOrDefault(u => u.Name == user.Name));
             }
             Add(user);
+            Save();
         }
 
         internal static void Save()
         {
             File.WriteAllText(Config.UsersPathName, JsonConvert.SerializeObject(allUsers));
+            allUsers = null;
         }
 
         private static ObservableCollection<User> Load()

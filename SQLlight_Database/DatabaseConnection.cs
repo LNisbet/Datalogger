@@ -9,8 +9,8 @@ namespace SQLight_Database
 {
     public static class DatabaseConnection
     {
-        private static User currentUser = new("BlankUser",false);
-        public static User CurrentUser { get => currentUser; set { currentUser = value; } }
+        private static User? currentUser;
+        public static User? CurrentUser { get => currentUser; set => currentUser = value; }
 
         private static SQLiteConnection? sqlite_conn = null;
         internal static SQLiteConnection SQLite_conn 
@@ -19,8 +19,14 @@ namespace SQLight_Database
             {
                 if (sqlite_conn == null)
                 {
+                    if (CurrentUser == null)
+                        throw new NullReferenceException();
+
                     CreateConnection(CurrentUser);
-                    if (sqlite_conn == null) { throw new NullReferenceException(); }
+
+                    if (sqlite_conn == null)
+                        throw new NullReferenceException();
+
                     return sqlite_conn;
                 }
                 else
@@ -57,7 +63,7 @@ namespace SQLight_Database
             CurrentUser = user;
         }
 
-        public static void CloseConnection()
+        internal static void CloseConnection()
         {
             if (sqlite_conn == null)
                 return;

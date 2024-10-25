@@ -8,15 +8,28 @@ namespace DataLogger.ViewModels
     class MainWindow_VM : Base_VM
     {
         public bool NavigationEnabled { get{ return !String.IsNullOrEmpty(SelectedUserName); } }
-
-        private static string? selectedUserName;
-        public string? SelectedUserName { get => selectedUserName; set { selectedUserName = value; OnPropertyChanged(nameof(NavigationEnabled)); }  }
+        public string? SelectedUserName 
+        {
+            get
+            {
+                if(DatabaseConnection.CurrentUser == null)
+                    return null;
+                return DatabaseConnection.CurrentUser.Name;
+            }
+            set 
+            { 
+                DatabaseConnection.CurrentUser = Users.SelectUserByName(value);
+                Properties.Settings.Default.LastLoggedInUser = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged(nameof(NavigationEnabled)); 
+            }  
+        }
 
         public ObservableCollection<string> UserNames { get => SQLight_Database.Users.AllUserNames; }
 
         public MainWindow_VM() 
         {
-            selectedUserName = Properties.Settings.Default.LastLoggedInUser;
+            SelectedUserName = Properties.Settings.Default.LastLoggedInUser;
         }
 
         #region Close App
@@ -35,8 +48,6 @@ namespace DataLogger.ViewModels
         }
         public void CloseAndSaveApp()
         {
-            Properties.Settings.Default.LastLoggedInUser = selectedUserName;
-            Properties.Settings.Default.Save();
         }
         #endregion
     }
