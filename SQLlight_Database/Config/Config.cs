@@ -77,7 +77,7 @@ namespace SQLight_Database
             new Exercise("Right Half Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand in a half crimp position"),
             new Exercise("Right Open Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand in a drag position"),
             new Exercise("Right Full Crimp", ["Fingers", "Strength"], Enums.Units.Kg,null,null,null,"Right hand in a full crimp position"),
-            new Exercise("Pullup", ["UpperBody", "Strength"], Enums.Units.Kg,Enums.Units.Reps,null,null,"Right hand in a full crimp position")
+            new Exercise("Pullup", ["UpperBody", "Strength"], Enums.Units.Kg,Enums.Units.Reps,null,null,"Full ROM pullup")
         ];
         #endregion
 

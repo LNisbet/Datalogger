@@ -14,6 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\Resources\Left_Hand_Outline.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Remove="Views\UserControl1.xaml" />
   </ItemGroup>
 
@@ -29,6 +33,12 @@
     <Page Include="App.xaml" />
 	<ProjectReference Include="..\SQLlight_Database\SQLight_Database.csproj" />
 	<ProjectReference Include="..\CSV_Exporter\CSV_Exporter.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\Resources\Left_Hand_Outline.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

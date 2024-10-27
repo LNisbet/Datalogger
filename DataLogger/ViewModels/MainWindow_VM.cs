@@ -17,8 +17,8 @@ namespace DataLogger.ViewModels
                 return DatabaseConnection.CurrentUser.Name;
             }
             set 
-            { 
-                var user = Users.SelectUserByName(value) ?? new(value,false);
+            {
+                var user = String.IsNullOrEmpty(value) ? null : (Users.SelectUserByName(value) ?? new(value, false));
                 DatabaseConnection.CurrentUser = user;
 
                 Properties.Settings.Default.LastLoggedInUser = value;

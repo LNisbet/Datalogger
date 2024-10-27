@@ -22,15 +22,18 @@ namespace DataLogger.ViewModels
 {
     internal class FingerStatistics_VM : Base_VM
     {
+        #region Fileds
         private Options selectedOption = Options.MostRecent;
         public Options SelectedOption { get { return selectedOption; } set { selectedOption = value; UpdatePieCharts(); } }
 
         public ObservableCollection<ISeries> LeftHalfCrimp_Series { get; set; }
-        private int leftHalfCrimpFullValue;
-        public ObservableCollection<ISeries> LeftOpenCrimp_Series { get; set; }
-        public ObservableCollection<ISeries> RightHalfCrimp_Series { get; set; }
-        public ObservableCollection<ISeries> RightOpenCrimp_Series { get; set; }
 
+        public ObservableCollection<ISeries> LeftOpenCrimp_Series { get; set; }
+
+        public ObservableCollection<ISeries> RightHalfCrimp_Series { get; set; }
+
+        public ObservableCollection<ISeries> RightOpenCrimp_Series { get; set; }
+        #endregion
 
         public FingerStatistics_VM()
         {
@@ -57,24 +60,25 @@ namespace DataLogger.ViewModels
         {
             return new ObservableCollection<ISeries>
             {
-                CreatePieSeries($"{hand} Little {crimp}"),
-                CreatePieSeries($"{hand} Ring {crimp}"),
-                CreatePieSeries($"{hand} Middle {crimp}"),
-                CreatePieSeries($"{hand} Index {crimp}")
+                CreatePieSeries($"{hand} Little Finger {crimp} Crimp", hand, crimp),
+                CreatePieSeries($"{hand} Ring Finger {crimp} Crimp", hand, crimp),
+                CreatePieSeries($"{hand} Middle Finger {crimp} Crimp", hand, crimp),
+                CreatePieSeries($"{hand} Index Finger {crimp} Crimp", hand, crimp)
             };
         }
 
-        private PieSeries<float> CreatePieSeries(string exerciseName)
+        private PieSeries<float> CreatePieSeries(string exerciseName, Hand hand, Crimp crimp)
         {
+
             return new PieSeries<float> 
             { 
                 Values = GetPieChartValues(exerciseName, SelectedOption),
                 Name = exerciseName,
                 DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                DataLabelsSize = 10,
+                DataLabelsSize = 12,
                 DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                DataLabelsFormatter = segment => $"{segment.Coordinate.PrimaryValue:N2}Kg",
-                ToolTipLabelFormatter = segment => $"{segment.Context.DataSource}%",
+                DataLabelsFormatter = segment => $"{(segment.Coordinate.PrimaryValue / GetPieChartTotal(hand, crimp)) * 100f:N2}%",
+                ToolTipLabelFormatter = segment => $"{segment.Coordinate.PrimaryValue:N2}Kg",
             };
         }
 
@@ -91,6 +95,15 @@ namespace DataLogger.ViewModels
             }
         }
 
+        private float GetPieChartTotal(Hand hand, Crimp crimp)
+        {
+            return GetPieChartValues($"{hand} Little Finger {crimp} Crimp", SelectedOption).Sum() +
+                GetPieChartValues($"{hand} Ring Finger {crimp} Crimp", SelectedOption).Sum() +
+                GetPieChartValues($"{hand} Middle Finger {crimp} Crimp", SelectedOption).Sum() +
+                GetPieChartValues($"{hand} Index Finger {crimp} Crimp", SelectedOption).Sum();
+        }
+
+        #region Enums
         public enum Options
         {
             [Description("Most Recent")]
@@ -110,6 +123,6 @@ namespace DataLogger.ViewModels
             Half,
             Open
         }
+        #endregion
     }
-
 }

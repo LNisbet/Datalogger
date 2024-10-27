@@ -18,13 +18,18 @@ namespace CSV_Exporter
             }
             catch
             {
-                
-                Enum.TryParse(list[1], out Enums.Units unit1);
-                Enum.TryParse(list[2], out Enums.Units unit2);
-                Enum.TryParse(list[3], out Enums.Units unit3);
-                Enum.TryParse(list[4], out Enums.Units unit4);
-
-                exercise = new(list[0], ["Imported"], unit1, unit2, unit3, unit4);
+                try
+                {
+                    Enum.TryParse(list[1], out Enums.Units unit1);
+                    Enum.TryParse(list[2], out Enums.Units unit2);
+                    Enum.TryParse(list[3], out Enums.Units unit3);
+                    Enum.TryParse(list[4], out Enums.Units unit4);
+                    exercise = new(list[0], ["Imported"], unit1, unit2, unit3, unit4);
+                }
+                catch
+                {
+                    exercise = new(list[0], ["Partial Imported"], Enums.Units.None);
+                }
             }
             return exercise;
         }
