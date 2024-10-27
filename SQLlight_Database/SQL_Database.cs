@@ -23,6 +23,10 @@ namespace SQLight_Database
         {
             SQL_Commands.ExecuteSQLString(conn, SQL_Strings.DeleteDatabase(dbName), Enums.CommandType.NonQuery);
             DatabaseConnection.CloseConnection();
+            if (File.Exists(dbName))
+            {
+                File.Delete(dbName);
+            }
         }
 
         private static void CreateTable(string tableName, List<ColumnDescription> tableDescription, SQLiteConnection conn)

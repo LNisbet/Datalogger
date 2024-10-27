@@ -12,7 +12,7 @@ namespace DataLogger.ViewModels
         {
         }
 
-        private string? SelectFilePath()
+        private string? SelectOpenFilePath()
         {
             // Create OpenFileDialog 
             Microsoft.Win32.OpenFileDialog dlg = new()
@@ -32,7 +32,29 @@ namespace DataLogger.ViewModels
                 Properties.Settings.Default.LastExportFilePath = filename;
                 Properties.Settings.Default.Save();
                 return filename;
-                
+            }
+            return null;
+        }
+
+        private string? SelectSaveFilePath()
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new()
+            {
+                // Set filter for file extension and default file extension 
+                DefaultExt = ".csv",
+                Filter = "CSV Files (*.csv)|*.csv",
+                DefaultDirectory = Properties.Settings.Default.LastExportFilePath
+            };
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                string filename = dlg.FileName;
+                Properties.Settings.Default.LastExportFilePath = filename;
+                Properties.Settings.Default.Save();
+                return filename;
             }
             return null;
         }
@@ -55,7 +77,7 @@ namespace DataLogger.ViewModels
 
         public void ExportLogs()
         {
-            var path = SelectFilePath();
+            var path = SelectSaveFilePath();
             if (path == null)
                 return;
             CSVHelper.WriteToCSV(path, new List<ExerciseLog>(LogsTable.Logs));
@@ -80,7 +102,7 @@ namespace DataLogger.ViewModels
 
         public void ExportExercises()
         {
-            var path = SelectFilePath();
+            var path = SelectSaveFilePath();
             if (path == null)
                 return;
             CSVHelper.WriteToCSV(path, new List<Exercise>(ExerciseTable.Exercises));
@@ -104,7 +126,7 @@ namespace DataLogger.ViewModels
 
         public void ImportLogs()
         {
-            var path = SelectFilePath();
+            var path = SelectOpenFilePath();
             if (path == null)
                 return;
             LogsTable.AddMultipleLogs(CSVHelper.ReadFromCSV<ExerciseLog>(path));
@@ -128,7 +150,7 @@ namespace DataLogger.ViewModels
 
         public void ImportExercises()
         {
-            var path = SelectFilePath();
+            var path = SelectOpenFilePath();
             if (path == null)
                 return;
             ExerciseTable.AddMultipleExercises(CSVHelper.ReadFromCSV<Exercise>(path));

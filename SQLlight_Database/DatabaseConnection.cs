@@ -66,9 +66,14 @@ namespace SQLight_Database
         internal static void CloseConnection()
         {
             if (sqlite_conn == null)
+            {
+                CurrentUser = null;
                 return;
+            }
+                
             SQL_Commands.CloseConnection(sqlite_conn);
             sqlite_conn = null;
+            CurrentUser = null;
         }
     }
 }

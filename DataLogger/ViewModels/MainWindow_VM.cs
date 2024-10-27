@@ -18,7 +18,9 @@ namespace DataLogger.ViewModels
             }
             set 
             { 
-                DatabaseConnection.CurrentUser = Users.SelectUserByName(value);
+                var user = Users.SelectUserByName(value) ?? new(value,false);
+                DatabaseConnection.CurrentUser = user;
+
                 Properties.Settings.Default.LastLoggedInUser = value;
                 Properties.Settings.Default.Save();
                 OnPropertyChanged(nameof(NavigationEnabled)); 
@@ -29,7 +31,10 @@ namespace DataLogger.ViewModels
 
         public MainWindow_VM() 
         {
-            SelectedUserName = Properties.Settings.Default.LastLoggedInUser;
+            if (Users.AllUserNames.Contains(Properties.Settings.Default.LastLoggedInUser))
+                SelectedUserName = Properties.Settings.Default.LastLoggedInUser;
+            else
+                SelectedUserName = null;
         }
 
         #region Close App

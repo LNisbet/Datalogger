@@ -11,7 +11,7 @@
         <StackPanel Orientation="Horizontal">
             <local:Navigation_Control/>
             <StackPanel MinWidth="100">
-                <ComboBox ItemsSource="{Binding UserNames}" Text="{Binding SelectedUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEditable="True"/>
+                <ComboBox ItemsSource="{Binding UserNames}" Text="{Binding SelectedUserName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" IsEditable="True"/>
             </StackPanel>
         </StackPanel>
     </NavigationWindow.Content>

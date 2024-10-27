@@ -11,7 +11,7 @@ namespace SQLight_Database
 {
     public static class Users
     {
-        private static ObservableCollection<User>? allUsers = null;
+        private static ObservableCollection<User>? allUsers;
         public static ObservableCollection<User> AllUsers => allUsers ??= Load();
 
         public static ObservableCollection<string> AllUserNames => new(AllUsers.Select(users => users.Name).Distinct());

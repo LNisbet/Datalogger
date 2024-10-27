@@ -54,6 +54,7 @@ namespace DataLogger.ViewModels
         public void DeleteDataBase(User dbName)
         {
             Users.Remove(dbName);
+            OnPropertyChanged(nameof(CurrentUserName));
         }
         #endregion
     }
