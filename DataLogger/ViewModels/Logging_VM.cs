@@ -8,12 +8,12 @@ namespace DataLogger.ViewModels
     public class Logging_VM : Base_VM
     {
         #region Fields
-        public ObservableCollection<ExerciseLog> ExerciseLogs { get => LogsTable.Logs; }
+        public ObservableCollection<ExerciseLog> ExerciseLogs  => LogsTable.Logs;
 
         private Exercise? selectedExercise;
         public Exercise? SelectedExercise { get => selectedExercise; set { selectedExercise = value; OnPropertyChanged(nameof(SelectedExercise)); UpdateValues(); } }
 
-        public ObservableCollection<Exercise> Exercises { get => ExerciseTable.Exercises; }
+        public ObservableCollection<Exercise> Exercises  => ExerciseTable.Exercises;
 
         public bool SpecifyDate { get; set; }
 

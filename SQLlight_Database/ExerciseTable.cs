@@ -24,7 +24,7 @@ namespace SQLight_Database
             }
         }
 
-        public static ObservableCollection<string> AllExerciseNames { get => new ObservableCollection<string>(Exercises.Select(exercise => exercise.Name).Distinct()); }
+        public static ObservableCollection<string> AllExerciseNames  => new ObservableCollection<string>(Exercises.Select(exercise => exercise.Name).Distinct());
 
         
         public static void AddSingleExercise(Exercise exercise)

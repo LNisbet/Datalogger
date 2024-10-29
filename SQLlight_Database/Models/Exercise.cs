@@ -31,7 +31,7 @@ namespace SQLight_Database
             if (sqlite_datareader != null && sqlite_datareader.HasRows && !sqlite_datareader.IsClosed)
             {
                 Name = sqlite_datareader.GetString(0);
-                Tags = sqlite_datareader.GetString(1).Split(',').ToList();
+                Tags = TagsFromString(sqlite_datareader.GetString(1));
                 Unit1 = (Enums.Units)Enum.Parse(typeof(Enums.Units), sqlite_datareader.GetString(2));
                 Unit2 = GetUnitsFromDatabase(sqlite_datareader, 3);
                 Unit3 = GetUnitsFromDatabase(sqlite_datareader, 4);
@@ -82,6 +82,11 @@ namespace SQLight_Database
             tagsAsAString += "'";
 
             return tagsAsAString;
+        }
+
+        private static List<string> TagsFromString(string tags)
+        {
+            return tags.Split(',').ToList();
         }
     }
 }

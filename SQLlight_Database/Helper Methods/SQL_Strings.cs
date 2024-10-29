@@ -6,22 +6,22 @@ namespace SQLight_Database
     {
         static internal string CreateConnection(string dbName, int version, bool newDb, bool compress)
         {
-            return $"DATA SOURCE={dbName}; VERSION={version}; NEW={newDb}; COMPRESS={compress}; ";
+            return $"DATA SOURCE={dbName}.db; VERSION={version}; NEW={newDb}; COMPRESS={compress}; ";
         }
 
         static internal string CreateDatabase(string dbName)
         {
-            return $"CREATE DATABASE {dbName}";
+            return $"CREATE DATABASE {dbName}.db";
         }
 
         static internal string DeleteDatabase(string dbName)
         {
-            return $"DROP DATABASE {dbName}";
+            return $"DROP DATABASE {dbName}.db";
         }
 
         static internal string BackupDatabase(string dbName, string path)
         {
-            return $"BACKUP DATABASE {dbName} TO DISK='{path}' WITH DIFFERETIAL;";
+            return $"BACKUP DATABASE {dbName}.db TO DISK='{path}' WITH DIFFERETIAL;";
         }
 
         static internal string CreateTable(string tableName, List<ColumnDescription> columns )

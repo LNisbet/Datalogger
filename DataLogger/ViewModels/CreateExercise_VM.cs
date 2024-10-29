@@ -22,7 +22,7 @@ namespace DataLogger.ViewModels
 
         public ObservableCollection<string> AllExerciseTags { get => TagsTable.AllExerciseTags;}
 
-        public ObservableCollection<Exercise> Exercises{ get => ExerciseTable.Exercises; }
+        public ObservableCollection<Exercise> Exercises => ExerciseTable.Exercises;
 
         public Exercise? SelectedExercise { get; set; }
         #endregion
