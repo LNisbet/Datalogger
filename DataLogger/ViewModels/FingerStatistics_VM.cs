@@ -84,12 +84,15 @@ namespace DataLogger.ViewModels
 
         private float[] GetPieChartValues(string exerciseName, Options option)
         {
+            var stat = new BasicStatistics(ExerciseTable.SelectExerciseByName(exerciseName), DateOnly.MinValue, DateOnly.MaxValue);
             switch (option)
             {
                 case Options.MostRecent:
-                    return [Statistics.MostRecent(ExerciseTable.SelectExerciseByName(exerciseName)).Value1];
+                    return stat.MostRecent == null ? [0] : [stat.MostRecent.Value1];
                 case Options.Max:
-                    return [Statistics.Max(ExerciseTable.SelectExerciseByName(exerciseName),DateOnly.MinValue,DateOnly.MaxValue).Value1];
+                    return stat.Max == null ? [0] : [stat.Max.Value1];
+                case Options.Min:
+                    return stat.Min == null ? [0] : [stat.Min.Value1];
                 default:
                     throw new NotImplementedException();
             }
@@ -109,7 +112,9 @@ namespace DataLogger.ViewModels
             [Description("Most Recent")]
             MostRecent,
             [Description("Maximum")]
-            Max
+            Max,
+            [Description("Minimum")]
+            Min
         }
 
         private enum Hand
