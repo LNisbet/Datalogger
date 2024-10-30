@@ -24,7 +24,16 @@ namespace DataLogger.ViewModels
     {
         #region Fileds
         private Options selectedOption = Options.MostRecent;
-        public Options SelectedOption { get { return selectedOption; } set { selectedOption = value; UpdatePieCharts(); } }
+
+        public Options SelectedOption
+        {
+            get => selectedOption;
+            set
+            {
+                selectedOption = value;
+                UpdatePieCharts();
+            }
+        }
 
         public ObservableCollection<ISeries> LeftHalfCrimp_Series { get; set; }
 
@@ -33,6 +42,8 @@ namespace DataLogger.ViewModels
         public ObservableCollection<ISeries> RightHalfCrimp_Series { get; set; }
 
         public ObservableCollection<ISeries> RightOpenCrimp_Series { get; set; }
+
+        public ObservableCollection<BasicStatistics> FingerStatistics { get; private set; }
         #endregion
 
         public FingerStatistics_VM()
@@ -41,6 +52,9 @@ namespace DataLogger.ViewModels
             LeftOpenCrimp_Series = [];
             RightHalfCrimp_Series = [];
             RightOpenCrimp_Series = [];
+
+            FingerStatistics = [];
+
             UpdatePieCharts();
         }
 
@@ -72,7 +86,7 @@ namespace DataLogger.ViewModels
 
             return new PieSeries<float> 
             { 
-                Values = GetPieChartValues(exerciseName, SelectedOption),
+                Values = new List<float>([GetExerciseValues(exerciseName, SelectedOption)]),
                 Name = exerciseName,
                 DataLabelsPaint = new SolidColorPaint(SKColors.Black),
                 DataLabelsSize = 12,
@@ -82,28 +96,29 @@ namespace DataLogger.ViewModels
             };
         }
 
-        private float[] GetPieChartValues(string exerciseName, Options option)
-        {
-            var stat = new BasicStatistics(ExerciseTable.SelectExerciseByName(exerciseName), DateOnly.MinValue, DateOnly.MaxValue);
-            switch (option)
-            {
-                case Options.MostRecent:
-                    return stat.MostRecent == null ? [0] : [stat.MostRecent.Value1];
-                case Options.Max:
-                    return stat.Max == null ? [0] : [stat.Max.Value1];
-                case Options.Min:
-                    return stat.Min == null ? [0] : [stat.Min.Value1];
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
         private float GetPieChartTotal(Hand hand, Crimp crimp)
         {
-            return GetPieChartValues($"{hand} Little Finger {crimp} Crimp", SelectedOption).Sum() +
-                GetPieChartValues($"{hand} Ring Finger {crimp} Crimp", SelectedOption).Sum() +
-                GetPieChartValues($"{hand} Middle Finger {crimp} Crimp", SelectedOption).Sum() +
-                GetPieChartValues($"{hand} Index Finger {crimp} Crimp", SelectedOption).Sum();
+            return Enum.GetValues(typeof(Fingers))
+                .Cast<Fingers>()
+                .Sum(finger => GetExerciseValues($"{hand} {finger} Finger {crimp} Crimp", SelectedOption));
+
+        }
+
+        private float GetExerciseValues(string exerciseName, Options option)
+        {
+            BasicStatistics stat = FingerStatistics.FirstOrDefault(st => st.Exercise.Name == exerciseName) 
+                ?? new BasicStatistics(ExerciseTable.SelectExerciseByName(exerciseName), DateOnly.MinValue, DateOnly.MaxValue);
+
+            if (!FingerStatistics.Contains(stat))
+                FingerStatistics.Add(stat);
+
+            return option switch
+            {
+                Options.MostRecent => stat.MostRecent?.Value1 ?? 0,
+                Options.Max => stat.Max?.Value1 ?? 0,
+                Options.Min => stat.Min?.Value1 ?? 0,
+                _ => throw new NotImplementedException()
+            };
         }
 
         #region Enums
@@ -121,6 +136,14 @@ namespace DataLogger.ViewModels
         {
             Left,
             Right
+        }
+
+        private enum Fingers
+        {
+            Little,
+            Ring,
+            Middle,
+            Index
         }
 
         private enum Crimp
