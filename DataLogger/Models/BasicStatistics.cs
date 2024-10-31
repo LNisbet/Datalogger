@@ -1,6 +1,7 @@
 ﻿using SQLight_Database;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,15 @@ namespace DataLogger
                 Max = null;
                 Min = null;
             }
+        }
+        public enum Options
+        {
+            [Description("Most Recent")]
+            MostRecent,
+            [Description("Maximum")]
+            Max,
+            [Description("Minimum")]
+            Min
         }
     }
 }

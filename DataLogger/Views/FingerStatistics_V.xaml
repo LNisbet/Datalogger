@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:DataLogger.Views" 
+      xmlns:uc="clr-namespace:DataLogger.Views.UserControls" 
       xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1200"
@@ -17,10 +18,20 @@
           SelectedValue="{Binding Path=SelectedOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <StackPanel Orientation="Horizontal">
                 <StackPanel HorizontalAlignment="Right">
-                    <Image Source="pack://application:,,,/DataLogger;component/Views/Resources/Left_Hand_Outline.png" Stretch="Uniform" MaxWidth="400"/>
+                    <uc:LeftHand_UserControl 
+                        LittleOpen="{Binding Path=LeftLittleOpenValue}"
+                        LittleHalf="{Binding Path=LeftLittleHalfValue}"
+                        RingOpen="{Binding Path=LeftRingOpenValue}"
+                        RingHalf="{Binding Path=LeftRingHalfValue}"
+                        MiddleOpen="{Binding Path=LeftMiddleOpenValue}"
+                        MiddleHalf="{Binding Path=LeftMiddleHalfValue}"
+                        IndexOpen="{Binding Path=LeftIndexOpenValue}"
+                        IndexHalf="{Binding Path=LeftIndexHalfValue}" />
+
                     <StackPanel Orientation="Horizontal">
                         <lvc:PieChart Series="{Binding LeftHalfCrimp_Series}" MinWidth="450" MinHeight="200" TooltipTextSize="12" LegendPosition="left" LegendTextSize="12"/>
                         <lvc:PieChart Series="{Binding LeftOpenCrimp_Series}" MinWidth="200" MinHeight="200" TooltipTextSize="12"/>
+
                     </StackPanel>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">

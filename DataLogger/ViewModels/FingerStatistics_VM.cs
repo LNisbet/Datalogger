@@ -17,15 +17,16 @@ using System.Linq.Expressions;
 using System.Xml.Linq;
 using SkiaSharp;
 using System.ComponentModel;
+using DataLogger.Models;
 
 namespace DataLogger.ViewModels
 {
     internal class FingerStatistics_VM : Base_VM
     {
         #region Fileds
-        private Options selectedOption = Options.MostRecent;
+        private BasicStatistics.Options selectedOption = BasicStatistics.Options.MostRecent;
 
-        public Options SelectedOption
+        public BasicStatistics.Options SelectedOption
         {
             get => selectedOption;
             set
@@ -43,7 +44,23 @@ namespace DataLogger.ViewModels
 
         public ObservableCollection<ISeries> RightOpenCrimp_Series { get; set; }
 
-        public ObservableCollection<BasicStatistics> FingerStatistics { get; private set; }
+        public float LeftLittleOpenValue => GetExerciseValues("Left Little Finger Open Crimp", SelectedOption);
+        public float LeftLittleHalfValue => GetExerciseValues("Left Little Finger Half Crimp", SelectedOption);
+        public float LeftRingOpenValue => GetExerciseValues("Left Ring Finger Open Crimp", SelectedOption);
+        public float LeftRingHalfValue => GetExerciseValues("Left Ring Finger Half Crimp", SelectedOption);
+        public float LeftMiddleOpenValue => GetExerciseValues("Left Middle Finger Open Crimp", SelectedOption);
+        public float LeftMiddleHalfValue => GetExerciseValues("Left Middle Finger Half Crimp", SelectedOption);
+        public float LeftIndexOpenValue => GetExerciseValues("Left Index Finger Open Crimp", SelectedOption);
+        public float LeftIndexHalfValue => GetExerciseValues("Left Index Finger Half Crimp", SelectedOption);
+
+        public float RightLittleOpenValue => GetExerciseValues("Right Little Finger Open Crimp", SelectedOption);
+        public float RightLittleHalfValue => GetExerciseValues("Right Little Finger Half Crimp", SelectedOption);
+        public float RightRingOpenValue => GetExerciseValues("Right Ring Finger Open Crimp", SelectedOption);
+        public float RightRingHalfValue => GetExerciseValues("Right Ring Finger Half Crimp", SelectedOption);
+        public float RightMiddleOpenValue => GetExerciseValues("Right Middle Finger Open Crimp", SelectedOption);
+        public float RightMiddleHalfValue => GetExerciseValues("Right Middle Finger Half Crimp", SelectedOption);
+        public float RightIndexOpenValue => GetExerciseValues("Right Index Finger Open Crimp", SelectedOption);
+        public float RightIndexHalfValue => GetExerciseValues("Right Index Finger Half Crimp", SelectedOption);
         #endregion
 
         public FingerStatistics_VM()
@@ -52,8 +69,6 @@ namespace DataLogger.ViewModels
             LeftOpenCrimp_Series = [];
             RightHalfCrimp_Series = [];
             RightOpenCrimp_Series = [];
-
-            FingerStatistics = [];
 
             UpdatePieCharts();
         }
@@ -104,34 +119,20 @@ namespace DataLogger.ViewModels
 
         }
 
-        private float GetExerciseValues(string exerciseName, Options option)
+        private float GetExerciseValues(string exerciseName, BasicStatistics.Options option)
         {
-            BasicStatistics stat = FingerStatistics.FirstOrDefault(st => st.Exercise.Name == exerciseName) 
-                ?? new BasicStatistics(ExerciseTable.SelectExerciseByName(exerciseName), DateOnly.MinValue, DateOnly.MaxValue);
-
-            if (!FingerStatistics.Contains(stat))
-                FingerStatistics.Add(stat);
+            var stat = BasicStatisticsList.GetStatisticsForExercise(exerciseName, DateOnly.MinValue, DateOnly.MaxValue);
 
             return option switch
             {
-                Options.MostRecent => stat.MostRecent?.Value1 ?? 0,
-                Options.Max => stat.Max?.Value1 ?? 0,
-                Options.Min => stat.Min?.Value1 ?? 0,
+                BasicStatistics.Options.MostRecent => stat.MostRecent?.Value1 ?? 0,
+                BasicStatistics.Options.Max => stat.Max?.Value1 ?? 0,
+                BasicStatistics.Options.Min => stat.Min?.Value1 ?? 0,
                 _ => throw new NotImplementedException()
             };
         }
 
         #region Enums
-        public enum Options
-        {
-            [Description("Most Recent")]
-            MostRecent,
-            [Description("Maximum")]
-            Max,
-            [Description("Minimum")]
-            Min
-        }
-
         private enum Hand
         {
             Left,

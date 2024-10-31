@@ -2,6 +2,7 @@
 using SQLight_Database;
 using CSV_Exporter;
 using System.Collections.ObjectModel;
+using DataLogger.Models;
 
 namespace DataLogger.ViewModels
 {
@@ -13,7 +14,7 @@ namespace DataLogger.ViewModels
             BasicStatisticsAllExercises = [];
             foreach (var exercise in ExerciseTable.Exercises) 
             {
-                BasicStatisticsAllExercises.Add(new BasicStatistics(exercise, DateOnly.MinValue, DateOnly.MaxValue));
+                BasicStatisticsAllExercises.Add(BasicStatisticsList.GetStatisticsForExercise(exercise, DateOnly.MinValue, DateOnly.MaxValue));
             }
         }
     }
