@@ -35,7 +35,7 @@ namespace DataLogger.ViewModels
         public List<Axis> XAxes { get; set; }
         public List<Axis> YAxes { get; set; }
 
-        private ObservableCollection<Enums.Units> yAxisLabels = []; 
+        private ObservableCollection<Exercise.Units> yAxisLabels = []; 
         public Charting_VM()
         {
             Series = [];
@@ -52,7 +52,7 @@ namespace DataLogger.ViewModels
                 }];
 
             YAxes = [];
-            foreach (var unit in (Enums.Units[])Enum.GetValues(typeof(Enums.Units)))
+            foreach (var unit in (Exercise.Units[])Enum.GetValues(typeof(Exercise.Units)))
             {
                 YAxes.Add(new Axis 
                 {
@@ -104,7 +104,7 @@ namespace DataLogger.ViewModels
         {
             foreach (var axis in YAxes)
             {
-                if (!Enum.TryParse(axis.Name, out Enums.Units unit) || !yAxisLabels.Contains(unit))
+                if (!Enum.TryParse(axis.Name, out Exercise.Units unit) || !yAxisLabels.Contains(unit))
                     axis.IsVisible = false;
                 else
                     axis.IsVisible = true;

@@ -21,7 +21,7 @@ namespace SQLight_Database
 
         internal static void DeleteDatabase(string dbName, SQLiteConnection conn)
         {
-            SQL_Commands.ExecuteSQLString(conn, SQL_Strings.DeleteDatabase(dbName), Enums.CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(conn, SQL_Strings.DeleteDatabase(dbName), SQL_Commands.CommandType.NonQuery);
             DatabaseConnection.CloseConnection();
             if (File.Exists(dbName))
             {
@@ -31,7 +31,7 @@ namespace SQLight_Database
 
         private static void CreateTable(string tableName, List<ColumnDescription> tableDescription, SQLiteConnection conn)
         {
-            SQL_Commands.ExecuteSQLString(conn, SQL_Strings.CreateTable(tableName, tableDescription), Enums.CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(conn, SQL_Strings.CreateTable(tableName, tableDescription), SQL_Commands.CommandType.NonQuery);
         }
     }
 }

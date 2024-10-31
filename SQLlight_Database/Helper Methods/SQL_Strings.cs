@@ -113,7 +113,7 @@ namespace SQLight_Database
             return $"{select} {columns} FROM {tableName} {con}; ";
         }
 
-        static internal string SelectData(string tableName, string columns, string inColumn, Enums.SelectDataOptions selectOption, string? condition = null)
+        static internal string SelectData(string tableName, string columns, string inColumn, SelectDataOptions selectOption, string? condition = null)
         {
             var whereCon = "";
             var andCon = "";
@@ -124,6 +124,14 @@ namespace SQLight_Database
             }
 
             return $"SELECT {columns} FROM {tableName} WHERE {inColumn} = (SELECT {selectOption}({inColumn}) FROM {tableName} {whereCon}) {andCon} Limit 1; ";
+        }
+        public enum SelectDataOptions
+        {
+            MIN,
+            MAX,
+            COUNT,
+            SUM,
+            AVG
         }
 
         static private string CreateStringFromList(List<string> list)

@@ -39,17 +39,17 @@ namespace SQLight_Database
             return conn;
         }
 
-        internal static object? ExecuteSQLString(SQLiteConnection? sqlite_conn, string sqlString, Enums.CommandType commandType)
+        internal static object? ExecuteSQLString(SQLiteConnection? sqlite_conn, string sqlString, CommandType commandType)
         {
             if (sqlite_conn == null)
                 throw new NoOpenSQLConnection();
 
             switch (commandType)
             {
-                case Enums.CommandType.NonQuery:
+                case CommandType.NonQuery:
                     ExecuteNonQueryCommand(sqlite_conn, sqlString);
                     return null;
-                case Enums.CommandType.Reader:
+                case CommandType.Reader:
                     return ExecuteReader(sqlite_conn, sqlString);
                 default:
                     throw new NotImplementedException(commandType.ToString());
@@ -71,6 +71,12 @@ namespace SQLight_Database
             SQLiteDataReader? sqlite_datareader = sqlite_cmd.ExecuteReader();
 
             return sqlite_datareader;
+        }
+
+        internal enum CommandType
+        {
+            NonQuery,
+            Reader
         }
     }
 }

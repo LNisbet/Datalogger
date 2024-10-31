@@ -17,7 +17,7 @@ namespace SQLight_Database
         {
             if (!AllExerciseTags.Contains(tag))
             {
-                SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), Enums.CommandType.NonQuery);
+                SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), SQL_Commands.CommandType.NonQuery);
                 ReadAllExerciseTags();
             }
         }
@@ -26,20 +26,20 @@ namespace SQLight_Database
         {
             foreach (var tag in tags)
                 if (!AllExerciseTags.Contains(tag))
-                    SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), Enums.CommandType.NonQuery);
+                    SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), SQL_Commands.CommandType.NonQuery);
 
             ReadAllExerciseTags();
         }
 
         public static void RemoveSingleTag(string tag)
         {
-            SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.DeleteFromTable(Config.TagsTableName, $"Tags='{tag}'"), Enums.CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.DeleteFromTable(Config.TagsTableName, $"Tags='{tag}'"), SQL_Commands.CommandType.NonQuery);
             ReadAllExerciseTags();
         }
 
         internal static void ReadAllExerciseTags()
         {
-            var sqlite_datareader = SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.ReadData(Config.TagsTableName, "*", true), Enums.CommandType.Reader) as SQLiteDataReader;
+            var sqlite_datareader = SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.ReadData(Config.TagsTableName, "*", true), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
 
             while (sqlite_datareader != null && sqlite_datareader.Read())
             {

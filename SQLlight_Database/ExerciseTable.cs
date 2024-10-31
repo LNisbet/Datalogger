@@ -31,7 +31,7 @@ namespace SQLight_Database
         {
             if (!AllExerciseNames.Contains(exercise.Name))
             {
-                SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), Enums.CommandType.NonQuery);
+                SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
                 foreach (var tag in exercise.Tags)
                 {
                     if (!TagsTable.AllExerciseTags.Contains(tag))
@@ -47,7 +47,7 @@ namespace SQLight_Database
             foreach (var exercise in exercises)
                 if (!AllExerciseNames.Contains(exercise.Name))
                 {
-                    SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), Enums.CommandType.NonQuery);
+                    SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
                     foreach (var tag in exercise.Tags)
                     {
                         if (!TagsTable.AllExerciseTags.Contains(tag))
@@ -60,13 +60,13 @@ namespace SQLight_Database
 
         public static void RemoveSingleExercise(Exercise exercise)
         {
-            SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.DeleteFromTable(Config.ExercieseTableName, $"Name='{exercise.Name}'"), Enums.CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.DeleteFromTable(Config.ExercieseTableName, $"Name='{exercise.Name}'"), SQL_Commands.CommandType.NonQuery);
             ReadAllExercises();
         }
 
         public static void ReadAllExercises()
         {
-            var sqlite_datareader = SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.ReadData(Config.ExercieseTableName, "*", false), Enums.CommandType.Reader) as SQLiteDataReader;
+            var sqlite_datareader = SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.ReadData(Config.ExercieseTableName, "*", false), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
             exercises.Clear();
 
             while (sqlite_datareader != null && sqlite_datareader.Read())

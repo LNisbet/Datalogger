@@ -10,5 +10,11 @@ namespace DataLogger.Models
     {
         public object Value { get; set; }
         public object Description { get; set; }
+
+        public ValueDescription(object value, object description) 
+        {
+            Value = value;
+            Description = description;
+        }
     }
 }

@@ -6,16 +6,16 @@ namespace SQLight_Database
     {
         public string Name { get; set; }
         public List<string> Tags { get; set; }
-        public Enums.Units Unit1 { get; set; }
-        public Enums.Units? Unit2 { get; set; }
-        public Enums.Units? Unit3 { get; set; }
-        public Enums.Units? Unit4 { get; set; }
+        public Units Unit1 { get; set; }
+        public Units? Unit2 { get; set; }
+        public Units? Unit3 { get; set; }
+        public Units? Unit4 { get; set; }
 
         public string? Description { get; set; }
 
         public Exercise() { }
 
-        public Exercise(string name, List<string> tags, Enums.Units unit1, Enums.Units? unit2 = null, Enums.Units? unit3 = null, Enums.Units? unit4 = null,  string? description = null)
+        public Exercise(string name, List<string> tags, Units unit1, Units? unit2 = null, Units? unit3 = null, Units? unit4 = null,  string? description = null)
         {
             Name = name;
             Tags = tags;
@@ -32,7 +32,7 @@ namespace SQLight_Database
             {
                 Name = sqlite_datareader.GetString(0);
                 Tags = TagsFromString(sqlite_datareader.GetString(1));
-                Unit1 = (Enums.Units)Enum.Parse(typeof(Enums.Units), sqlite_datareader.GetString(2));
+                Unit1 = (Units)Enum.Parse(typeof(Units), sqlite_datareader.GetString(2));
                 Unit2 = GetUnitsFromDatabase(sqlite_datareader, 3);
                 Unit3 = GetUnitsFromDatabase(sqlite_datareader, 4);
                 Unit4 = GetUnitsFromDatabase(sqlite_datareader, 5);
@@ -42,11 +42,11 @@ namespace SQLight_Database
                 throw new ArgumentNullException();
         }
 
-        private static Enums.Units? GetUnitsFromDatabase(SQLiteDataReader sqlite_datareader, int col)
+        private static Units? GetUnitsFromDatabase(SQLiteDataReader sqlite_datareader, int col)
         {
             try
             {
-                return (Enums.Units)Enum.Parse(typeof(Enums.Units), sqlite_datareader.GetString(col));
+                return (Units)Enum.Parse(typeof(Units), sqlite_datareader.GetString(col));
             }
             catch 
             { 
@@ -87,6 +87,19 @@ namespace SQLight_Database
         private static List<string> TagsFromString(string tags)
         {
             return tags.Split(',').ToList();
+        }
+
+        public enum Units
+        {
+            None,
+            Kg,
+            N,
+            mm,
+            cm,
+            Reps,
+            Sets,
+            Minutes,
+            Seconds
         }
     }
 }

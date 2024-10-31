@@ -28,7 +28,7 @@ namespace SQLight_Database
         {
             if (IsLogUnique(log))
             {
-                SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), Enums.CommandType.NonQuery);
+                SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
                 ReadAllLogs();
             }
         }
@@ -36,19 +36,19 @@ namespace SQLight_Database
         public static void AddMultipleLogs(List<ExerciseLog> logs)
         {
             foreach (var log in logs) if (IsLogUnique(log))
-                    SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), Enums.CommandType.NonQuery);
+                    SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
             ReadAllLogs();
         }
 
         public static void RemoveSingleLog(ExerciseLog log)
         {
-            SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Id={log.Id}"), Enums.CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Id={log.Id}"), SQL_Commands.CommandType.NonQuery);
             ReadAllLogs();
         }
 
         public static void ReadAllLogs()
         {
-            var sqlite_datareader = SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.ReadData(Config.LogsTableName, "*", false), Enums.CommandType.Reader) as SQLiteDataReader;
+            var sqlite_datareader = SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.ReadData(Config.LogsTableName, "*", false), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
             logs.Clear();
 
             while (sqlite_datareader != null && sqlite_datareader.Read())
