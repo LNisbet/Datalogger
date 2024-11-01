@@ -5,20 +5,17 @@
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local="clr-namespace:DataLogger.Views"
+      xmlns:cvert="clr-namespace:DataLogger.Views.Converters"
+      xmlns:uc="clr-namespace:DataLogger.Views.UserControls"
       xmlns:db="clr-namespace:SQLight_Database;assembly=SQLight_Database"
       mc:Ignorable="d"
       d:DesignHeight="600" d:DesignWidth="1200"
       Title="CreateExercise_V">
 
     <Page.Resources>
-        <ObjectDataProvider x:Key="UnitsEnum"
-                            MethodName="GetValues"
-                            ObjectType="{x:Type sys:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="db:Enums+Units"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+        <cvert:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
     </Page.Resources>
+
     <StackPanel Orientation="Horizontal">
         <local:Navigation_Control/>
         <StackPanel>
@@ -35,6 +32,7 @@
                          SelectionChanged="ListBox_SelectionChanged"
                          Margin="5" />
                 </StackPanel>
+                
                 <StackPanel Width="100">
                     <TextBlock Text="Number of Units" />
                     <StackPanel Orientation="Horizontal">
@@ -42,21 +40,41 @@
                         <Button x:Name="MoreUnits_Button" Content="+" Width="50" Click="MoreUnits"/>
                     </StackPanel>
                 </StackPanel>
+                
                 <StackPanel Width="100">
                     <TextBlock Text="Unit1" />
-                    <ComboBox ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit1, Mode=TwoWay}"/>
+                    <ComboBox
+                        ItemsSource="{Binding Path=NewUnit1, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
+                        SelectedValuePath="Value"
+                        DisplayMemberPath="Description"
+                        SelectedValue="{Binding Path=NewUnit1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
+                
                 <StackPanel x:Name="Unit2_SP"  Width="100">
                     <TextBlock Text="Unit2" />
-                    <ComboBox x:Name="Unit2_CB" ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit2, Mode=TwoWay}"/>
+                    <ComboBox x:Name="Unit2_CB"
+                        ItemsSource="{Binding Path=NewUnit2, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
+                        SelectedValuePath="Value"
+                        DisplayMemberPath="Description"
+                        SelectedValue="{Binding Path=NewUnit2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
+                
                 <StackPanel x:Name="Unit3_SP" Width="100">
                     <TextBlock Text="Unit3" />
-                    <ComboBox x:Name="Unit3_CB" ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit3, Mode=TwoWay}"/>
+                    <ComboBox x:Name="Unit3_CB"
+                        ItemsSource="{Binding Path=NewUnit3, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
+                        SelectedValuePath="Value"
+                        DisplayMemberPath="Description"
+                        SelectedValue="{Binding Path=NewUnit3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
+                
                 <StackPanel x:Name="Unit4_SP" Width="100">
                     <TextBlock Text="Unit4" />
-                    <ComboBox x:Name="Unit4_CB" ItemsSource="{Binding Source={StaticResource UnitsEnum}}" SelectedItem="{Binding NewUnit4, Mode=TwoWay}"/>
+                    <ComboBox x:Name="Unit4_CB"
+                        ItemsSource="{Binding Path=NewUnit4, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
+                        SelectedValuePath="Value"
+                        DisplayMemberPath="Description"
+                        SelectedValue="{Binding Path=NewUnit4, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
             </StackPanel>
 

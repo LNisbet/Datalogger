@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DataLogger.Views"
+             xmlns:views="clr-namespace:DataLogger.Views"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="150">
     <StackPanel HorizontalAlignment="Left" Background="AliceBlue">
@@ -47,7 +48,7 @@
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
-                    <Hyperlink NavigateUri="Debug_V.xaml">
+                    <Hyperlink NavigateUri="vDebug_V.xaml">
                         Debug
                     </Hyperlink>
                 </TextBlock>

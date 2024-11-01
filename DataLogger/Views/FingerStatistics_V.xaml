@@ -5,17 +5,24 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:DataLogger.Views" 
       xmlns:uc="clr-namespace:DataLogger.Views.UserControls" 
+      xmlns:cvert="clr-namespace:DataLogger.Views.Converters"
       xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1200"
       Title="FingerStatistics_V">
+
+    <Page.Resources>
+        <cvert:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
+    </Page.Resources>
+
     <StackPanel Orientation="Horizontal">
         <local:Navigation_Control/>
         <StackPanel >
-            <ComboBox Width="150" ItemsSource="{Binding Path=SelectedOption, Converter={local:EnumToCollectionConverter}, Mode=OneTime}"
-          SelectedValuePath="Value"
-          DisplayMemberPath="Description"
-          SelectedValue="{Binding Path=SelectedOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ComboBox Width="150" 
+                ItemsSource="{Binding Path=SelectedOption, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
+                SelectedValuePath="Value"
+                DisplayMemberPath="Description"
+                SelectedValue="{Binding Path=SelectedOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <StackPanel Orientation="Horizontal">
                 <StackPanel HorizontalAlignment="Right">
                     <uc:LeftHand_UserControl 
@@ -35,16 +42,16 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">
-                    <Image Source="pack://application:,,,/DataLogger;component/Views/Resources/Left_Hand_Outline.png" Stretch="Uniform" RenderTransformOrigin="0.5,0.5" MaxWidth="400" >
-                        <Image.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform ScaleX="-1"/>
-                                <SkewTransform/>
-                                <RotateTransform/>
-                                <TranslateTransform/>
-                            </TransformGroup>
-                        </Image.RenderTransform>
-                    </Image>
+                    <uc:LeftHand_UserControl
+                        IsMirrored="True"
+                        LittleOpen="{Binding Path=RightLittleOpenValue}"
+                        LittleHalf="{Binding Path=RightLittleHalfValue}"
+                        RingOpen="{Binding Path=RightRingOpenValue}"
+                        RingHalf="{Binding Path=RightRingHalfValue}"
+                        MiddleOpen="{Binding Path=RightMiddleOpenValue}"
+                        MiddleHalf="{Binding Path=RightMiddleHalfValue}"
+                        IndexOpen="{Binding Path=RightIndexOpenValue}"
+                        IndexHalf="{Binding Path=RightIndexHalfValue}" />
                     <StackPanel Orientation="Horizontal">
                         <lvc:PieChart Series="{Binding RightOpenCrimp_Series}" MinWidth="200" MinHeight="200" TooltipTextSize="12"/>
                         <lvc:PieChart Series="{Binding RightHalfCrimp_Series}" MinWidth="200" MinHeight="200" TooltipTextSize="12"/>

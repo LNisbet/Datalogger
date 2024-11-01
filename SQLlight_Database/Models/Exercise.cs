@@ -1,4 +1,5 @@
-﻿using System.Data.SQLite;
+﻿using System.ComponentModel;
+using System.Data.SQLite;
 
 namespace SQLight_Database
 {
@@ -91,14 +92,23 @@ namespace SQLight_Database
 
         public enum Units
         {
+            [Description("None")]
             None,
+            [Description("Kg")]
             Kg,
+            [Description("N")]
             N,
+            [Description("mm")]
             mm,
+            [Description("cm")]
             cm,
+            [Description("Reps")]
             Reps,
+            [Description("Sets")]
             Sets,
+            [Description("Minutes")]
             Minutes,
+            [Description("Seconds")]
             Seconds
         }
     }

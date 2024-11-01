@@ -98,7 +98,17 @@ DependencyProperty.Register("MiddleHalf", typeof(float), typeof(LeftHand_UserCon
                     get { return (float)GetValue(IndexHalfProperty); }
                     set { SetValue(IndexHalfProperty, value); }
                 }
-                #endregion
+        #endregion
+
+        public static readonly DependencyProperty IsMirroredProperty =
+            DependencyProperty.Register("IsMirrored", typeof(bool), typeof(LeftHand_UserControl), new PropertyMetadata(false));
+
+        public bool IsMirrored
+        {
+            get { return (bool)GetValue(IsMirroredProperty); }
+            set { SetValue(IsMirroredProperty, value); }
+        }
+
         public LeftHand_UserControl()
         {
             InitializeComponent();

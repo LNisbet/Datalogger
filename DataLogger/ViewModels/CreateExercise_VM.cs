@@ -12,9 +12,9 @@ namespace DataLogger.ViewModels
 
         public ObservableCollection<string> NewExerciseTags { get; set; }
         public Exercise.Units NewUnit1 { get; set; }
-        public Exercise.Units? NewUnit2 { get; set; }
-        public Exercise.Units? NewUnit3 { get; set; }
-        public Exercise.Units? NewUnit4 { get; set; }
+        public Exercise.Units NewUnit2 { get; set; }
+        public Exercise.Units NewUnit3 { get; set; }
+        public Exercise.Units NewUnit4 { get; set; }
 
         public string? NewExerciseDescription { get; set; }
 

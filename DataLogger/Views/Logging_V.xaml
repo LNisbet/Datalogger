@@ -4,16 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataLogger.Views"
+        xmlns:uc="clr-namespace:DataLogger.Views.UserControls"
         xmlns:VM="clr-namespace:DataLogger.ViewModels"
         mc:Ignorable="d"
         d:DesignHeight="600" d:DesignWidth="1200"
         Title="Logging_V" Height="600" Width="1200">
+    
     <Page.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Padding" Value="10,0,0,0"/>
         </Style>
         <VM:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     </Page.Resources>
+    
     <StackPanel Orientation="Horizontal">
         <local:Navigation_Control/>
         <StackPanel>
