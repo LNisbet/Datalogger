@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DataLogger.ViewModels.HelperClasses;
 
 namespace DataLogger.ViewModels
 {
@@ -27,7 +28,7 @@ namespace DataLogger.ViewModels
             }  
         }
 
-        public ObservableCollection<string> UserNames { get => SQLight_Database.Users.AllUserNames; }
+        public ObservableCollection<string> UserNames => SQLight_Database.Users.AllUserNames;
 
         public MainWindow_VM() 
         {
@@ -43,11 +44,8 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                if (closeApp == null)
-                {
-                    closeApp = new RelayCommand(
+                closeApp ??= new RelayCommand(
                         p => CloseAndSaveApp());
-                }
                 return closeApp;
             }
         }

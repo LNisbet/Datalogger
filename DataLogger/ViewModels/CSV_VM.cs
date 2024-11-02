@@ -3,6 +3,7 @@ using SQLight_Database;
 using CSV_Exporter;
 using Newtonsoft.Json.Linq;
 using System.Windows.Controls;
+using DataLogger.ViewModels.HelperClasses;
 
 namespace DataLogger.ViewModels
 {
@@ -12,7 +13,8 @@ namespace DataLogger.ViewModels
         {
         }
 
-        private string? SelectOpenFilePath()
+        #region Select File Path
+        private static string? SelectOpenFilePath()
         {
             // Create OpenFileDialog 
             Microsoft.Win32.OpenFileDialog dlg = new()
@@ -36,7 +38,7 @@ namespace DataLogger.ViewModels
             return null;
         }
 
-        private string? SelectSaveFilePath()
+        private static string? SelectSaveFilePath()
         {
             Microsoft.Win32.SaveFileDialog dlg = new()
             {
@@ -58,6 +60,7 @@ namespace DataLogger.ViewModels
             }
             return null;
         }
+        #endregion
 
         #region ExportLogsToCSV
         private ICommand? exportLogsCommand;
@@ -65,17 +68,14 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                if (exportLogsCommand == null)
-                {
-                    exportLogsCommand = new RelayCommand(
+                exportLogsCommand ??= new RelayCommand(
                         p => LogsTable.Logs.Count > 0,
                         p => ExportLogs());
-                }
                 return exportLogsCommand;
             }
         }
 
-        public void ExportLogs()
+        public static void ExportLogs()
         {
             var path = SelectSaveFilePath();
             if (path == null)
@@ -90,17 +90,14 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                if (exportExercisesCommand == null)
-                {
-                    exportExercisesCommand = new RelayCommand(
+                exportExercisesCommand ??= new RelayCommand(
                         p => ExerciseTable.Exercises.Count > 0,
                         p => ExportExercises());
-                }
                 return exportExercisesCommand;
             }
         }
 
-        public void ExportExercises()
+        public static void ExportExercises()
         {
             var path = SelectSaveFilePath();
             if (path == null)
@@ -115,16 +112,13 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                if (importLogsCommand == null)
-                {
-                    importLogsCommand = new RelayCommand(
+                importLogsCommand ??= new RelayCommand(
                         p => ImportLogs());
-                }
                 return importLogsCommand;
             }
         }
 
-        public void ImportLogs()
+        public static void ImportLogs()
         {
             var path = SelectOpenFilePath();
             if (path == null)
@@ -139,16 +133,13 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                if (importExercisesCommand == null)
-                {
-                    importExercisesCommand = new RelayCommand(
+                importExercisesCommand ??= new RelayCommand(
                         p => ImportExercises());
-                }
                 return importExercisesCommand;
             }
         }
 
-        public void ImportExercises()
+        public static void ImportExercises()
         {
             var path = SelectOpenFilePath();
             if (path == null)

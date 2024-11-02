@@ -18,12 +18,10 @@ namespace DataLogger.Views
 {
     public partial class BasicStatistics_V : Page
     {
-        private object? dataContext = null;
         public BasicStatistics_V()
         {
             InitializeComponent();
-            dataContext ??= new BasicStatistics_VM();
-            DataContext = dataContext;
+            DataContext = new BasicStatistics_VM();
         }
     }
 }

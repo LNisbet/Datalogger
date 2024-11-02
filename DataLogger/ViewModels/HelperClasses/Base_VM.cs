@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace DataLogger.ViewModels
+namespace DataLogger.ViewModels.HelperClasses
 {
     public partial class Base_VM : INotifyPropertyChanged
     {

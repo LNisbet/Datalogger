@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Controls;
 
-namespace DataLogger.ViewModels
+namespace DataLogger.ViewModels.HelperClasses
 {
     public class NumericValidationRule : ValidationRule
     {

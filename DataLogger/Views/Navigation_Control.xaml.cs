@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace DataLogger.Views
 {
-    /// <summary>
-    /// Interaction logic for Navigation_Control.xaml
-    /// </summary>
     public partial class Navigation_Control : UserControl
     {
         public Navigation_Control()

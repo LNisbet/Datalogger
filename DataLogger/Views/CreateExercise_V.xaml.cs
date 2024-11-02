@@ -5,21 +5,27 @@ namespace DataLogger.Views
 {
     public partial class CreateExercise_V : Page
     {
-        private object? dataContext = null;
         private int unitsDisplayed;
+        private int UnitsDisplayed 
+        { 
+            get => unitsDisplayed;
+            set
+            {
+                unitsDisplayed = value;
+                UpdateUnitsBoxes();
+            }
+        }
         public CreateExercise_V()
         {
             InitializeComponent();
-            dataContext ??= new CreateExercise_VM();
-            DataContext = dataContext;
-            unitsDisplayed = 1;
-            UpdateUnitsBoxes();
+            DataContext = new CreateExercise_VM();
+            UnitsDisplayed = 1;
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var listBox = sender as ListBox;
-            var viewModel = DataContext as CreateExercise_VM;
+            if (sender is not ListBox listBox || DataContext is not CreateExercise_VM viewModel)
+                return;
 
             // Clear and update NewExerciseTags based on selected items
             viewModel.NewExerciseTags.Clear();
@@ -31,7 +37,7 @@ namespace DataLogger.Views
 
         private void UpdateUnitsBoxes()
         {
-            switch (unitsDisplayed)
+            switch (UnitsDisplayed)
             {
                 case 1:
                     LessUnits_Button.IsEnabled = false;
@@ -68,21 +74,19 @@ namespace DataLogger.Views
                     MoreUnits_Button.IsEnabled = false;
                     break;
                 default:
-                    unitsDisplayed = 1;
+                    UnitsDisplayed = 1;
                     break;
             }
         }
 
         private void MoreUnits(object sender, System.Windows.RoutedEventArgs e)
         {
-            unitsDisplayed++;
-            UpdateUnitsBoxes();
+            UnitsDisplayed++;
         }
 
         private void LessUnits(object sender, System.Windows.RoutedEventArgs e)
         {
-            unitsDisplayed--;
-            UpdateUnitsBoxes();
+            UnitsDisplayed--;
         }
     }
 }

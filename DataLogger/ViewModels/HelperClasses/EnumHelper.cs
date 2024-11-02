@@ -7,14 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLogger.ViewModels
+namespace DataLogger.ViewModels.HelperClasses
 {
     public static class EnumHelper
     {
         public static string Description(this Enum value)
         {
             var attributes = value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
-            if (attributes.Any())
+            if (attributes.Length != 0)
                 return (attributes.First() as DescriptionAttribute).Description;
 
             // If no description is found, the least we can do is replace underscores with spaces

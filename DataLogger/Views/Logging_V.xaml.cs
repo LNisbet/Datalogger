@@ -6,13 +6,11 @@ namespace DataLogger.Views
 {
     public partial class Logging_V : Page
     {
-        private object? dataContext = null;
         public Logging_V()
         {
             InitializeComponent();
+            DataContext = new Logging_VM();
             TBOX_Date.Visibility = Visibility.Hidden;
-            dataContext ??= new Logging_VM();
-            DataContext = dataContext;
         }
 
         private void CB_Date_Clicked(object sender, RoutedEventArgs e)

@@ -1,13 +1,8 @@
 ﻿using DataLogger.Models;
-using DataLogger.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Markup;
+using DataLogger.ViewModels.HelperClasses;
 
 namespace DataLogger.Views.Converters
 {

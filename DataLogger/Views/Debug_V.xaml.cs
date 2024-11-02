@@ -21,12 +21,10 @@ namespace DataLogger.Views
     /// </summary>
     public partial class Debug_V : Page
     {
-        private object? dataContext = null;
         public Debug_V()
         {
             InitializeComponent();
-            dataContext ??= new Debug_VM();
-            DataContext = dataContext;
+            DataContext = new Debug_VM();
         }
     }
 }

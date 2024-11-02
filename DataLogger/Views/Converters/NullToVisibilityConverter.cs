@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Data;
 
 
-namespace DataLogger.ViewModels
+namespace DataLogger.Views.Converters
 {
     public class NullToVisibilityConverter : IValueConverter
     {

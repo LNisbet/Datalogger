@@ -62,7 +62,7 @@ namespace DataLogger.Models
             };
         }
 
-        internal float GetCrimpTotal(Crimp crimp, BasicStatistics.Options option)
+        internal float? GetCrimpTotal(Crimp crimp, BasicStatistics.Options option)
         {
             return Enum.GetValues(typeof(Fingers))
                 .Cast<Fingers>()

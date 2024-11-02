@@ -21,12 +21,10 @@ namespace DataLogger.Views
     /// </summary>
     public partial class FingerStatistics_V : Page
     {
-        private object? dataContext = null;
         public FingerStatistics_V()
         {
             InitializeComponent();
-            dataContext ??= new FingerStatistics_VM();
-            DataContext = dataContext;
+            DataContext = new FingerStatistics_VM();
         }
     }
 }

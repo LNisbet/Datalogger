@@ -12,13 +12,13 @@ using System.Windows.Input.Manipulations;
 using LiveChartsCore.Drawing;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.Kernel;
-using Newtonsoft.Json.Linq;
+using DataLogger.ViewModels.HelperClasses;
 
 namespace DataLogger.ViewModels
 {
     internal class Charting_VM : Base_VM
     {
-        public ObservableCollection<string>? ExerciseTags => TagsTable.AllExerciseTags;
+        public static ObservableCollection<string>? ExerciseTags => TagsTable.AllExerciseTags;
         
         private string? selectedExerciseTag = null;
         public string? SelectedExerciseTag {  get => selectedExerciseTag; set { selectedExerciseTag = value; OnPropertyChanged(nameof(ExerciseList)); } }
@@ -35,7 +35,7 @@ namespace DataLogger.ViewModels
         public List<Axis> XAxes { get; set; }
         public List<Axis> YAxes { get; set; }
 
-        private ObservableCollection<Exercise.Units> yAxisLabels = []; 
+        private readonly ObservableCollection<Exercise.Units> yAxisLabels = []; 
         public Charting_VM()
         {
             Series = [];

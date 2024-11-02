@@ -16,23 +16,16 @@ using System.Windows.Shapes;
 
 namespace DataLogger.Views
 {
-    /// <summary>
-    /// Interaction logic for Graphs_V.xaml
-    /// </summary>
     public partial class Charting_V : Page
     {
-        private object? dataContext = null;
         public Charting_V()
         {
             InitializeComponent();
-            dataContext ??= new Charting_VM();
-            DataContext = dataContext;
+            DataContext = new Charting_VM();
         }
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var viewModel = DataContext as Charting_VM;
-            var listBox = sender as ListBox;
-            if (listBox == null || viewModel == null)
+            if (sender is not ListBox listBox || DataContext is not Charting_VM viewModel)
                 return;
 
             foreach (var listItem in viewModel.ExerciseList)

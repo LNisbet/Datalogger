@@ -2,18 +2,28 @@
 using System.Windows;
 using System.Windows.Input;
 using SQLight_Database;
+using DataLogger.ViewModels.HelperClasses;
 
 namespace DataLogger.ViewModels
 {
     public class Logging_VM : Base_VM
     {
         #region Fields
-        public ObservableCollection<ExerciseLog> ExerciseLogs  => LogsTable.Logs;
+        public static ObservableCollection<ExerciseLog> ExerciseLogs  => LogsTable.Logs;
 
         private Exercise? selectedExercise;
-        public Exercise? SelectedExercise { get => selectedExercise; set { selectedExercise = value; OnPropertyChanged(nameof(SelectedExercise)); UpdateValues(); } }
+        public Exercise? SelectedExercise 
+        { 
+            get => selectedExercise; 
+            set 
+            { 
+                selectedExercise = value; 
+                OnPropertyChanged(nameof(SelectedExercise)); 
+                UpdateValues(); 
+            } 
+        }
 
-        public ObservableCollection<Exercise> Exercises  => ExerciseTable.Exercises;
+        public static ObservableCollection<Exercise> Exercises  => ExerciseTable.Exercises;
 
         public bool SpecifyDate { get; set; }
 
@@ -26,7 +36,15 @@ namespace DataLogger.ViewModels
         public string? Note { get; set; }
 
         private ExerciseLog? selectedExerciseLog;
-        public ExerciseLog? SelectedExerciseLog { get => selectedExerciseLog; set { selectedExerciseLog = value; UpdateValues(); } }
+        public ExerciseLog? SelectedExerciseLog 
+        { 
+            get => selectedExerciseLog; 
+            set 
+            { 
+                selectedExerciseLog = value; 
+                UpdateValues(); 
+            } 
+        }
         #endregion
 
         public Logging_VM()
@@ -42,15 +60,13 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                if (addNewLogCommand == null)
-                {
-                    addNewLogCommand = new RelayCommand(
+                addNewLogCommand ??= new RelayCommand(
                         p => SelectedExercise != null,
                         p => AddNewLog(SpecifyDate));
-                }
                 return addNewLogCommand;
             }
         }
+
         public void AddNewLog(bool dateSpecified)
         {
             if (SelectedExercise == null) 
@@ -70,16 +86,13 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                if (deleteLogCommand == null)
-                {
-                    deleteLogCommand = new RelayCommand(
+                deleteLogCommand ??= new RelayCommand(
                         p => SelectedExerciseLog != null,
                         p => DeleteLog(SelectedExerciseLog));
-                }
                 return deleteLogCommand;
             }
         }
-        public void DeleteLog(ExerciseLog? exercise)
+        public static void DeleteLog(ExerciseLog? exercise)
         {
             ArgumentNullException.ThrowIfNull(exercise);
 

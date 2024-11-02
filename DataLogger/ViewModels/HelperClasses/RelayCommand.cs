@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace DataLogger.ViewModels
+namespace DataLogger.ViewModels.HelperClasses
 {
     public class RelayCommand : ICommand
     {
@@ -12,26 +12,32 @@ namespace DataLogger.ViewModels
             _canExecute = canExecute;
             _execute = execute;
         }
-        public RelayCommand( Action<object> execute)
+        public RelayCommand(Action<object> execute)
         {
             _canExecute = param => true;
             _execute = execute;
         }
 
 
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
+            if (parameter == null)
+                return false;
+
             return _canExecute(parameter);
         }
 
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
+            if (parameter == null) 
+                return;
+
             _execute(parameter);
         }
     }

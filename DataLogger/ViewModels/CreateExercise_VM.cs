@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using SQLight_Database;
 using System.Windows;
+using DataLogger.ViewModels.HelperClasses;
 
 namespace DataLogger.ViewModels
 {
@@ -18,11 +19,11 @@ namespace DataLogger.ViewModels
 
         public string? NewExerciseDescription { get; set; }
 
-        private Exercise newExercise { get => new(NewExerciseName, NewExerciseTags.ToList(), NewUnit1, NewUnit2, NewUnit3, NewUnit4, NewExerciseDescription); }
+        private Exercise NewExercise { get => new(NewExerciseName, NewExerciseTags.ToList(), NewUnit1, NewUnit2, NewUnit3, NewUnit4, NewExerciseDescription); }
 
-        public ObservableCollection<string> AllExerciseTags { get => TagsTable.AllExerciseTags;}
+        public static ObservableCollection<string> AllExerciseTags => TagsTable.AllExerciseTags;
 
-        public ObservableCollection<Exercise> Exercises => ExerciseTable.Exercises;
+        public static ObservableCollection<Exercise> Exercises => ExerciseTable.Exercises;
 
         public Exercise? SelectedExercise { get; set; }
         #endregion
@@ -31,7 +32,7 @@ namespace DataLogger.ViewModels
         {
             NewExerciseName = "";
             NewExerciseDescription = "";
-            NewExerciseTags = new ObservableCollection<string>();
+            NewExerciseTags = [];
         }
 
         #region AddNewExercise
@@ -40,12 +41,9 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                if (addNewExercise == null)
-                {
-                    addNewExercise = new RelayCommand(
-                        p => ExerciseIsValid(newExercise),
-                        p => AddNewExercise(newExercise));
-                }
+                addNewExercise ??= new RelayCommand(
+                        p => ExerciseIsValid(NewExercise),
+                        p => AddNewExercise(NewExercise));
                 return addNewExercise;
             }
         }
@@ -57,7 +55,7 @@ namespace DataLogger.ViewModels
             OnPropertyChanged(nameof(AllExerciseTags));
         }
 
-        public bool ExerciseIsValid(Exercise ex)
+        public static bool ExerciseIsValid(Exercise ex)
         {
             return!ExerciseTable.AllExerciseNames.Contains(ex.Name);
         }
@@ -69,12 +67,9 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                if (deleteExerciseCommand == null)
-                {
-                    deleteExerciseCommand = new RelayCommand(
+                deleteExerciseCommand ??= new RelayCommand(
                         p => SelectedExercise != null,
                         p => DeleteExercise(SelectedExercise));
-                }
                 return deleteExerciseCommand;
             }
         }

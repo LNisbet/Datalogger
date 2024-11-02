@@ -3,6 +3,7 @@ using SQLight_Database;
 using CSV_Exporter;
 using System.Collections.ObjectModel;
 using DataLogger.Models;
+using DataLogger.ViewModels.HelperClasses;
 
 namespace DataLogger.ViewModels
 {

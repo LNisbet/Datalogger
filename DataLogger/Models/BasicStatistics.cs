@@ -5,9 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static DataLogger.Models.FingerStatistics;
 
-namespace DataLogger
+namespace DataLogger.Models
 {
     public class BasicStatistics
     {
@@ -38,13 +37,13 @@ namespace DataLogger
             }
         }
 
-        internal float SelectetStatistic(Options option)
+        internal float? SelectetStatistic(Options option)
         {
             return option switch
             {
-                Options.MostRecent => MostRecent.Value1,
-                Options.Max => Max.Value1,
-                Options.Min => Min.Value1,
+                Options.MostRecent => MostRecent?.Value1,
+                Options.Max => Max?.Value1,
+                Options.Min => Min?.Value1,
                 _ => throw new NotImplementedException(),
             };
         }

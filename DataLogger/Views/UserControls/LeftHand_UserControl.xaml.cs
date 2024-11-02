@@ -100,6 +100,7 @@ DependencyProperty.Register("MiddleHalf", typeof(float), typeof(LeftHand_UserCon
                 }
         #endregion
 
+        #region Mirroring
         public static readonly DependencyProperty IsMirroredProperty =
             DependencyProperty.Register("IsMirrored", typeof(bool), typeof(LeftHand_UserControl), new PropertyMetadata(false));
 
@@ -108,6 +109,7 @@ DependencyProperty.Register("MiddleHalf", typeof(float), typeof(LeftHand_UserCon
             get { return (bool)GetValue(IsMirroredProperty); }
             set { SetValue(IsMirroredProperty, value); }
         }
+        #endregion
 
         public LeftHand_UserControl()
         {
