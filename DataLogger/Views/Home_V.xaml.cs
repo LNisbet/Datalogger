@@ -1,14 +1,15 @@
 ﻿using DataLogger.ViewModels;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace DataLogger.Views
 {
-    public partial class CSV_V : UserControl
+    public partial class Home_V : UserControl
     {
-        public CSV_V()
+        public Home_V()
         {
             InitializeComponent();
-            DataContext = new CSV_VM();
+            DataContext = new Home_VM();
         }
     }
 }

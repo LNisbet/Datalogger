@@ -15,9 +15,9 @@ using System.Windows.Shapes;
 
 namespace DataLogger.Views
 {
-    public partial class Navigation_Control : UserControl
+    public partial class NavigationBar_V : UserControl
     {
-        public Navigation_Control()
+        public NavigationBar_V()
         {
             InitializeComponent();
         }

@@ -60,9 +60,7 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                addNewLogCommand ??= new RelayCommand(
-                        p => SelectedExercise != null,
-                        p => AddNewLog(SpecifyDate));
+                addNewLogCommand ??= new RelayCommand(p => AddNewLog(SpecifyDate), p => SelectedExercise != null);
                 return addNewLogCommand;
             }
         }
@@ -86,9 +84,7 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                deleteLogCommand ??= new RelayCommand(
-                        p => SelectedExerciseLog != null,
-                        p => DeleteLog(SelectedExerciseLog));
+                deleteLogCommand ??= new RelayCommand(p => DeleteLog(SelectedExerciseLog), p => SelectedExerciseLog != null);
                 return deleteLogCommand;
             }
         }

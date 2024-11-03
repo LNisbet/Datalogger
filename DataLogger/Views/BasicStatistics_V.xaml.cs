@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace DataLogger.Views
 {
-    public partial class BasicStatistics_V : Page
+    public partial class BasicStatistics_V : UserControl
     {
         public BasicStatistics_V()
         {

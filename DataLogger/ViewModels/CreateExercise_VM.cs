@@ -41,9 +41,7 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                addNewExercise ??= new RelayCommand(
-                        p => ExerciseIsValid(NewExercise),
-                        p => AddNewExercise(NewExercise));
+                addNewExercise ??= new RelayCommand(p => AddNewExercise(NewExercise), p => ExerciseIsValid(NewExercise));
                 return addNewExercise;
             }
         }
@@ -67,9 +65,7 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                deleteExerciseCommand ??= new RelayCommand(
-                        p => SelectedExercise != null,
-                        p => DeleteExercise(SelectedExercise));
+                deleteExerciseCommand ??= new RelayCommand(p => DeleteExercise(SelectedExercise), p => SelectedExercise != null);
                 return deleteExerciseCommand;
             }
         }

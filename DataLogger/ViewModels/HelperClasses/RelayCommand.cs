@@ -7,17 +7,17 @@ namespace DataLogger.ViewModels.HelperClasses
         private readonly Predicate<object> _canExecute;
         private readonly Action<object> _execute;
 
-        public RelayCommand(Predicate<object> canExecute, Action<object> execute)
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
-            _canExecute = canExecute;
             _execute = execute;
+            _canExecute = canExecute;
         }
+
         public RelayCommand(Action<object> execute)
         {
             _canExecute = param => true;
             _execute = execute;
         }
-
 
         public event EventHandler? CanExecuteChanged
         {
@@ -25,19 +25,14 @@ namespace DataLogger.ViewModels.HelperClasses
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public bool CanExecute(object? parameter)
+        public bool CanExecute(object parameter)
         {
-            if (parameter == null)
-                return false;
 
             return _canExecute(parameter);
         }
 
-        public void Execute(object? parameter)
+        public void Execute(object parameter)
         {
-            if (parameter == null) 
-                return;
-
             _execute(parameter);
         }
     }

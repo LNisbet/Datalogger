@@ -19,7 +19,7 @@ namespace DataLogger.Views
     /// <summary>
     /// Interaction logic for FingerStatistics_V.xaml
     /// </summary>
-    public partial class FingerStatistics_V : Page
+    public partial class FingerStatistics_V : UserControl
     {
         public FingerStatistics_V()
         {

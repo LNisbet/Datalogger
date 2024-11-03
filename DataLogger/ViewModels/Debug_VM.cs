@@ -25,9 +25,7 @@ namespace DataLogger.ViewModels
             {
                 if (deleteUser == null)
                 {
-                    deleteUser = new RelayCommand(
-                        p => (!String.IsNullOrEmpty(CurrentUserName)),
-                        p => DeleteDataBase(new User(CurrentUserName, !IsNewUser)));
+                    deleteUser = new RelayCommand(p => DeleteDataBase(new User(CurrentUserName, !IsNewUser)), p => (!String.IsNullOrEmpty(CurrentUserName)));
                 }
                 return deleteUser;
             }

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DataLogger.Views.UserControls
+namespace DataLogger.Views
 {
     /// <summary>
     /// Interaction logic for LeftHand_UserControl.xaml

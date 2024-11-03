@@ -135,7 +135,7 @@ namespace DataLogger.ViewModels
 
             return new PieSeries<float> 
             { 
-                Values = new List<float?>([handStat.SelectetBasicStatistic(finger, crimp).SelectetStatistic(SelectedOption)]),
+                Values = new List<float>([handStat.SelectetBasicStatistic(finger, crimp).SelectetStatistic(SelectedOption) ?? 0f]),
                 Name = handStat.SelectetBasicStatistic(finger, crimp).Exercise.Name,
                 DataLabelsPaint = new SolidColorPaint(SKColors.Black),
                 DataLabelsSize = 12,

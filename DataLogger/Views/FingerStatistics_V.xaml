@@ -1,22 +1,19 @@
-﻿<Page x:Class="DataLogger.Views.FingerStatistics_V"
+﻿<UserControl x:Class="DataLogger.Views.FingerStatistics_V"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:DataLogger.Views" 
-      xmlns:uc="clr-namespace:DataLogger.Views.UserControls" 
       xmlns:cvert="clr-namespace:DataLogger.Views.Converters"
       xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="1200"
-      Title="FingerStatistics_V">
+      d:DesignHeight="600" d:DesignWidth="1200">
 
-    <Page.Resources>
+    <UserControl.Resources>
         <cvert:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
-    </Page.Resources>
+    </UserControl.Resources>
 
     <StackPanel Orientation="Horizontal">
-        <local:Navigation_Control/>
         <StackPanel >
             <ComboBox Width="150" 
                 ItemsSource="{Binding Path=SelectedOption, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
@@ -25,7 +22,7 @@
                 SelectedValue="{Binding Path=SelectedOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <StackPanel Orientation="Horizontal">
                 <StackPanel HorizontalAlignment="Right">
-                    <uc:LeftHand_UserControl 
+                    <local:LeftHand_UserControl 
                         LittleOpen="{Binding Path=LeftLittleOpenValue}"
                         LittleHalf="{Binding Path=LeftLittleHalfValue}"
                         RingOpen="{Binding Path=LeftRingOpenValue}"
@@ -42,7 +39,7 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">
-                    <uc:LeftHand_UserControl
+                    <local:LeftHand_UserControl
                         IsMirrored="True"
                         LittleOpen="{Binding Path=RightLittleOpenValue}"
                         LittleHalf="{Binding Path=RightLittleHalfValue}"
@@ -60,4 +57,4 @@
             </StackPanel>
         </StackPanel>
     </StackPanel>
-</Page>
+</UserControl>

@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace DataLogger.Views
 {
-    public partial class Logging_V : Page
+    public partial class Logging_V : UserControl
     {
         public Logging_V()
         {

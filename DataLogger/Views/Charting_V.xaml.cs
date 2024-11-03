@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace DataLogger.Views
 {
-    public partial class Charting_V : Page
+    public partial class Charting_V : UserControl
     {
         public Charting_V()
         {

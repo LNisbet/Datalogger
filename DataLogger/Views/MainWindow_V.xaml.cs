@@ -1,14 +1,13 @@
 ﻿using DataLogger.ViewModels;
-using System.Windows.Navigation;
+using System.Windows;
 
 namespace DataLogger.Views
 {
-    public partial class MainWindow_V : NavigationWindow
+    public partial class MainWindow_V : Window
     {
         public MainWindow_V()
         {
             InitializeComponent();
-            DataContext = new MainWindow_VM();
         }
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)

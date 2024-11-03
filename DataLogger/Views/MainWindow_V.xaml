@@ -1,20 +1,55 @@
-﻿<NavigationWindow x:Class="DataLogger.Views.MainWindow_V"
-                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   xmlns:local="clr-namespace:DataLogger.Views"
-                   xmlns:uc="clr-namespace:DataLogger.Views.UserControls"
-                   mc:Ignorable="d"
-                   Title="MainWindow" Height="600" Width="1200"
-                   Closing="WindowClosing">
+﻿<Window x:Class="DataLogger.Views.MainWindow_V"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataLogger.Views"
+        xmlns:vm="clr-namespace:DataLogger.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="1200"
+        Closing="WindowClosing">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ContentControl Content="{Binding NavigationViewModel}" Grid.Row="0">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type vm:NavigationBar_VM}">
+                    <local:NavigationBar_V/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+
+        <ContentControl Content="{Binding CurrentViewModel}" Grid.Column="1">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type vm:Home_VM}">
+                    <local:Home_V/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:Logging_VM}">
+                    <local:Logging_V/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:CreateExercise_VM}">
+                    <local:CreateExercise_V/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:CSV_VM}">
+                    <local:CSV_V/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:BasicStatistics_VM}">
+                    <local:BasicStatistics_V/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:FingerStatistics_VM}">
+                    <local:FingerStatistics_V/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:Charting_VM}">
+                    <local:Charting_V/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:Debug_VM}">
+                    <local:Debug_V/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+    </Grid>
     
-    <NavigationWindow.Content>
-        <StackPanel Orientation="Horizontal">
-            <local:Navigation_Control/>
-            <StackPanel MinWidth="100">
-                <ComboBox ItemsSource="{Binding UserNames}" Text="{Binding SelectedUserName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" IsEditable="True"/>
-            </StackPanel>
-        </StackPanel>
-    </NavigationWindow.Content>
-</NavigationWindow>
+</Window>

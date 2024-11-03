@@ -3,7 +3,7 @@ using DataLogger.ViewModels;
 
 namespace DataLogger.Views
 {
-    public partial class CreateExercise_V : Page
+    public partial class CreateExercise_V : UserControl
     {
         private int unitsDisplayed;
         private int UnitsDisplayed 

@@ -19,7 +19,7 @@ namespace DataLogger.Views
     /// <summary>
     /// Interaction logic for Debug_V.xaml
     /// </summary>
-    public partial class Debug_V : Page
+    public partial class Debug_V : UserControl
     {
         public Debug_V()
         {

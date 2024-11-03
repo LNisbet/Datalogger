@@ -68,9 +68,7 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                exportLogsCommand ??= new RelayCommand(
-                        p => LogsTable.Logs.Count > 0,
-                        p => ExportLogs());
+                exportLogsCommand ??= new RelayCommand(p => ExportLogs(), p => LogsTable.Logs.Count > 0);
                 return exportLogsCommand;
             }
         }
@@ -90,9 +88,7 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                exportExercisesCommand ??= new RelayCommand(
-                        p => ExerciseTable.Exercises.Count > 0,
-                        p => ExportExercises());
+                exportExercisesCommand ??= new RelayCommand(p => ExportExercises(), p => ExerciseTable.Exercises.Count > 0);
                 return exportExercisesCommand;
             }
         }
@@ -112,8 +108,7 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                importLogsCommand ??= new RelayCommand(
-                        p => ImportLogs());
+                importLogsCommand ??= new RelayCommand(p => ImportLogs());
                 return importLogsCommand;
             }
         }

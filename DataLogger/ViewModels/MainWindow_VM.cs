@@ -3,39 +3,32 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DataLogger.ViewModels.HelperClasses;
+using DataLogger.ViewModels.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DataLogger.ViewModels
 {
     class MainWindow_VM : Base_VM
     {
-        public bool NavigationEnabled { get{ return !String.IsNullOrEmpty(SelectedUserName); } }
-        public string? SelectedUserName 
-        {
-            get
-            {
-                if(DatabaseConnection.CurrentUser == null)
-                    return null;
-                return DatabaseConnection.CurrentUser.Name;
-            }
-            set 
-            {
-                var user = String.IsNullOrEmpty(value) ? null : (Users.SelectUserByName(value) ?? new(value, false));
-                DatabaseConnection.CurrentUser = user;
+        private readonly IServiceProvider _serviceProvider;
 
-                Properties.Settings.Default.LastLoggedInUser = value;
-                Properties.Settings.Default.Save();
-                OnPropertyChanged(nameof(NavigationEnabled)); 
-            }  
+        private readonly NavigationStore _navigationStore;
+        public Base_VM CurrentViewModel => _navigationStore.CurrentViewModel;
+
+        public NavigationBar_VM NavigationViewModel { get; }
+
+        public MainWindow_VM(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+            _navigationStore = serviceProvider.GetRequiredService<NavigationStore>();
+            NavigationViewModel = new NavigationBar_VM(serviceProvider);
+
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
         }
-
-        public ObservableCollection<string> UserNames => SQLight_Database.Users.AllUserNames;
-
-        public MainWindow_VM() 
+        private void OnCurrentViewModelChanged()
         {
-            if (Users.AllUserNames.Contains(Properties.Settings.Default.LastLoggedInUser))
-                SelectedUserName = Properties.Settings.Default.LastLoggedInUser;
-            else
-                SelectedUserName = null;
+            // Notify that CurrentViewModel has changed
+            OnPropertyChanged(nameof(CurrentViewModel));
         }
 
         #region Close App
@@ -44,8 +37,7 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                closeApp ??= new RelayCommand(
-                        p => CloseAndSaveApp());
+                closeApp ??= new RelayCommand(p => CloseAndSaveApp());
                 return closeApp;
             }
         }
