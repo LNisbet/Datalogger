@@ -10,18 +10,15 @@ namespace DataLogger.ViewModels
 {
     class MainWindow_VM : Base_VM
     {
-        private readonly IServiceProvider _serviceProvider;
-
         private readonly NavigationStore _navigationStore;
         public Base_VM CurrentViewModel => _navigationStore.CurrentViewModel;
 
         public NavigationBar_VM NavigationViewModel { get; }
 
-        public MainWindow_VM(IServiceProvider serviceProvider)
+        public MainWindow_VM(NavigationBar_VM navigationBar_VM, NavigationStore navigationStore)
         {
-            _serviceProvider = serviceProvider;
-            _navigationStore = serviceProvider.GetRequiredService<NavigationStore>();
-            NavigationViewModel = new NavigationBar_VM(serviceProvider);
+            _navigationStore = navigationStore;
+            NavigationViewModel = navigationBar_VM;
 
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
         }
