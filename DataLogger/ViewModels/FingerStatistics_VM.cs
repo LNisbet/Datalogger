@@ -19,7 +19,8 @@ namespace DataLogger.ViewModels
             set
             {
                 selectedOption = value;
-                UpdatePieCharts();
+                UpdateHandStatistics();
+                UpdatePieCharts();                
             }
         }
 
@@ -31,65 +32,8 @@ namespace DataLogger.ViewModels
 
         public ObservableCollection<ISeries> RightOpenCrimp_Series { get; set; }
 
-        private readonly FingerStatistics LeftHandStatistics = new(FingerStatistics.Hand.Left, DateOnly.MinValue, DateOnly.MaxValue);
-        private readonly FingerStatistics RightHandStatistics = new(FingerStatistics.Hand.Right, DateOnly.MinValue, DateOnly.MaxValue);
-
-        public float? LeftLittleOpenValue => LeftHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Little, FingerStatistics.Crimp.Open)
-            .SelectetStatistic(SelectedOption);
-        public float? LeftLittleHalfValue => LeftHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Little, FingerStatistics.Crimp.Half)
-            .SelectetStatistic(SelectedOption);
-
-        public float? LeftRingOpenValue => LeftHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Ring, FingerStatistics.Crimp.Open)
-            .SelectetStatistic(SelectedOption);
-        public float? LeftRingHalfValue => LeftHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Ring, FingerStatistics.Crimp.Half)
-            .SelectetStatistic(SelectedOption);
-
-        public float? LeftMiddleOpenValue => LeftHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Middle, FingerStatistics.Crimp.Open)
-            .SelectetStatistic(SelectedOption);
-        public float? LeftMiddleHalfValue => LeftHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Middle, FingerStatistics.Crimp.Half)
-            .SelectetStatistic(SelectedOption);
-
-        public float? LeftIndexOpenValue => LeftHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Index, FingerStatistics.Crimp.Open)
-            .SelectetStatistic(SelectedOption);
-        public float? LeftIndexHalfValue => LeftHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Index, FingerStatistics.Crimp.Half)
-            .SelectetStatistic(SelectedOption);
-
-
-        public float? RightLittleOpenValue => RightHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Little, FingerStatistics.Crimp.Open)
-            .SelectetStatistic(SelectedOption);
-        public float? RightLittleHalfValue => RightHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Little, FingerStatistics.Crimp.Half)
-            .SelectetStatistic(SelectedOption);
-
-        public float? RightRingOpenValue => RightHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Ring, FingerStatistics.Crimp.Open)
-            .SelectetStatistic(SelectedOption);
-        public float? RightRingHalfValue => RightHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Ring, FingerStatistics.Crimp.Half)
-            .SelectetStatistic(SelectedOption);
-
-        public float? RightMiddleOpenValue => RightHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Middle, FingerStatistics.Crimp.Open)
-            .SelectetStatistic(SelectedOption);
-        public float? RightMiddleHalfValue => RightHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Middle, FingerStatistics.Crimp.Half)
-            .SelectetStatistic(SelectedOption);
-
-        public float? RightIndexOpenValue => RightHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Index, FingerStatistics.Crimp.Open)
-            .SelectetStatistic(SelectedOption);
-        public float? RightIndexHalfValue => RightHandStatistics
-            .SelectetBasicStatistic(FingerStatistics.Fingers.Index, FingerStatistics.Crimp.Half)
-            .SelectetStatistic(SelectedOption);
+        public HandStatistics_VM LeftHand { get; }
+        public HandStatistics_VM RightHand { get; }
         #endregion
 
         public FingerStatistics_VM()
@@ -99,7 +43,16 @@ namespace DataLogger.ViewModels
             RightHalfCrimp_Series = [];
             RightOpenCrimp_Series = [];
 
+            LeftHand = new(FingerStatistics.Hand.Left);
+            RightHand = new(FingerStatistics.Hand.Right);
+
             UpdatePieCharts();
+        }
+
+        private void UpdateHandStatistics()
+        {
+            LeftHand.Option = SelectedOption;
+            RightHand.Option = SelectedOption;
         }
 
         private void UpdatePieCharts()
@@ -129,9 +82,9 @@ namespace DataLogger.ViewModels
         {
             FingerStatistics handStat;
             if (hand == FingerStatistics.Hand.Left)
-                handStat = LeftHandStatistics;
+                handStat = LeftHand.HandStatistics;
             else
-                handStat = RightHandStatistics;
+                handStat = RightHand.HandStatistics;
 
             return new PieSeries<float> 
             { 

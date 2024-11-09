@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:DataLogger.Views" 
       xmlns:cvert="clr-namespace:DataLogger.Views.Converters"
       xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+      xmlns:vm="clr-namespace:DataLogger.ViewModels"       
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1200">
 
@@ -22,16 +23,13 @@
                 SelectedValue="{Binding Path=SelectedOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <StackPanel Orientation="Horizontal">
                 <StackPanel HorizontalAlignment="Right">
-                    <local:LeftHand_UserControl 
-                        LittleOpen="{Binding Path=LeftLittleOpenValue}"
-                        LittleHalf="{Binding Path=LeftLittleHalfValue}"
-                        RingOpen="{Binding Path=LeftRingOpenValue}"
-                        RingHalf="{Binding Path=LeftRingHalfValue}"
-                        MiddleOpen="{Binding Path=LeftMiddleOpenValue}"
-                        MiddleHalf="{Binding Path=LeftMiddleHalfValue}"
-                        IndexOpen="{Binding Path=LeftIndexOpenValue}"
-                        IndexHalf="{Binding Path=LeftIndexHalfValue}" />
-
+                    <ContentControl Content="{Binding LeftHand}">
+                        <ContentControl.Resources>
+                            <DataTemplate DataType="{x:Type vm:HandStatistics_VM}">
+                                <local:Hand_V/>
+                            </DataTemplate>
+                        </ContentControl.Resources>
+                    </ContentControl>
                     <StackPanel Orientation="Horizontal">
                         <lvc:PieChart Series="{Binding LeftHalfCrimp_Series}" MinWidth="450" MinHeight="200" TooltipTextSize="12" LegendPosition="left" LegendTextSize="12"/>
                         <lvc:PieChart Series="{Binding LeftOpenCrimp_Series}" MinWidth="200" MinHeight="200" TooltipTextSize="12"/>
@@ -39,16 +37,13 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">
-                    <local:LeftHand_UserControl
-                        IsMirrored="True"
-                        LittleOpen="{Binding Path=RightLittleOpenValue}"
-                        LittleHalf="{Binding Path=RightLittleHalfValue}"
-                        RingOpen="{Binding Path=RightRingOpenValue}"
-                        RingHalf="{Binding Path=RightRingHalfValue}"
-                        MiddleOpen="{Binding Path=RightMiddleOpenValue}"
-                        MiddleHalf="{Binding Path=RightMiddleHalfValue}"
-                        IndexOpen="{Binding Path=RightIndexOpenValue}"
-                        IndexHalf="{Binding Path=RightIndexHalfValue}" />
+                    <ContentControl Content="{Binding RightHand}">
+                        <ContentControl.Resources>
+                            <DataTemplate DataType="{x:Type vm:HandStatistics_VM}">
+                                <local:Hand_V/>
+                            </DataTemplate>
+                        </ContentControl.Resources>
+                    </ContentControl>
                     <StackPanel Orientation="Horizontal">
                         <lvc:PieChart Series="{Binding RightOpenCrimp_Series}" MinWidth="200" MinHeight="200" TooltipTextSize="12"/>
                         <lvc:PieChart Series="{Binding RightHalfCrimp_Series}" MinWidth="200" MinHeight="200" TooltipTextSize="12"/>
