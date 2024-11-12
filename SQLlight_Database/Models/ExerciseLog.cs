@@ -17,6 +17,7 @@ namespace SQLight_Database
         public ExerciseLog()
         {
         }
+
         public ExerciseLog(DateOnly date, Exercise exercise, float value1, float? value2 = null, float? value3 = null, float? value4 = null, string? note = null, int? id = null)
         {
             Id = id;

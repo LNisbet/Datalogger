@@ -24,7 +24,7 @@ namespace DataLogger.ViewModels
             }
             set
             {
-                var user = String.IsNullOrEmpty(value) ? null : (Users.SelectUserByName(value) ?? new(value, false));
+                var user = String.IsNullOrEmpty(value) ? null : (UsersTable.SelectUserByName(value) ?? new(value, false));
                 DatabaseConnection.CurrentUser = user;
                 OnPropertyChanged(nameof(DatabaseConnection.CurrentUser));
 
@@ -33,12 +33,12 @@ namespace DataLogger.ViewModels
             }
         }
 
-        public static ObservableCollection<string> UserNames => SQLight_Database.Users.AllUserNames;
+        public static ObservableCollection<string> UserNames => SQLight_Database.UsersTable.AllUserNames;
         #endregion
 
         public Home_VM()
         {
-            if (Users.AllUserNames.Contains(Properties.Settings.Default.LastLoggedInUser))
+            if (UsersTable.AllUserNames.Contains(Properties.Settings.Default.LastLoggedInUser))
                 SelectedUserName = Properties.Settings.Default.LastLoggedInUser;
             else
                 SelectedUserName = null;

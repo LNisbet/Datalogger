@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLight_Database.Tables.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
@@ -8,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace SQLight_Database
 {
-    public static class LogsTable
+    public class LogsTable : ILogsTable
     {
-        private static ObservableCollection<ExerciseLog>? logs = null;
-        public static ObservableCollection<ExerciseLog> Logs
+        private ObservableCollection<ExerciseLog>? logs = null;
+        public ObservableCollection<ExerciseLog> Logs
         {
             get
             {
@@ -24,7 +25,12 @@ namespace SQLight_Database
             }
         }
 
-        public static void AddSingleLog(ExerciseLog log)
+        public LogsTable()
+        {
+
+        }
+
+        public void AddSingleLog(ExerciseLog log)
         {
             if (IsLogUnique(log))
             {
@@ -33,20 +39,25 @@ namespace SQLight_Database
             }
         }
 
-        public static void AddMultipleLogs(List<ExerciseLog> logs)
+        public void AddMultipleLogs(List<ExerciseLog> logs)
         {
             foreach (var log in logs) if (IsLogUnique(log))
                     SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
             ReadAllLogs();
         }
 
-        public static void RemoveSingleLog(ExerciseLog log)
+        public void RemoveSingleLog(ExerciseLog log)
         {
             SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Id={log.Id}"), SQL_Commands.CommandType.NonQuery);
             ReadAllLogs();
         }
 
-        public static void ReadAllLogs()
+        public void RemoveMultipleLogs(List<ExerciseLog> logs)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ReadAllLogs()
         {
             var sqlite_datareader = SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.ReadData(Config.LogsTableName, "*", false), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
             logs.Clear();
@@ -57,7 +68,7 @@ namespace SQLight_Database
             }
         }
 
-        private static bool IsLogUnique(ExerciseLog log)
+        private bool IsLogUnique(ExerciseLog log)
         {
             return !(Logs.Any(l => l.Date.Equals(log.Date)) &&
                 Logs.Any(l => l.Exercise.Name.Equals(log.Exercise.Name)) &&

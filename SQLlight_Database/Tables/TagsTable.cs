@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLight_Database.Tables.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
@@ -8,12 +9,17 @@ using System.Threading.Tasks;
 
 namespace SQLight_Database
 {
-    public class TagsTable
+    public class TagsTable : ITagsTable
     {
-        private static ObservableCollection<string> allExerciseTags = new();
-        public static ObservableCollection<string> AllExerciseTags { get { ReadAllExerciseTags(); return allExerciseTags; } }
+        private ObservableCollection<string> allExerciseTags = new();
+        public ObservableCollection<string> AllExerciseTags { get { ReadAllExerciseTags(); return allExerciseTags; } }
 
-        internal static void AddSingleTag(string tag)
+        public TagsTable() 
+        { 
+
+        }
+
+        public void AddSingleTag(string tag)
         {
             if (!AllExerciseTags.Contains(tag))
             {
@@ -22,7 +28,7 @@ namespace SQLight_Database
             }
         }
 
-        internal static void AddMultipleTags(List<string> tags)
+        public void AddMultipleTags(List<string> tags)
         {
             foreach (var tag in tags)
                 if (!AllExerciseTags.Contains(tag))
@@ -31,13 +37,18 @@ namespace SQLight_Database
             ReadAllExerciseTags();
         }
 
-        public static void RemoveSingleTag(string tag)
+        public void RemoveSingleTag(string tag)
         {
             SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.DeleteFromTable(Config.TagsTableName, $"Tags='{tag}'"), SQL_Commands.CommandType.NonQuery);
             ReadAllExerciseTags();
         }
 
-        internal static void ReadAllExerciseTags()
+        public void RemoveMultipleTags(List<string> tags)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ReadAllExerciseTags()
         {
             var sqlite_datareader = SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.ReadData(Config.TagsTableName, "*", true), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
 

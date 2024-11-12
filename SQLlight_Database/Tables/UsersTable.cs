@@ -6,24 +6,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SQLight_Database.Tables.Interfaces;
 
 namespace SQLight_Database
 {
-    public static class Users
+    public class UsersTable : IUsersTable
     {
-        private static ObservableCollection<User>? allUsers;
-        public static ObservableCollection<User> AllUsers => allUsers ??= Load();
+        private ObservableCollection<User>? allUsers;
+        public ObservableCollection<User> AllUsers => allUsers ??= Load();
 
-        public static ObservableCollection<string> AllUserNames => new(AllUsers.Select(users => users.Name).Distinct());
+        public ObservableCollection<string> AllUserNames => new(AllUsers.Select(users => users.Name).Distinct());
 
-        public static User? SelectUserByName(string? name)
+        public User? SelectUserByName(string? name)
         {
             if (string.IsNullOrWhiteSpace(name)) 
                 return null;
             return AllUsers.FirstOrDefault(u => u.Name == name);
         }
 
-        public static void Add(User user)
+        public void Add(User user)
         {
             allUsers ??= [];
             if (allUsers.FirstOrDefault(u => u.Name == user.Name) == null)
@@ -33,18 +34,18 @@ namespace SQLight_Database
             }
         }
 
-        public static void Remove(User user)
+        public void Remove(User user)
         {
             if (allUsers != null && allUsers.FirstOrDefault(u => u.Name == user.Name) != null)
             {   
                 if (user.Initilised == true)
-                    SQL_Database.DeleteDatabase(user.Name,DatabaseConnection.SQLite_conn);
+                    Database.DeleteDatabase(user.Name,DatabaseConnection.SQLite_conn);
                 allUsers.Remove(allUsers.FirstOrDefault(u => u.Name == user.Name));
                 Save();
             }  
         }
 
-        public static void Modify(User user)
+        public void Modify(User user)
         {
             if (allUsers != null && allUsers.FirstOrDefault(u => u.Name == user.Name) != null)
             {
@@ -54,13 +55,13 @@ namespace SQLight_Database
             Save();
         }
 
-        internal static void Save()
+        internal void Save()
         {
             File.WriteAllText(Config.UsersPathName, JsonConvert.SerializeObject(allUsers));
             allUsers = null;
         }
 
-        private static ObservableCollection<User> Load()
+        private ObservableCollection<User> Load()
         {
             try
             {
