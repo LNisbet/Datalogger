@@ -36,15 +36,15 @@ namespace DataLogger.ViewModels
         public HandStatistics_VM RightHand { get; }
         #endregion
 
-        public FingerStatistics_VM()
+        public FingerStatistics_VM(BasicStatisticsList basicStatisticsList)
         {
             LeftHalfCrimp_Series = [];
             LeftOpenCrimp_Series = [];
             RightHalfCrimp_Series = [];
             RightOpenCrimp_Series = [];
 
-            LeftHand = new(FingerStatistics.Hand.Left);
-            RightHand = new(FingerStatistics.Hand.Right);
+            LeftHand = new(basicStatisticsList, FingerStatistics.Hand.Left);
+            RightHand = new(basicStatisticsList, FingerStatistics.Hand.Right);
 
             UpdatePieCharts();
         }

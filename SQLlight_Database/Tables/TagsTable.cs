@@ -1,4 +1,5 @@
-﻿using SQLight_Database.Tables.Interfaces;
+﻿using SQLight_Database.Database.Interfaces;
+using SQLight_Database.Tables.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,19 +12,21 @@ namespace SQLight_Database
 {
     public class TagsTable : ITagsTable
     {
+        private readonly DatabaseConnectionStore _databaseConnectionStore;
+
         private ObservableCollection<string> allExerciseTags = new();
         public ObservableCollection<string> AllExerciseTags { get { ReadAllExerciseTags(); return allExerciseTags; } }
 
-        public TagsTable() 
-        { 
-
+        public TagsTable(DatabaseConnectionStore databaseConnectionStore) 
+        {
+            _databaseConnectionStore = databaseConnectionStore;
         }
 
         public void AddSingleTag(string tag)
         {
             if (!AllExerciseTags.Contains(tag))
             {
-                SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), SQL_Commands.CommandType.NonQuery);
+                SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), SQL_Commands.CommandType.NonQuery);
                 ReadAllExerciseTags();
             }
         }
@@ -32,14 +35,14 @@ namespace SQLight_Database
         {
             foreach (var tag in tags)
                 if (!AllExerciseTags.Contains(tag))
-                    SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), SQL_Commands.CommandType.NonQuery);
+                    SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.InsertData(Config.TagsTableName, [$"'{tag}'"]), SQL_Commands.CommandType.NonQuery);
 
             ReadAllExerciseTags();
         }
 
         public void RemoveSingleTag(string tag)
         {
-            SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.DeleteFromTable(Config.TagsTableName, $"Tags='{tag}'"), SQL_Commands.CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.DeleteFromTable(Config.TagsTableName, $"Tags='{tag}'"), SQL_Commands.CommandType.NonQuery);
             ReadAllExerciseTags();
         }
 
@@ -50,7 +53,7 @@ namespace SQLight_Database
 
         private void ReadAllExerciseTags()
         {
-            var sqlite_datareader = SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.ReadData(Config.TagsTableName, "*", true), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
+            var sqlite_datareader = SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.ReadData(Config.TagsTableName, "*", true), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
 
             while (sqlite_datareader != null && sqlite_datareader.Read())
             {

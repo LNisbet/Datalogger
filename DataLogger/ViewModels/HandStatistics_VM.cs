@@ -58,11 +58,11 @@ namespace DataLogger.ViewModels
             .SelectetStatistic(Option);
         #endregion
 
-        public HandStatistics_VM(FingerStatistics.Hand hand, BasicStatistics.Options option = BasicStatistics.Options.MostRecent)
+        public HandStatistics_VM(BasicStatisticsList basicStatisticsList, FingerStatistics.Hand hand, BasicStatistics.Options option = BasicStatistics.Options.MostRecent)
         {
             Hand = hand;
             Option = option;
-            HandStatistics = new(hand, DateOnly.MinValue, DateOnly.MaxValue);
+            HandStatistics = new(basicStatisticsList, hand, DateOnly.MinValue, DateOnly.MaxValue);
         }
 
         private void UpdateValues()

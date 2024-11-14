@@ -1,4 +1,5 @@
-﻿using SQLight_Database.Tables.Interfaces;
+﻿using SQLight_Database.Database.Interfaces;
+using SQLight_Database.Tables.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,9 @@ namespace SQLight_Database
 {
     public class LogsTable : ILogsTable
     {
+        private readonly DatabaseConnectionStore _databaseConnectionStore;
+        private readonly IExerciseTable _exerciseTable;
+
         private ObservableCollection<ExerciseLog>? logs = null;
         public ObservableCollection<ExerciseLog> Logs
         {
@@ -25,16 +29,17 @@ namespace SQLight_Database
             }
         }
 
-        public LogsTable()
+        public LogsTable(DatabaseConnectionStore databaseConnectionStore, IExerciseTable exerciseTable)
         {
-
+            _databaseConnectionStore = databaseConnectionStore;
+            _exerciseTable = exerciseTable;
         }
 
         public void AddSingleLog(ExerciseLog log)
         {
             if (IsLogUnique(log))
             {
-                SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
+                SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
                 ReadAllLogs();
             }
         }
@@ -42,13 +47,13 @@ namespace SQLight_Database
         public void AddMultipleLogs(List<ExerciseLog> logs)
         {
             foreach (var log in logs) if (IsLogUnique(log))
-                    SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
+                    SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.InsertData(Config.LogsTableName, log.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
             ReadAllLogs();
         }
 
         public void RemoveSingleLog(ExerciseLog log)
         {
-            SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Id={log.Id}"), SQL_Commands.CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.DeleteFromTable(Config.LogsTableName, $"Id={log.Id}"), SQL_Commands.CommandType.NonQuery);
             ReadAllLogs();
         }
 
@@ -59,12 +64,12 @@ namespace SQLight_Database
 
         private void ReadAllLogs()
         {
-            var sqlite_datareader = SQL_Commands.ExecuteSQLString(DatabaseConnection.SQLite_conn, SQL_Strings.ReadData(Config.LogsTableName, "*", false), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
+            var sqlite_datareader = SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.ReadData(Config.LogsTableName, "*", false), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
             logs.Clear();
 
             while (sqlite_datareader != null && sqlite_datareader.Read())
             {
-                logs.Add(new ExerciseLog(sqlite_datareader));
+                logs.Add(new ExerciseLog(sqlite_datareader,_exerciseTable));
             }
         }
 

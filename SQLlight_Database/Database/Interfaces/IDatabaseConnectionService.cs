@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace SQLight_Database.Database.Interfaces
 {
-    public interface IDatabaseConnection
+    public interface IDatabaseConnectionService
     {
-        User CurrentUser { get; }
-        SQLiteConnection SQLite_conn { get; }
-
+        void Open(User user);
         void Close();
     }
 }

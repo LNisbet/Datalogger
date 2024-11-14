@@ -24,7 +24,6 @@ namespace DataLogger.Views
         public Debug_V()
         {
             InitializeComponent();
-            DataContext = new Debug_VM();
         }
     }
 }

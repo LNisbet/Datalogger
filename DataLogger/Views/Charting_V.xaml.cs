@@ -21,7 +21,6 @@ namespace DataLogger.Views
         public Charting_V()
         {
             InitializeComponent();
-            DataContext = new Charting_VM();
         }
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

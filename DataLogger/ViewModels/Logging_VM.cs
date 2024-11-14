@@ -3,13 +3,17 @@ using System.Windows;
 using System.Windows.Input;
 using SQLight_Database;
 using DataLogger.ViewModels.HelperClasses;
+using SQLight_Database.Tables.Interfaces;
 
 namespace DataLogger.ViewModels
 {
     public class Logging_VM : Base_VM
     {
         #region Fields
-        public static ObservableCollection<ExerciseLog> ExerciseLogs  => LogsTable.Logs;
+        private readonly IExerciseTable _exerciseTable;
+        private readonly ILogsTable _logsTable;
+
+        public ObservableCollection<ExerciseLog> ExerciseLogs  => _logsTable.Logs;
 
         private Exercise? selectedExercise;
         public Exercise? SelectedExercise 
@@ -23,7 +27,7 @@ namespace DataLogger.ViewModels
             } 
         }
 
-        public static ObservableCollection<Exercise> Exercises  => ExerciseTable.Exercises;
+        public ObservableCollection<Exercise> Exercises  => _exerciseTable.Exercises;
 
         public bool SpecifyDate { get; set; }
 
@@ -47,8 +51,10 @@ namespace DataLogger.ViewModels
         }
         #endregion
 
-        public Logging_VM()
+        public Logging_VM(IExerciseTable exerciseTable, ILogsTable logsTable)
         {
+            _exerciseTable = exerciseTable;
+            _logsTable = logsTable;
             SpecifyDate = false;
             Date = DateOnly.FromDateTime(DateTime.Now);
             UpdateValues();
@@ -74,7 +80,7 @@ namespace DataLogger.ViewModels
                 Date = DateOnly.FromDateTime(DateTime.Now);
 
             ExerciseLog log = new(Date, SelectedExercise, Value1, Value2, Value3, Value4, Note);
-            LogsTable.AddSingleLog(log);
+            _logsTable.AddSingleLog(log);
         }
         #endregion
 
@@ -88,13 +94,11 @@ namespace DataLogger.ViewModels
                 return deleteLogCommand;
             }
         }
-        public static void DeleteLog(ExerciseLog? exercise)
+        public void DeleteLog(ExerciseLog? exercise)
         {
             ArgumentNullException.ThrowIfNull(exercise);
 
-            LogsTable.RemoveSingleLog(exercise);
-                
-                
+            _logsTable.RemoveSingleLog(exercise);
         }
         #endregion
 

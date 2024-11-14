@@ -4,18 +4,19 @@ using CSV_Exporter;
 using System.Collections.ObjectModel;
 using DataLogger.Models;
 using DataLogger.ViewModels.HelperClasses;
+using SQLight_Database.Tables.Interfaces;
 
 namespace DataLogger.ViewModels
 {
     public class BasicStatistics_VM : Base_VM
     {
         public ObservableCollection<BasicStatistics> BasicStatisticsAllExercises { get; set; }
-        public BasicStatistics_VM() 
+        public BasicStatistics_VM(IExerciseTable exerciseTable, BasicStatisticsList basicStatisticsList) 
         {
             BasicStatisticsAllExercises = [];
-            foreach (var exercise in ExerciseTable.Exercises) 
+            foreach (var exercise in exerciseTable.Exercises) 
             {
-                BasicStatisticsAllExercises.Add(BasicStatisticsList.GetStatisticsForExercise(exercise, DateOnly.MinValue, DateOnly.MaxValue));
+                BasicStatisticsAllExercises.Add(basicStatisticsList.GetStatisticsForExercise(exercise, DateOnly.MinValue, DateOnly.MaxValue));
             }
         }
     }

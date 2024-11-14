@@ -21,7 +21,6 @@ namespace DataLogger.Views
         public BasicStatistics_V()
         {
             InitializeComponent();
-            DataContext = new BasicStatistics_VM();
         }
     }
 }

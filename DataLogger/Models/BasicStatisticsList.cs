@@ -1,5 +1,6 @@
 ﻿using DataLogger.Views;
 using SQLight_Database;
+using SQLight_Database.Tables.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,15 +11,24 @@ using static DataLogger.ViewModels.FingerStatistics_VM;
 
 namespace DataLogger.Models
 {
-    static internal class BasicStatisticsList
+    public class BasicStatisticsList
     {
-        private static ObservableCollection<BasicStatistics> ListOfBasicStatistics { get; set; } = [];
+        private readonly IExerciseTable _exerciseTable;
+        private readonly ILogsTable _logsTable;
 
-        internal static BasicStatistics GetStatisticsForExercise(string exerciseName, DateOnly startDate, DateOnly endDate)
+        private ObservableCollection<BasicStatistics> ListOfBasicStatistics { get; set; } = [];
+
+        public BasicStatisticsList (ILogsTable logsTable, IExerciseTable exerciseTable)
+        {
+            _exerciseTable = exerciseTable;
+            _logsTable = logsTable;
+        }
+
+        internal BasicStatistics GetStatisticsForExercise(string exerciseName, DateOnly startDate, DateOnly endDate)
         {
             BasicStatistics stat = ListOfBasicStatistics
                 .FirstOrDefault(st => st.Exercise.Name == exerciseName && st.StartDate == startDate && st.EndDate == endDate)
-                ?? new BasicStatistics(ExerciseTable.SelectExerciseByName(exerciseName), startDate, endDate);
+                ?? new BasicStatistics(_logsTable, _exerciseTable.SelectExerciseByName(exerciseName), startDate, endDate);
 
             if (!ListOfBasicStatistics.Contains(stat))
                 ListOfBasicStatistics.Add(stat);
@@ -26,11 +36,11 @@ namespace DataLogger.Models
             return stat;
         }
 
-        internal static BasicStatistics GetStatisticsForExercise(Exercise exercise, DateOnly startDate, DateOnly endDate)
+        internal BasicStatistics GetStatisticsForExercise(Exercise exercise, DateOnly startDate, DateOnly endDate)
         {
             BasicStatistics stat = ListOfBasicStatistics
                 .FirstOrDefault(st => st.Exercise == exercise && st.StartDate == startDate && st.EndDate == endDate)
-                ?? new BasicStatistics(exercise, startDate, endDate);
+                ?? new BasicStatistics(_logsTable, exercise, startDate, endDate);
 
             if (!ListOfBasicStatistics.Contains(stat))
                 ListOfBasicStatistics.Add(stat);

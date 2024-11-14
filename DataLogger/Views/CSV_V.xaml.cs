@@ -8,7 +8,6 @@ namespace DataLogger.Views
         public CSV_V()
         {
             InitializeComponent();
-            DataContext = new CSV_VM();
         }
     }
 }

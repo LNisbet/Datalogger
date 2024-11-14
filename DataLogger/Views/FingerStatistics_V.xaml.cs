@@ -24,7 +24,6 @@ namespace DataLogger.Views
         public FingerStatistics_V()
         {
             InitializeComponent();
-            DataContext = new FingerStatistics_VM();
         }
     }
 }

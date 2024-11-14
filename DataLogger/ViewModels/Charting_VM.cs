@@ -13,18 +13,24 @@ using LiveChartsCore.Drawing;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.Kernel;
 using DataLogger.ViewModels.HelperClasses;
+using SQLight_Database.Tables.Interfaces;
 
 namespace DataLogger.ViewModels
 {
     internal class Charting_VM : Base_VM
     {
-        public static ObservableCollection<string>? ExerciseTags => TagsTable.AllExerciseTags;
+        #region Fields
+        private readonly ITagsTable _tagsTable;
+        private readonly IExerciseTable _exerciseTable;
+        private readonly ILogsTable _logsTable;
+
+        public ObservableCollection<string>? ExerciseTags => _tagsTable.AllExerciseTags;
         
         private string? selectedExerciseTag = null;
         public string? SelectedExerciseTag {  get => selectedExerciseTag; set { selectedExerciseTag = value; OnPropertyChanged(nameof(ExerciseList)); } }
 
         public List<string> ExerciseList => 
-            ExerciseTable.Exercises
+            _exerciseTable.Exercises
             .Where(e => SelectedExerciseTag == null || e.Tags.Contains(SelectedExerciseTag))
             .Select(e => e.Name)
             .ToList();
@@ -35,9 +41,15 @@ namespace DataLogger.ViewModels
         public List<Axis> XAxes { get; set; }
         public List<Axis> YAxes { get; set; }
 
-        private readonly ObservableCollection<Exercise.Units> yAxisLabels = []; 
-        public Charting_VM()
+        private readonly ObservableCollection<Exercise.Units> yAxisLabels = [];
+        #endregion
+
+        public Charting_VM(ITagsTable tagsTable, IExerciseTable exerciseTable, ILogsTable logsTable)
         {
+            _tagsTable = tagsTable;
+            _exerciseTable = exerciseTable;
+            _logsTable = logsTable;
+
             Series = [];
             SelectedExercises = [];
             SelectedExercises.CollectionChanged += (s, e) => UpdateSeries();
@@ -67,13 +79,13 @@ namespace DataLogger.ViewModels
             Series.Clear();
             yAxisLabels.Clear();
 
-            foreach (var exercise in ExerciseTable.Exercises)
+            foreach (var exercise in _exerciseTable.Exercises)
             {
                 // Only include selected exercises
                 if (SelectedExercises.Contains(exercise.Name))
                 {
                     // Map the logs into X (Date) and Y (Value1)
-                    var chartPoints = LogsTable.Logs
+                    var chartPoints = _logsTable.Logs
                         .Where(log => log.Exercise == exercise)  // Filter by exercise
                         .OrderByDescending(log => log.Date)
                         .Select(log => new DateTimePoint

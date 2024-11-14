@@ -6,6 +6,7 @@ using DataLogger.ViewModels.Interfaces;
 using DataLogger.ViewModels.HelperClasses;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using DataLogger.Models;
 
 namespace DataLogger
 {
@@ -15,37 +16,40 @@ namespace DataLogger
 
         public App()
         {
-            var services = new ServiceCollection();
+            var serviceCollection = new ServiceCollection();
 
             // Register ViewModels
-            services.AddSingleton<MainWindow_VM>();
-            services.AddSingleton<Home_VM>();
-            services.AddSingleton<Logging_VM>();
-            services.AddSingleton<CreateExercise_VM>();
-            services.AddSingleton<CSV_VM>();
-            services.AddSingleton<BasicStatistics_VM>();
-            services.AddSingleton<FingerStatistics_VM>();
-            services.AddSingleton<Charting_VM>();
-            services.AddSingleton<Debug_VM>();
-            services.AddSingleton<NavigationBar_VM>();
+            serviceCollection.AddSingleton<MainWindow_VM>();
+            serviceCollection.AddSingleton<Home_VM>();
+            serviceCollection.AddSingleton<Logging_VM>();
+            serviceCollection.AddSingleton<CreateExercise_VM>();
+            serviceCollection.AddSingleton<CSV_VM>();
+            serviceCollection.AddSingleton<BasicStatistics_VM>();
+            serviceCollection.AddSingleton<FingerStatistics_VM>();
+            serviceCollection.AddSingleton<Charting_VM>();
+            serviceCollection.AddSingleton<Debug_VM>();
+            serviceCollection.AddSingleton<NavigationBar_VM>();
 
             // Register Stores
-            services.AddSingleton<NavigationStore>();
+            serviceCollection.AddSingleton<NavigationStore>();
+            serviceCollection.AddSingleton<BasicStatisticsList>();
 
             // Register Views with dependency injection
-            services.AddSingleton<MainWindow_V>(s => new MainWindow_V
+            serviceCollection.AddSingleton<MainWindow_V>(s => new MainWindow_V
             {
                 DataContext = s.GetRequiredService<MainWindow_VM>()
             });
 
             // Register NavigationService with callback to set CurrentViewModel
-            services.AddSingleton<INavigationService>(s =>
+            serviceCollection.AddSingleton<INavigationService>(s =>
             {
                 var navigationStore = s.GetRequiredService<NavigationStore>();
                 return new NavigationService(s, vm => navigationStore.CurrentViewModel = vm);
             });
 
-            _serviceProvider = services.BuildServiceProvider();
+            SQLight_Database.DependencyInjection.ConfigureDependencies(serviceCollection);
+
+            _serviceProvider = serviceCollection.BuildServiceProvider();
         }
 
         protected override void OnStartup(StartupEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using System.Data.SQLite;
 using SQLight_Database;
+using SQLight_Database.Tables.Interfaces;
 
 namespace SQLight_Database
 {
@@ -30,13 +31,13 @@ namespace SQLight_Database
             Note = note;
         }
 
-        public ExerciseLog(SQLiteDataReader sqlite_datareader)
+        public ExerciseLog(SQLiteDataReader sqlite_datareader, IExerciseTable exerciseTable)
         {
             if (sqlite_datareader != null && sqlite_datareader.HasRows && !sqlite_datareader.IsClosed)
             {
                 Id = sqlite_datareader.GetInt32(0);
                 Date = DateOnly.Parse(sqlite_datareader.GetString(1));
-                Exercise = ExerciseTable.SelectExerciseByName(sqlite_datareader.GetString(2));
+                Exercise = exerciseTable.SelectExerciseByName(sqlite_datareader.GetString(2));
                 Value1 = (float)sqlite_datareader.GetFloat(3);
                 Value2 = GetFloatFromDatabase(sqlite_datareader,4);
                 Value3 = GetFloatFromDatabase(sqlite_datareader, 5);

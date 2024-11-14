@@ -10,32 +10,34 @@ namespace SQLight_Database
 {
     public class SQL_Database : ISQL_Database
     {
-        private readonly IDatabaseConnection _databaseConnection;
+        private readonly DatabaseConnectionStore _databaseConnectionStore;
+        private readonly IUsersTable _usersTable;
 
-        public SQL_Database(UsersTable usersTable, IDatabaseConnection databaseConnection, ITagsTable tagsTable, IExerciseTable exerciseTable) 
+        public SQL_Database(IUsersTable usersTable, DatabaseConnectionStore databaseConnectionStore, ITagsTable tagsTable, IExerciseTable exerciseTable) 
         {
-            _databaseConnection = databaseConnection;
+            _databaseConnectionStore = databaseConnectionStore;
+            _usersTable = usersTable;
             InititiliseDatabase(tagsTable, exerciseTable);
-            databaseConnection.CurrentUser.Initilised = true;
+            databaseConnectionStore.CurrentUser.Initilised = true;
 
-            if (!usersTable.AllUserNames.Contains(databaseConnection.CurrentUser.Name))
+            if (!usersTable.AllUserNames.Contains(databaseConnectionStore.CurrentUser.Name))
             {
-                usersTable.Add(databaseConnection.CurrentUser);
+                usersTable.Add(databaseConnectionStore.CurrentUser);
             }
-            else if (!usersTable.AllUsers.FirstOrDefault(u => u.Name == databaseConnection.CurrentUser.Name).Initilised)
+            else if (!usersTable.AllUsers.FirstOrDefault(u => u.Name == databaseConnectionStore.CurrentUser.Name).Initilised)
             {
-                usersTable.Modify(databaseConnection.CurrentUser);
+                usersTable.Modify(databaseConnectionStore.CurrentUser);
             }
         }
 
         public void DeleteDatabase()
         {
-            SQL_Commands.ExecuteSQLString(_databaseConnection.SQLite_conn, SQL_Strings.DeleteDatabase(_databaseConnection.CurrentUser.Name), SQL_Commands.CommandType.NonQuery);
-            _databaseConnection.Close();
+            SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.DeleteDatabase(_databaseConnectionStore.CurrentUser.Name), SQL_Commands.CommandType.NonQuery);
+            _usersTable.Remove(_databaseConnectionStore.CurrentUser);
 
-            if (File.Exists($"{_databaseConnection.CurrentUser.Name}.db"))
+            if (File.Exists($"{_databaseConnectionStore.CurrentUser.Name}.db"))
             {
-                File.Delete($"{_databaseConnection.CurrentUser.Name}.db");
+                File.Delete($"{_databaseConnectionStore.CurrentUser.Name}.db");
             }
         }
 
@@ -50,7 +52,7 @@ namespace SQLight_Database
 
         private void CreateTable(string tableName, List<ColumnDescription> tableDescription)
         {
-            SQL_Commands.ExecuteSQLString(_databaseConnection.SQLite_conn, SQL_Strings.CreateTable(tableName, tableDescription), SQL_Commands.CommandType.NonQuery);
+            SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.CreateTable(tableName, tableDescription), SQL_Commands.CommandType.NonQuery);
         }
     }
 }

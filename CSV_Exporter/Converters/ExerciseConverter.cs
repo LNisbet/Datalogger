@@ -2,11 +2,18 @@
 using CsvHelper.TypeConversion;
 using CsvHelper;
 using SQLight_Database;
+using SQLight_Database.Tables.Interfaces;
 
 namespace CSV_Exporter
 {
     public class ExerciseConverter : ITypeConverter
     {
+        private readonly IExerciseTable _exerciseTable;
+        public ExerciseConverter(IExerciseTable exerciseTable) 
+        {
+            _exerciseTable = exerciseTable;
+        }
+
         public object ConvertFromString(string? text, IReaderRow row, MemberMapData memberMapData)
         {
             ArgumentNullException.ThrowIfNull(text);
@@ -14,7 +21,7 @@ namespace CSV_Exporter
             var list = text.Split(',').ToList();
             try
             {
-                exercise = ExerciseTable.SelectExerciseByName(list[0]);
+                exercise = _exerciseTable.SelectExerciseByName(list[0]);
             }
             catch
             {

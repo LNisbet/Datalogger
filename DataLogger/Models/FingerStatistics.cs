@@ -22,20 +22,20 @@ namespace DataLogger.Models
         internal BasicStatistics IndexFingerOpen { get;}
         internal BasicStatistics IndexFingerHalf { get;}
 
-        internal FingerStatistics(Hand hand, DateOnly startDate, DateOnly endDate) 
+        internal FingerStatistics(BasicStatisticsList basicStatisticsList, Hand hand, DateOnly startDate, DateOnly endDate) 
         {
             SetHand = hand;
-            LittelFingerOpen = BasicStatisticsList.GetStatisticsForExercise($"{hand} Little Finger Open Crimp", startDate, endDate);
-            LittelFingerHalf = BasicStatisticsList.GetStatisticsForExercise($"{hand} Little Finger Half Crimp", startDate, endDate);
+            LittelFingerOpen = basicStatisticsList.GetStatisticsForExercise($"{hand} Little Finger Open Crimp", startDate, endDate);
+            LittelFingerHalf = basicStatisticsList.GetStatisticsForExercise($"{hand} Little Finger Half Crimp", startDate, endDate);
 
-            RingFingerOpen = BasicStatisticsList.GetStatisticsForExercise($"{hand} Ring Finger Open Crimp", startDate, endDate);
-            RingFingerHalf = BasicStatisticsList.GetStatisticsForExercise($"{hand} Ring Finger Half Crimp", startDate, endDate);
+            RingFingerOpen = basicStatisticsList.GetStatisticsForExercise($"{hand} Ring Finger Open Crimp", startDate, endDate);
+            RingFingerHalf = basicStatisticsList.GetStatisticsForExercise($"{hand} Ring Finger Half Crimp", startDate, endDate);
 
-            MiddleFingerOpen = BasicStatisticsList.GetStatisticsForExercise($"{hand} Middle Finger Open Crimp", startDate, endDate);
-            MiddleFingerHalf = BasicStatisticsList.GetStatisticsForExercise($"{hand} Middle Finger Half Crimp", startDate, endDate);
+            MiddleFingerOpen = basicStatisticsList.GetStatisticsForExercise($"{hand} Middle Finger Open Crimp", startDate, endDate);
+            MiddleFingerHalf = basicStatisticsList.GetStatisticsForExercise($"{hand} Middle Finger Half Crimp", startDate, endDate);
 
-            IndexFingerOpen = BasicStatisticsList.GetStatisticsForExercise($"{hand} Index Finger Open Crimp", startDate, endDate);
-            IndexFingerHalf = BasicStatisticsList.GetStatisticsForExercise($"{hand} Index Finger Half Crimp", startDate, endDate);
+            IndexFingerOpen = basicStatisticsList.GetStatisticsForExercise($"{hand} Index Finger Open Crimp", startDate, endDate);
+            IndexFingerHalf = basicStatisticsList.GetStatisticsForExercise($"{hand} Index Finger Half Crimp", startDate, endDate);
         }
 
         internal BasicStatistics SelectetBasicStatistic(Fingers fingers, Crimp crimp)

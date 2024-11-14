@@ -9,7 +9,6 @@ namespace DataLogger.Views
         public Home_V()
         {
             InitializeComponent();
-            DataContext = new Home_VM();
         }
     }
 }

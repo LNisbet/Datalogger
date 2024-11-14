@@ -18,7 +18,6 @@ namespace DataLogger.Views
         public CreateExercise_V()
         {
             InitializeComponent();
-            DataContext = new CreateExercise_VM();
             UnitsDisplayed = 1;
         }
 

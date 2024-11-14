@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SQLight_Database.Database.Interfaces;
 using SQLight_Database.Tables.Interfaces;
 
 namespace SQLight_Database
@@ -37,9 +38,7 @@ namespace SQLight_Database
         public void Remove(User user)
         {
             if (allUsers != null && allUsers.FirstOrDefault(u => u.Name == user.Name) != null)
-            {   
-                if (user.Initilised == true)
-                    Database.DeleteDatabase(user.Name,DatabaseConnection.SQLite_conn);
+            {
                 allUsers.Remove(allUsers.FirstOrDefault(u => u.Name == user.Name));
                 Save();
             }  

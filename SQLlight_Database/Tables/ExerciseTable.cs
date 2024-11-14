@@ -13,6 +13,7 @@ namespace SQLight_Database
     public class ExerciseTable : IExerciseTable
     {
         private readonly ITagsTable _tagsTable;
+        private readonly DatabaseConnectionStore _databaseConnectionStore;
 
         private ObservableCollection<Exercise>? exercises;
         public ObservableCollection<Exercise> Exercises
@@ -30,16 +31,17 @@ namespace SQLight_Database
 
         public ObservableCollection<string> AllExerciseNames  => new ObservableCollection<string>(Exercises.Select(exercise => exercise.Name).Distinct());
 
-        public ExerciseTable(ITagsTable tagsTable)
+        public ExerciseTable(ITagsTable tagsTable, DatabaseConnectionStore databaseConnectionStore)
         {
             _tagsTable = tagsTable;
+            _databaseConnectionStore = databaseConnectionStore;
         }
         
         public void AddSingleExercise(Exercise exercise)
         {
             if (!AllExerciseNames.Contains(exercise.Name))
             {
-                SQL_Commands.ExecuteSQLString(databaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
+                SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
                 foreach (var tag in exercise.Tags)
                 {
                     if (!_tagsTable.AllExerciseTags.Contains(tag))
@@ -55,7 +57,7 @@ namespace SQLight_Database
             foreach (var exercise in exercises)
                 if (!AllExerciseNames.Contains(exercise.Name))
                 {
-                    SQL_Commands.ExecuteSQLString(databaseConnection.SQLite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
+                    SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
                     foreach (var tag in exercise.Tags)
                     {
                         if (!_tagsTable.AllExerciseTags.Contains(tag))
@@ -68,8 +70,8 @@ namespace SQLight_Database
 
         public void RemoveSingleExercise(Exercise exercise)
         {
-            SQL_Commands.ExecuteSQLString(databaseConnection.SQLite_conn, SQL_Strings.DeleteFromTable(Config.ExercieseTableName, $"Name='{exercise.Name}'"), SQL_Commands.CommandType.NonQuery);
-            ReadAllExercises(databaseConnection);
+            SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.DeleteFromTable(Config.ExercieseTableName, $"Name='{exercise.Name}'"), SQL_Commands.CommandType.NonQuery);
+            ReadAllExercises();
         }
 
         public void RemoveMultipleExercises(List<Exercise> exercises)
@@ -83,9 +85,9 @@ namespace SQLight_Database
             return ex ?? throw new ExerciseNotFoundException(name);
         }
 
-        private void ReadAllExercises(IDatabaseConnection databaseConnection)
+        private void ReadAllExercises()
         {
-            var sqlite_datareader = SQL_Commands.ExecuteSQLString(databaseConnection.SQLite_conn, SQL_Strings.ReadData(Config.ExercieseTableName, "*", false), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
+            var sqlite_datareader = SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.ReadData(Config.ExercieseTableName, "*", false), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
             exercises.Clear();
 
             while (sqlite_datareader != null && sqlite_datareader.Read())

@@ -15,13 +15,15 @@ namespace DataLogger.ViewModels
     internal class NavigationBar_VM : Base_VM
     {
         private readonly INavigationService _navigationService;
+        private readonly DatabaseConnectionStore _databaseConnectionStore;
 
-        public bool CanNavigate => !string.IsNullOrEmpty(DatabaseConnection.CurrentUser?.Name);
+        public bool CanNavigate => !string.IsNullOrEmpty(_databaseConnectionStore.CurrentUser?.Name);
 
 
-        public NavigationBar_VM(INavigationService navigationService)
+        public NavigationBar_VM(INavigationService navigationService, DatabaseConnectionStore databaseConnectionStore)
         {
             _navigationService = navigationService;
+            _databaseConnectionStore = databaseConnectionStore;
         }
 
         #region Home

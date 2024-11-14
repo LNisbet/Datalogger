@@ -9,7 +9,6 @@ namespace DataLogger.Views
         public Logging_V()
         {
             InitializeComponent();
-            DataContext = new Logging_VM();
             TBOX_Date.Visibility = Visibility.Hidden;
         }
 
