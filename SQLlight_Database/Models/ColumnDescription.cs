@@ -1,6 +1,6 @@
-﻿namespace SQLight_Database
+﻿namespace SQLight_Database.Models
 {
-    internal class ColumnDescription
+    public class ColumnDescription
     {
         internal string Name { get; set; }
         internal string DataType { get; set; }

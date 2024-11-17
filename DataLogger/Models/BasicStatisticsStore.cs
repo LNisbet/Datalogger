@@ -1,5 +1,5 @@
 ﻿using DataLogger.Views;
-using SQLight_Database;
+using SQLight_Database.Models;
 using SQLight_Database.Tables.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,12 +13,12 @@ namespace DataLogger.Models
 {
     public class BasicStatisticsStore
     {
-        private readonly IExerciseTable _exerciseTable;
-        private readonly ILogsTable _logsTable;
+        private readonly ITable<Exercise> _exerciseTable;
+        private readonly ITable<ExerciseLog> _logsTable;
 
         internal ObservableCollection<BasicStatistics> ListOfBasicStatistics { get; private set; } = [];
 
-        public BasicStatisticsStore (ILogsTable logsTable, IExerciseTable exerciseTable)
+        public BasicStatisticsStore (ITable<ExerciseLog> logsTable, ITable<Exercise> exerciseTable)
         {
             _exerciseTable = exerciseTable;
             _logsTable = logsTable;
@@ -28,7 +28,7 @@ namespace DataLogger.Models
         {
             BasicStatistics stat = ListOfBasicStatistics
                 .FirstOrDefault(st => st.Exercise.Name == exerciseName && st.StartDate == startDate && st.EndDate == endDate)
-                ?? new BasicStatistics(_logsTable, _exerciseTable.SelectExerciseByName(exerciseName), startDate, endDate);
+                ?? new BasicStatistics(_logsTable, _exerciseTable.SelectByName(exerciseName), startDate, endDate);
 
             if (!ListOfBasicStatistics.Contains(stat))
                 ListOfBasicStatistics.Add(stat);

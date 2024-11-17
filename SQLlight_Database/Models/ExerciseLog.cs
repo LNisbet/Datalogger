@@ -1,8 +1,7 @@
 ﻿using System.Data.SQLite;
-using SQLight_Database;
 using SQLight_Database.Tables.Interfaces;
 
-namespace SQLight_Database
+namespace SQLight_Database.Models
 {
     public class ExerciseLog
     {
@@ -31,15 +30,15 @@ namespace SQLight_Database
             Note = note;
         }
 
-        public ExerciseLog(SQLiteDataReader sqlite_datareader, IExerciseTable exerciseTable)
+        public ExerciseLog(SQLiteDataReader sqlite_datareader, ITable<Exercise> exerciseTable)
         {
             if (sqlite_datareader != null && sqlite_datareader.HasRows && !sqlite_datareader.IsClosed)
             {
                 Id = sqlite_datareader.GetInt32(0);
                 Date = DateOnly.Parse(sqlite_datareader.GetString(1));
-                Exercise = exerciseTable.SelectExerciseByName(sqlite_datareader.GetString(2));
+                Exercise = exerciseTable.SelectByName(sqlite_datareader.GetString(2));
                 Value1 = (float)sqlite_datareader.GetFloat(3);
-                Value2 = GetFloatFromDatabase(sqlite_datareader,4);
+                Value2 = GetFloatFromDatabase(sqlite_datareader, 4);
                 Value3 = GetFloatFromDatabase(sqlite_datareader, 5);
                 Value4 = GetFloatFromDatabase(sqlite_datareader, 6);
                 Note = (string?)sqlite_datareader.GetString(7);

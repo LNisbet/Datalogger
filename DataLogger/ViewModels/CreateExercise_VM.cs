@@ -1,17 +1,17 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using SQLight_Database;
 using System.Windows;
 using DataLogger.ViewModels.HelperClasses;
 using SQLight_Database.Tables.Interfaces;
+using SQLight_Database.Models;
 
 namespace DataLogger.ViewModels
 {
     public class CreateExercise_VM : Base_VM
     {
         #region Fields
-        private readonly IExerciseTable _exerciseTable;
-        private readonly ITagsTable _tagsTable;
+        private readonly ITable<Exercise> _exerciseTable;
+        private readonly ITable<string> _tagsTable;
 
         public string NewExerciseName { get; set; }
 
@@ -25,14 +25,14 @@ namespace DataLogger.ViewModels
 
         private Exercise NewExercise { get => new(NewExerciseName, NewExerciseTags.ToList(), NewUnit1, NewUnit2, NewUnit3, NewUnit4, NewExerciseDescription); }
 
-        public ObservableCollection<string> AllExerciseTags => _tagsTable.AllExerciseTags;
+        public ObservableCollection<string> AllExerciseTags => _tagsTable.Values;
 
-        public ObservableCollection<Exercise> Exercises => _exerciseTable.Exercises;
+        public ObservableCollection<Exercise> Exercises => _exerciseTable.Values;
 
         public Exercise? SelectedExercise { get; set; }
         #endregion
 
-        public CreateExercise_VM(IExerciseTable exerciseTable, ITagsTable tagsTable)
+        public CreateExercise_VM(ITable<Exercise> exerciseTable, ITable<string> tagsTable)
         {
             _exerciseTable = exerciseTable;
             _tagsTable = tagsTable;
@@ -54,14 +54,14 @@ namespace DataLogger.ViewModels
 
         public void AddNewExercise(Exercise ex)
         {
-            _exerciseTable.AddSingleExercise(ex);
+            _exerciseTable.AddSingleRow(ex);
             OnPropertyChanged(nameof(Exercises));
             OnPropertyChanged(nameof(AllExerciseTags));
         }
 
         public bool ExerciseIsValid(Exercise ex)
         {
-            return!_exerciseTable.AllExerciseNames.Contains(ex.Name);
+            return!_exerciseTable.AllNames.Contains(ex.Name);
         }
         #endregion
 
@@ -79,7 +79,7 @@ namespace DataLogger.ViewModels
         {
             if (log != null)
             {
-                _exerciseTable.RemoveSingleExercise(log);
+                _exerciseTable.RemoveSingleRow(log);
                 OnPropertyChanged(nameof(Exercises));
                 OnPropertyChanged(nameof(AllExerciseTags));
             }

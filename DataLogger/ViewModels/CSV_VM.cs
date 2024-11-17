@@ -1,18 +1,18 @@
 ﻿using System.Windows.Input;
-using SQLight_Database;
 using CSV_Exporter;
 using Newtonsoft.Json.Linq;
 using System.Windows.Controls;
 using DataLogger.ViewModels.HelperClasses;
 using SQLight_Database.Tables.Interfaces;
+using SQLight_Database.Models;
 
 namespace DataLogger.ViewModels
 {
     public class CSV_VM : Base_VM
     {
-        private readonly IExerciseTable _exerciseTable;
-        private readonly ILogsTable _logsTable;
-        public CSV_VM(IExerciseTable exerciseTable, ILogsTable logsTable)
+        private readonly ITable<Exercise> _exerciseTable;
+        private readonly ITable<ExerciseLog> _logsTable;
+        public CSV_VM(ITable<Exercise> exerciseTable, ITable<ExerciseLog> logsTable)
         {
             _exerciseTable = exerciseTable;
             _logsTable = logsTable;
@@ -73,7 +73,7 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                exportLogsCommand ??= new RelayCommand(p => ExportLogs(), p => _logsTable.Logs.Count > 0);
+                exportLogsCommand ??= new RelayCommand(p => ExportLogs(), p => _logsTable.Values.Count > 0);
                 return exportLogsCommand;
             }
         }
@@ -83,7 +83,7 @@ namespace DataLogger.ViewModels
             var path = SelectSaveFilePath();
             if (path == null)
                 return;
-            CSVHelper.WriteToCSV(path, new List<ExerciseLog>(_logsTable.Logs));
+            CSVHelper.WriteToCSV(path, new List<ExerciseLog>(_logsTable.Values));
         }
         #endregion
 
@@ -93,7 +93,7 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                exportExercisesCommand ??= new RelayCommand(p => ExportExercises(), p => _exerciseTable.Exercises.Count > 0);
+                exportExercisesCommand ??= new RelayCommand(p => ExportExercises(), p => _exerciseTable.Values.Count > 0);
                 return exportExercisesCommand;
             }
         }
@@ -103,7 +103,7 @@ namespace DataLogger.ViewModels
             var path = SelectSaveFilePath();
             if (path == null)
                 return;
-            CSVHelper.WriteToCSV(path, new List<Exercise>(_exerciseTable.Exercises));
+            CSVHelper.WriteToCSV(path, new List<Exercise>(_exerciseTable.Values));
         }
         #endregion
 
@@ -123,7 +123,7 @@ namespace DataLogger.ViewModels
             var path = SelectOpenFilePath();
             if (path == null)
                 return;
-            _logsTable.AddMultipleLogs(CSVHelper.ReadFromCSV<ExerciseLog>(path));
+            _logsTable.AddMultipleRows(CSVHelper.ReadFromCSV<ExerciseLog>(path));
         }
         #endregion
 
@@ -144,7 +144,7 @@ namespace DataLogger.ViewModels
             var path = SelectOpenFilePath();
             if (path == null)
                 return;
-            _exerciseTable.AddMultipleExercises(CSVHelper.ReadFromCSV<Exercise>(path));
+            _exerciseTable.AddMultipleRows(CSVHelper.ReadFromCSV<Exercise>(path));
         }
         #endregion
     }

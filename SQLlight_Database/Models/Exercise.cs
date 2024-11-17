@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Data.SQLite;
 
-namespace SQLight_Database
+namespace SQLight_Database.Models
 {
     public class Exercise
     {
@@ -16,7 +16,7 @@ namespace SQLight_Database
 
         public Exercise() { }
 
-        public Exercise(string name, List<string> tags, Units unit1, Units? unit2 = null, Units? unit3 = null, Units? unit4 = null,  string? description = null)
+        public Exercise(string name, List<string> tags, Units unit1, Units? unit2 = null, Units? unit3 = null, Units? unit4 = null, string? description = null)
         {
             Name = name;
             Tags = tags;
@@ -49,9 +49,9 @@ namespace SQLight_Database
             {
                 return (Units)Enum.Parse(typeof(Units), sqlite_datareader.GetString(col));
             }
-            catch 
-            { 
-                return null; 
+            catch
+            {
+                return null;
             }
         }
 
@@ -72,7 +72,7 @@ namespace SQLight_Database
 
             var tagsAsAString = "'";
             var i = 0;
-            foreach (var tag in list) 
+            foreach (var tag in list)
             {
                 tagsAsAString += tag;
                 if (i < list.Count - 1)

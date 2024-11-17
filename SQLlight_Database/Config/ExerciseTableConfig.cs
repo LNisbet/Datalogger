@@ -1,47 +1,15 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Reflection;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+﻿
 
-namespace SQLight_Database
+using SQLight_Database.Config.Interface;
+using SQLight_Database.Models;
+
+namespace SQLight_Database.Config
 {
-    static internal class Config
+    public class ExerciseTableConfig : ITableConfig<Exercise>
     {
-        #region Users File
-        internal const string UsersPathName = "users.json";
-        #endregion
+        public string Name => "Values";
 
-        #region Tag Table
-        internal const string TagsTableName = "Tags";
-
-        static internal List<ColumnDescription> TagsTableDescription =
-        [
-            new ColumnDescription("Tags", "TEXT", "PRIMARY KEY")
-        ];
-
-        static internal readonly List<string> StandardTags = 
-        [
-            "UpperBody", 
-            "LowerBody",
-            "Core",
-            "Fingers",
-            "Endurance",
-            "Strength",
-            "Power",
-            "Flexibility"
-        ];
-        #endregion
-
-        #region Exercise Table
-        internal const string ExercieseTableName = "Exercises";
-
-        static internal List<ColumnDescription> ExerciseTableDescription =
+        public List<ColumnDescription> Description  =>
         [
             new ColumnDescription("Name", "VARCHAR(32)", "PRIMARY KEY"),
             new ColumnDescription("Tags", "TEXT"),
@@ -52,7 +20,7 @@ namespace SQLight_Database
             new ColumnDescription("Description", "TEXT")
         ];
 
-        static internal readonly List<Exercise> StandardExercises =
+        public List<Exercise>? DefaultValues =>
         [
             new Exercise("Weight", [], Exercise.Units.Kg),
             new Exercise("Left Little Finger Open Crimp", ["Fingers", "Strength"], Exercise.Units.Kg,null,null,null,"Left hand little finger in a drag position"),
@@ -79,22 +47,5 @@ namespace SQLight_Database
             new Exercise("Right Full Crimp", ["Fingers", "Strength"], Exercise.Units.Kg,null,null,null,"Right hand in a full crimp position"),
             new Exercise("Pullup", ["UpperBody", "Strength"], Exercise.Units.Kg,Exercise.Units.Reps,null,null,"Full ROM pullup")
         ];
-        #endregion
-
-        #region Logs Table
-        internal const string LogsTableName = "ExerciseLogs";
-
-        static internal List<ColumnDescription> LogTableDescription =
-        [
-            new ColumnDescription("Id", "INTEGER PRIMARY KEY"),
-            new ColumnDescription("Date", "DATE", "NOT NULL"),
-            new ColumnDescription("Exercise", "VARCHAR(20)", "NOT NULL"),
-            new ColumnDescription("Value1", "FLOAT", "NOT NULL"),
-            new ColumnDescription("Value2", "FLOAT"),
-            new ColumnDescription("Value3", "FLOAT"),
-            new ColumnDescription("Value4", "FLOAT"),
-            new ColumnDescription("Note", "TEXT")
-        ];
-        #endregion
     }
 }

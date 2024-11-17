@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using DataLogger.Models;
 using DataLogger.ViewModels.HelperClasses;
 using SQLight_Database.Tables.Interfaces;
+using SQLight_Database.Models;
 
 namespace DataLogger.ViewModels
 {
@@ -12,10 +13,10 @@ namespace DataLogger.ViewModels
     {
         private readonly BasicStatisticsStore _basicStatisticsStore;
         public ObservableCollection<BasicStatistics> BasicStatisticsAllExercises => _basicStatisticsStore.ListOfBasicStatistics;
-        public BasicStatistics_VM(BasicStatisticsStore basicStatisticsStore, IExerciseTable exerciseTable) 
+        public BasicStatistics_VM(BasicStatisticsStore basicStatisticsStore, ITable<Exercise> exerciseTable) 
         {
             _basicStatisticsStore = basicStatisticsStore;
-            foreach (var exercise in exerciseTable.Exercises) 
+            foreach (var exercise in exerciseTable.Values) 
             {
                 basicStatisticsStore.Get(exercise, DateOnly.MinValue, DateOnly.MaxValue);
             }

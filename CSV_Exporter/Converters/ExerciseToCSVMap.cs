@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper.Configuration;
-using SQLight_Database;
+using SQLight_Database.Models;
 
 namespace CSV_Exporter.Converters
 {

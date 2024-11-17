@@ -6,17 +6,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SQLight_Database.Config;
 using SQLight_Database.Database.Interfaces;
+using SQLight_Database.Models;
 using SQLight_Database.Tables.Interfaces;
 
 namespace SQLight_Database
 {
     public class UsersTable : IUsersTable
     {
+        private readonly UserConfig config;
+
         private ObservableCollection<User>? allUsers;
         public ObservableCollection<User> AllUsers => allUsers ??= Load();
 
         public ObservableCollection<string> AllUserNames => new(AllUsers.Select(users => users.Name).Distinct());
+
+        public UsersTable(UserConfig userConfig) 
+        {
+            config = userConfig;
+        }
 
         public User? SelectUserByName(string? name)
         {
@@ -56,7 +65,7 @@ namespace SQLight_Database
 
         internal void Save()
         {
-            File.WriteAllText(Config.UsersPathName, JsonConvert.SerializeObject(allUsers));
+            File.WriteAllText(config.UsersPathName, JsonConvert.SerializeObject(allUsers));
             allUsers = null;
         }
 
@@ -64,7 +73,7 @@ namespace SQLight_Database
         {
             try
             {
-                return JsonConvert.DeserializeObject<ObservableCollection<User>>(File.ReadAllText(Config.UsersPathName)) ?? [];
+                return JsonConvert.DeserializeObject<ObservableCollection<User>>(File.ReadAllText(config.UsersPathName)) ?? [];
             }
             catch
             {

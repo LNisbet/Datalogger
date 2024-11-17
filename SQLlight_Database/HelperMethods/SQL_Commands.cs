@@ -1,6 +1,7 @@
-﻿using System.Data.SQLite;
+﻿using SQLight_Database.Exceptions;
+using System.Data.SQLite;
 
-namespace SQLight_Database
+namespace SQLight_Database.HelperMethods
 {
     static internal class SQL_Commands
     {

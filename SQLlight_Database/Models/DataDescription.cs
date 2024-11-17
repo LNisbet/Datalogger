@@ -1,4 +1,4 @@
-﻿namespace SQLight_Database
+﻿namespace SQLight_Database.Models
 {
     internal class DataDescription(List<string> columnNames, List<string?> values)
     {

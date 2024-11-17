@@ -1,4 +1,4 @@
-﻿namespace SQLight_Database
+﻿namespace SQLight_Database.Exceptions
 {
     public class NoOpenSQLConnection : Exception
     {

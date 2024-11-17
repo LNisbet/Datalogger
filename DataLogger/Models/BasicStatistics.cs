@@ -1,4 +1,4 @@
-﻿using SQLight_Database;
+﻿using SQLight_Database.Models;
 using SQLight_Database.Tables.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,12 +18,12 @@ namespace DataLogger.Models
         public ExerciseLog? Max { get; }
         public ExerciseLog? Min { get; }
 
-        public BasicStatistics(ILogsTable logsTable, Exercise exercise, DateOnly startDate, DateOnly endDate) 
+        public BasicStatistics(ITable<ExerciseLog> logsTable, Exercise exercise, DateOnly startDate, DateOnly endDate) 
         {
             Exercise = exercise;
             StartDate = startDate;
             EndDate = endDate;
-            var filteredLogs = logsTable.Logs.Where(log => log.Exercise == exercise && log.Date >= startDate && log.Date <= endDate);
+            var filteredLogs = logsTable.Values.Where(log => log.Exercise == exercise && log.Date >= startDate && log.Date <= endDate);
             if (filteredLogs.Any())
             {
                 MostRecent = filteredLogs.Aggregate((log1, log2) => log1.Date > log2.Date ? log1 : log2);

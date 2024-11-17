@@ -1,6 +1,7 @@
-﻿using System.Data.SQLite;
+﻿
+using SQLight_Database.Models;
 
-namespace SQLight_Database
+namespace SQLight_Database.HelperMethods
 {
     static internal class SQL_Strings
     {
@@ -24,7 +25,7 @@ namespace SQLight_Database
             return $"BACKUP DATABASE {dbName}.db TO DISK='{path}' WITH DIFFERETIAL;";
         }
 
-        static internal string CreateTable(string tableName, List<ColumnDescription> columns )
+        static internal string CreateTable(string tableName, List<ColumnDescription> columns)
         {
             List<string> strings = [];
 

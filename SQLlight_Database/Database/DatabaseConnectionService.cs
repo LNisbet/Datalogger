@@ -1,24 +1,18 @@
-﻿using SQLight_Database.Database;
-using SQLight_Database.Database.Interfaces;
-using SQLight_Database.Tables.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SQLight_Database.Database.Interfaces;
+using SQLight_Database.HelperMethods;
+using SQLight_Database.Models;
 
-namespace SQLight_Database
+namespace SQLight_Database.Database
 {
     public class DatabaseConnectionService : IDatabaseConnectionService
     {
         private readonly DatabaseConnectionStore _connectionStore;
 
-        public DatabaseConnectionService(DatabaseConnectionStore databaseConnectionStore) 
+        public DatabaseConnectionService(DatabaseConnectionStore databaseConnectionStore)
         {
             _connectionStore = databaseConnectionStore;
         }
-        public void Open(User user) 
+        public void Open(User user)
         {
             try
             {
@@ -33,7 +27,7 @@ namespace SQLight_Database
 
         public void Close()
         {
-            if (_connectionStore?.SQLite_conn == null) 
+            if (_connectionStore?.SQLite_conn == null)
             {
                 return;
             }

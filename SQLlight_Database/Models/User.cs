@@ -1,18 +1,21 @@
-﻿using System.Data.SQLite;
-
-namespace SQLight_Database
+﻿
+namespace SQLight_Database.Models
 {
     public class User
     {
-        public int? Id { get;}
-        public string Name { get;}
-        public bool Initilised { get; set; }
+        public int? Id { get; }
+        public string Name { get; }
+        public bool TagsTableInitilised { get; set; }
+        public bool LogsTableInitilised { get; set; }
+        public bool ExerciseTableInitilised { get; set; }
 
-        public User(string name, bool initilised, int? id = null)
+        public User(string name, bool tagsTableInitilised = false, bool logsTableInitilised = false, bool exerciseTableInitilised = false, int? id = null)
         {
             Id = id;
             Name = name;
-            Initilised = initilised;
+            TagsTableInitilised = tagsTableInitilised;
+            LogsTableInitilised = logsTableInitilised;
+            ExerciseTableInitilised = exerciseTableInitilised;
         }
     }
 }

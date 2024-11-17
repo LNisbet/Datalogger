@@ -1,6 +1,6 @@
 ﻿using DataLogger.ViewModels.HelperClasses;
 using DataLogger.ViewModels.Interfaces;
-using SQLight_Database;
+using SQLight_Database.Database;
 using SQLight_Database.Database.Interfaces;
 using SQLight_Database.Tables.Interfaces;
 using System;

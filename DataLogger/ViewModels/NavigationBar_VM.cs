@@ -2,7 +2,7 @@
 using DataLogger.ViewModels.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
-using SQLight_Database;
+using SQLight_Database.Database;
 using SQLight_Database.Database.Interfaces;
 using System;
 using System.Collections.Generic;

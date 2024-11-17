@@ -1,4 +1,11 @@
-﻿using SQLight_Database.Database.Interfaces;
+﻿using SQLight_Database.Config;
+using SQLight_Database.Config.Interface;
+using SQLight_Database.Database;
+using SQLight_Database.Database.Interfaces;
+using SQLight_Database.Exceptions;
+using SQLight_Database.HelperMethods;
+using SQLight_Database.Models;
+using SQLight_Database.Tables;
 using SQLight_Database.Tables.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,89 +17,85 @@ using System.Threading.Tasks;
 
 namespace SQLight_Database
 {
-    public class ExerciseTable : IExerciseTable
+    public class ExerciseTable : BaseTable<Exercise>
     {
-        private readonly ITagsTable _tagsTable;
-        private readonly DatabaseConnectionStore _databaseConnectionStore;
+        private readonly ITable<string> _tagsTable;
 
-        private ObservableCollection<Exercise>? exercises;
-        public ObservableCollection<Exercise> Exercises
-        {
-            get
-            {
-                if (exercises == null)
-                {
-                    exercises = [];
-                    ReadAllExercises();
-                }
-                return exercises;
-            }
-        }
+        public override ObservableCollection<string> AllNames  => new(Values.Select(exercise => exercise.Name).Distinct());
 
-        public ObservableCollection<string> AllExerciseNames  => new ObservableCollection<string>(Exercises.Select(exercise => exercise.Name).Distinct());
-
-        public ExerciseTable(ITagsTable tagsTable, DatabaseConnectionStore databaseConnectionStore)
+        public ExerciseTable(DatabaseConnectionStore databaseConnectionStore, ITableConfig<Exercise> config, ITable<string> tagsTable) : base(databaseConnectionStore, config)
         {
             _tagsTable = tagsTable;
-            _databaseConnectionStore = databaseConnectionStore;
         }
-        
-        public void AddSingleExercise(Exercise exercise)
+
+        public override void Initilise()
         {
-            if (!AllExerciseNames.Contains(exercise.Name))
+            if (String.IsNullOrEmpty(_databaseConnectionStore.CurrentUser?.Name) || _databaseConnectionStore.CurrentUser.ExerciseTableInitilised == true)
+                return;
+
+            CreateTable(_config.Name, _config.Description);
+
+            if (_config.DefaultValues != null)
+                AddMultipleRows(_config.DefaultValues);
+
+            _databaseConnectionStore.CurrentUser.ExerciseTableInitilised = true;
+        }
+
+        public override Exercise SelectByName(string name)
+        {
+            var ex = Values.SingleOrDefault(ex => ex.Name == name);
+            return ex ?? throw new ExerciseNotFoundException(name);
+        }
+
+        public override void AddSingleRow(Exercise exercise)
+        {
+            if (!AllNames.Contains(exercise.Name))
             {
-                SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
+                SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.InsertData(_config.Name, exercise.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
                 foreach (var tag in exercise.Tags)
                 {
-                    if (!_tagsTable.AllExerciseTags.Contains(tag))
-                        _tagsTable.AddSingleTag(tag);
+                    if (!_tagsTable.AllNames.Contains(tag))
+                        _tagsTable.AddSingleRow(tag);
                 }
 
-                ReadAllExercises();
+                ReadAllRows();
             }
         }
 
-        public void AddMultipleExercises(List<Exercise> exercises)
+        public override void AddMultipleRows(List<Exercise> exercises)
         {
             foreach (var exercise in exercises)
-                if (!AllExerciseNames.Contains(exercise.Name))
+                if (!AllNames.Contains(exercise.Name))
                 {
-                    SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.InsertData(Config.ExercieseTableName, exercise.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
+                    SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.InsertData(_config.Name, exercise.ToSQLStringList()), SQL_Commands.CommandType.NonQuery);
                     foreach (var tag in exercise.Tags)
                     {
-                        if (!_tagsTable.AllExerciseTags.Contains(tag))
-                            _tagsTable.AddSingleTag(tag);
+                        if (!_tagsTable.AllNames.Contains(tag))
+                            _tagsTable.AddSingleRow(tag);
                     }
                 }
-
-            ReadAllExercises();
+            ReadAllRows();
         }
 
-        public void RemoveSingleExercise(Exercise exercise)
+        public override void RemoveSingleRow(Exercise exercise)
         {
-            SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.DeleteFromTable(Config.ExercieseTableName, $"Name='{exercise.Name}'"), SQL_Commands.CommandType.NonQuery);
-            ReadAllExercises();
+            SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.DeleteFromTable(_config.Name, $"Name='{exercise.Name}'"), SQL_Commands.CommandType.NonQuery);
+            ReadAllRows();
         }
 
-        public void RemoveMultipleExercises(List<Exercise> exercises)
+        public override void RemoveMultipleRows(List<Exercise> exercises)
         {
             throw new NotImplementedException();
         }
 
-        public Exercise SelectExerciseByName(string name)
+        private protected override void ReadAllRows()
         {
-            var ex = Exercises.SingleOrDefault(ex => ex.Name == name);
-            return ex ?? throw new ExerciseNotFoundException(name);
-        }
-
-        private void ReadAllExercises()
-        {
-            var sqlite_datareader = SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.ReadData(Config.ExercieseTableName, "*", false), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
-            exercises.Clear();
+            var sqlite_datareader = SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.ReadData(_config.Name, "*", false), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
+            values.Clear();
 
             while (sqlite_datareader != null && sqlite_datareader.Read())
             {
-                exercises.Add(new Exercise(sqlite_datareader));
+                values.Add(new Exercise(sqlite_datareader));
             }
         }
     }

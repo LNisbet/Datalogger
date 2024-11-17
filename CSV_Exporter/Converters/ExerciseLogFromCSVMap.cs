@@ -1,6 +1,6 @@
 ﻿using CSV_Exporter.Converters;
 using CsvHelper.Configuration;
-using SQLight_Database;
+using SQLight_Database.Models;
 
 namespace CSV_Exporter
 {
