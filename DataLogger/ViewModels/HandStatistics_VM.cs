@@ -13,10 +13,18 @@ namespace DataLogger.ViewModels
     internal class HandStatistics_VM : Base_VM
     {
         #region Fileds
-        public FingerStatistics.Hand Hand { get; }
+        private FingerStatistics.Hand hand;
+        public FingerStatistics.Hand Hand 
+        {
+            get => hand;
+            set
+            {
+                hand = value;
+                UpdateValues();
+            }
+        }
 
         private BasicStatistics.Options options;
-
         public BasicStatistics.Options Option 
         { 
             get => options; 
@@ -27,46 +35,47 @@ namespace DataLogger.ViewModels
             } 
         }
 
-        internal readonly FingerStatistics HandStatistics;
+        private readonly FingerStatisticsStore _fingerStatisticsStore;
+        private FingerStatistics? fingerStatistics;
 
-        public float? LittleOpen => HandStatistics
+        public float? LittleOpen => fingerStatistics?
             .SelectetBasicStatistic(FingerStatistics.Fingers.Little, FingerStatistics.Crimp.Open)
             .SelectetStatistic(Option);
-        public float? LittleHalf => HandStatistics
+        public float? LittleHalf => fingerStatistics?
             .SelectetBasicStatistic(FingerStatistics.Fingers.Little, FingerStatistics.Crimp.Half)
             .SelectetStatistic(Option);
 
-        public float? RingOpen => HandStatistics
+        public float? RingOpen => fingerStatistics?
             .SelectetBasicStatistic(FingerStatistics.Fingers.Ring, FingerStatistics.Crimp.Open)
             .SelectetStatistic(Option);
-        public float? RingHalf => HandStatistics
+        public float? RingHalf => fingerStatistics?
             .SelectetBasicStatistic(FingerStatistics.Fingers.Ring, FingerStatistics.Crimp.Half)
             .SelectetStatistic(Option);
 
-        public float? MiddleOpen => HandStatistics
+        public float? MiddleOpen => fingerStatistics?
             .SelectetBasicStatistic(FingerStatistics.Fingers.Middle, FingerStatistics.Crimp.Open)
             .SelectetStatistic(Option);
-        public float? MiddleHalf => HandStatistics
+        public float? MiddleHalf => fingerStatistics?
             .SelectetBasicStatistic(FingerStatistics.Fingers.Middle, FingerStatistics.Crimp.Half)
             .SelectetStatistic(Option);
 
-        public float? IndexOpen => HandStatistics
+        public float? IndexOpen => fingerStatistics?
             .SelectetBasicStatistic(FingerStatistics.Fingers.Index, FingerStatistics.Crimp.Open)
             .SelectetStatistic(Option);
-        public float? IndexHalf => HandStatistics
+        public float? IndexHalf => fingerStatistics?
             .SelectetBasicStatistic(FingerStatistics.Fingers.Index, FingerStatistics.Crimp.Half)
             .SelectetStatistic(Option);
         #endregion
 
-        public HandStatistics_VM(BasicStatisticsList basicStatisticsList, FingerStatistics.Hand hand, BasicStatistics.Options option = BasicStatistics.Options.MostRecent)
+        public HandStatistics_VM(FingerStatisticsStore fingerStatisticsStore)
         {
-            Hand = hand;
-            Option = option;
-            HandStatistics = new(basicStatisticsList, hand, DateOnly.MinValue, DateOnly.MaxValue);
+            _fingerStatisticsStore = fingerStatisticsStore;
+            Option = BasicStatistics.Options.MostRecent;
         }
 
         private void UpdateValues()
         {
+            fingerStatistics = _fingerStatisticsStore.Get(Hand, DateOnly.MinValue, DateOnly.MaxValue);
             OnPropertyChanged(nameof(LittleOpen));
             OnPropertyChanged(nameof(LittleHalf));
             OnPropertyChanged(nameof(RingOpen));

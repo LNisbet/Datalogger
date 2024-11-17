@@ -10,13 +10,14 @@ namespace DataLogger.ViewModels
 {
     public class BasicStatistics_VM : Base_VM
     {
-        public ObservableCollection<BasicStatistics> BasicStatisticsAllExercises { get; set; }
-        public BasicStatistics_VM(IExerciseTable exerciseTable, BasicStatisticsList basicStatisticsList) 
+        private readonly BasicStatisticsStore _basicStatisticsStore;
+        public ObservableCollection<BasicStatistics> BasicStatisticsAllExercises => _basicStatisticsStore.ListOfBasicStatistics;
+        public BasicStatistics_VM(BasicStatisticsStore basicStatisticsStore, IExerciseTable exerciseTable) 
         {
-            BasicStatisticsAllExercises = [];
+            _basicStatisticsStore = basicStatisticsStore;
             foreach (var exercise in exerciseTable.Exercises) 
             {
-                BasicStatisticsAllExercises.Add(basicStatisticsList.GetStatisticsForExercise(exercise, DateOnly.MinValue, DateOnly.MaxValue));
+                basicStatisticsStore.Get(exercise, DateOnly.MinValue, DateOnly.MaxValue);
             }
         }
     }

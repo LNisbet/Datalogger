@@ -7,24 +7,24 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static DataLogger.ViewModels.FingerStatistics_VM;
+using static DataLogger.ViewModels.HandStatisticsOverview_VM;
 
 namespace DataLogger.Models
 {
-    public class BasicStatisticsList
+    public class BasicStatisticsStore
     {
         private readonly IExerciseTable _exerciseTable;
         private readonly ILogsTable _logsTable;
 
-        private ObservableCollection<BasicStatistics> ListOfBasicStatistics { get; set; } = [];
+        internal ObservableCollection<BasicStatistics> ListOfBasicStatistics { get; private set; } = [];
 
-        public BasicStatisticsList (ILogsTable logsTable, IExerciseTable exerciseTable)
+        public BasicStatisticsStore (ILogsTable logsTable, IExerciseTable exerciseTable)
         {
             _exerciseTable = exerciseTable;
             _logsTable = logsTable;
         }
 
-        internal BasicStatistics GetStatisticsForExercise(string exerciseName, DateOnly startDate, DateOnly endDate)
+        internal BasicStatistics Get(string exerciseName, DateOnly startDate, DateOnly endDate)
         {
             BasicStatistics stat = ListOfBasicStatistics
                 .FirstOrDefault(st => st.Exercise.Name == exerciseName && st.StartDate == startDate && st.EndDate == endDate)
@@ -36,7 +36,7 @@ namespace DataLogger.Models
             return stat;
         }
 
-        internal BasicStatistics GetStatisticsForExercise(Exercise exercise, DateOnly startDate, DateOnly endDate)
+        internal BasicStatistics Get(Exercise exercise, DateOnly startDate, DateOnly endDate)
         {
             BasicStatistics stat = ListOfBasicStatistics
                 .FirstOrDefault(st => st.Exercise == exercise && st.StartDate == startDate && st.EndDate == endDate)

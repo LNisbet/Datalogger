@@ -39,8 +39,8 @@
                 <DataTemplate DataType="{x:Type vm:BasicStatistics_VM}">
                     <local:BasicStatistics_V/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:FingerStatistics_VM}">
-                    <local:FingerStatistics_V/>
+                <DataTemplate DataType="{x:Type vm:HandStatisticsOverview_VM}">
+                    <local:HandStatisticsOverview_V/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:Charting_VM}">
                     <local:Charting_V/>

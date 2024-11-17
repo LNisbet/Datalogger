@@ -3,6 +3,7 @@ using DataLogger.ViewModels.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
 using SQLight_Database;
+using SQLight_Database.Database.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,14 +87,14 @@ namespace DataLogger.ViewModels
         }
         #endregion
 
-        #region Finger Statistics
-        private ICommand? navigateToFingerStatisticsCommand;
-        public ICommand NavigateToFingerStatisticsCommand
+        #region Hand Statistics Overview
+        private ICommand? navigateToHandStatisticsOverviewCommand;
+        public ICommand NavigateToHandStatisticsOverviewCommand
         {
             get
             {
-                navigateToFingerStatisticsCommand ??= new RelayCommand(p => _navigationService.NavigateTo<FingerStatistics_VM>(), p => CanNavigate);
-                return navigateToFingerStatisticsCommand;
+                navigateToHandStatisticsOverviewCommand ??= new RelayCommand(p => _navigationService.NavigateTo<HandStatisticsOverview_VM>(), p => CanNavigate);
+                return navigateToHandStatisticsOverviewCommand;
             }
         }
         #endregion

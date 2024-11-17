@@ -8,11 +8,12 @@ using DataLogger.ViewModels.HelperClasses;
 
 namespace DataLogger.ViewModels
 {
-    internal class FingerStatistics_VM : Base_VM
+    internal class HandStatisticsOverview_VM : Base_VM
     {
         #region Fileds
-        private BasicStatistics.Options selectedOption = BasicStatistics.Options.MostRecent;
+        private readonly FingerStatisticsStore _fingerStatisticsStore;
 
+        private BasicStatistics.Options selectedOption = BasicStatistics.Options.MostRecent;
         public BasicStatistics.Options SelectedOption
         {
             get => selectedOption;
@@ -25,28 +26,29 @@ namespace DataLogger.ViewModels
         }
 
         public ObservableCollection<ISeries> LeftHalfCrimp_Series { get; set; }
-
         public ObservableCollection<ISeries> LeftOpenCrimp_Series { get; set; }
-
         public ObservableCollection<ISeries> RightHalfCrimp_Series { get; set; }
-
         public ObservableCollection<ISeries> RightOpenCrimp_Series { get; set; }
 
         public HandStatistics_VM LeftHand { get; }
         public HandStatistics_VM RightHand { get; }
         #endregion
 
-        public FingerStatistics_VM(BasicStatisticsList basicStatisticsList)
+        public HandStatisticsOverview_VM(FingerStatisticsStore fingerStatisticsStore, HandStatistics_VM leftHand, HandStatistics_VM rightHand)
         {
+            _fingerStatisticsStore = fingerStatisticsStore;
             LeftHalfCrimp_Series = [];
             LeftOpenCrimp_Series = [];
             RightHalfCrimp_Series = [];
             RightOpenCrimp_Series = [];
 
-            LeftHand = new(basicStatisticsList, FingerStatistics.Hand.Left);
-            RightHand = new(basicStatisticsList, FingerStatistics.Hand.Right);
+            leftHand.Hand = FingerStatistics.Hand.Left;
+            rightHand.Hand = FingerStatistics.Hand.Right;
+            LeftHand = leftHand;
+            RightHand = rightHand;
 
             UpdatePieCharts();
+            UpdateHandStatistics();
         }
 
         private void UpdateHandStatistics()
@@ -80,12 +82,7 @@ namespace DataLogger.ViewModels
 
         private PieSeries<float> CreatePieSeries(FingerStatistics.Hand hand, FingerStatistics.Crimp crimp, FingerStatistics.Fingers finger)
         {
-            FingerStatistics handStat;
-            if (hand == FingerStatistics.Hand.Left)
-                handStat = LeftHand.HandStatistics;
-            else
-                handStat = RightHand.HandStatistics;
-
+            FingerStatistics handStat = _fingerStatisticsStore.Get(hand, DateOnly.MinValue, DateOnly.MaxValue);
             return new PieSeries<float> 
             { 
                 Values = new List<float>([handStat.SelectetBasicStatistic(finger, crimp).SelectetStatistic(SelectedOption) ?? 0f]),

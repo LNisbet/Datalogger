@@ -16,7 +16,7 @@
                 <Expander Header="Stats">
                     <StackPanel HorizontalAlignment="Right">
                         <Button Content="Overview" Command="{Binding NavigateToBasicStatisticsCommand}"/>
-                        <Button Content="Fingers" Command="{Binding NavigateToFingerStatisticsCommand}"/>
+                        <Button Content="Fingers" Command="{Binding NavigateToHandStatisticsOverviewCommand}"/>
                         <Button Content="Charts" Command="{Binding NavigateToChartingCommand}"/>
                     </StackPanel>
                 </Expander>

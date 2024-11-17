@@ -16,12 +16,9 @@ using System.Windows.Shapes;
 
 namespace DataLogger.Views
 {
-    /// <summary>
-    /// Interaction logic for FingerStatistics_V.xaml
-    /// </summary>
-    public partial class FingerStatistics_V : UserControl
+    public partial class HandStatisticsOverview_V : UserControl
     {
-        public FingerStatistics_V()
+        public HandStatisticsOverview_V()
         {
             InitializeComponent();
         }
