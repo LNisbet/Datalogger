@@ -7,7 +7,7 @@ namespace SQLight_Database.Config
 {
     public class ExerciseTableConfig : ITableConfig<Exercise>
     {
-        public string Name => "Values";
+        public string Name => "Exercises";
 
         public List<ColumnDescription> Description  =>
         [

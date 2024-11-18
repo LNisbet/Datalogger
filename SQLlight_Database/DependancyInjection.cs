@@ -22,15 +22,15 @@ namespace SQLight_Database
             serviceCollection.AddSingleton<DatabaseConnectionStore>();
             serviceCollection.AddSingleton<ISQL_Database, SQL_Database>();
 
-            serviceCollection.AddSingleton<ITableConfig<Exercise>>();
-            serviceCollection.AddSingleton<ITableConfig<ExerciseLog>>();
-            serviceCollection.AddSingleton<ITableConfig<string>>();
+            serviceCollection.AddSingleton<ITableConfig<Exercise>, ExerciseTableConfig>();
+            serviceCollection.AddSingleton<ITableConfig<ExerciseLog>, LogsTableConfig>();
+            serviceCollection.AddSingleton<ITableConfig<string>, TagTableConfig>();
             serviceCollection.AddSingleton<UserConfig>();
 
-            serviceCollection.AddSingleton<ITable<Exercise>>();
-            serviceCollection.AddSingleton<ITable<ExerciseLog>>();
-            serviceCollection.AddSingleton<ITable<string>>();
-            serviceCollection.AddSingleton<IUsersTable>();
+            serviceCollection.AddSingleton<ITable<Exercise>, ExerciseTable>();
+            serviceCollection.AddSingleton<ITable<ExerciseLog>, LogsTable>();
+            serviceCollection.AddSingleton<ITable<string>, TagsTable>();
+            serviceCollection.AddSingleton<IUsersTable, UsersTable>();
         }
     }
 }

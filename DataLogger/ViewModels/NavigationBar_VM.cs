@@ -33,7 +33,7 @@ namespace DataLogger.ViewModels
         {
             get
             {
-                navigateToHomeCommand ??= new RelayCommand(p => _navigationService.NavigateTo<Logging_VM>(), p => CanNavigate);
+                navigateToHomeCommand ??= new RelayCommand(p => _navigationService.NavigateTo<Home_VM>(), p => CanNavigate);
                 return navigateToHomeCommand;
             }
         }
