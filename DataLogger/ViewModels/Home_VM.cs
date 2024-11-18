@@ -30,7 +30,10 @@ namespace DataLogger.ViewModels
             }
             set
             {
-                var user = String.IsNullOrEmpty(value) ? null : (_usersTable.SelectUserByName(value) ?? new(value, false));
+                if (string.IsNullOrEmpty(value))
+                    return;
+
+                var user = (_usersTable.SelectUserByName(value) ?? new(value));
                 _databaseConnection.Open(user);
                 OnPropertyChanged(nameof(_databaseConnectionStore.CurrentUser));
 

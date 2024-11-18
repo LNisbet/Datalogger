@@ -3,7 +3,6 @@ using SQLight_Database.Config.Interface;
 using SQLight_Database.Database;
 using SQLight_Database.Database.Interfaces;
 using SQLight_Database.HelperMethods;
-using SQLight_Database.Tables;
 using SQLight_Database.Tables.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLight_Database
+namespace SQLight_Database.Tables
 {
     public class TagsTable : BaseTable<string>
     {
@@ -26,7 +25,7 @@ namespace SQLight_Database
 
         public override void Initilise()
         {
-            if (String.IsNullOrEmpty(_databaseConnectionStore.CurrentUser?.Name) || _databaseConnectionStore.CurrentUser.TagsTableInitilised == true)
+            if (string.IsNullOrEmpty(_databaseConnectionStore.CurrentUser?.Name) || _databaseConnectionStore.CurrentUser.TagsTableInitilised == true)
                 return;
 
             CreateTable(_config.Name, _config.Description);
@@ -72,8 +71,8 @@ namespace SQLight_Database
             while (sqlite_datareader != null && sqlite_datareader.Read())
             {
                 string tag = sqlite_datareader.GetString(0);
-                if (!values.Contains(tag))
-                    values.Add(tag);
+                if (!Values.Contains(tag))
+                    Values.Add(tag);
             }
         }
 

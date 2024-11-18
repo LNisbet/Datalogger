@@ -11,7 +11,7 @@ using SQLight_Database.Database.Interfaces;
 using SQLight_Database.Models;
 using SQLight_Database.Tables.Interfaces;
 
-namespace SQLight_Database
+namespace SQLight_Database.Tables
 {
     public class UsersTable : IUsersTable
     {
@@ -22,14 +22,14 @@ namespace SQLight_Database
 
         public ObservableCollection<string> AllUserNames => new(AllUsers.Select(users => users.Name).Distinct());
 
-        public UsersTable(UserConfig userConfig) 
+        public UsersTable(UserConfig userConfig)
         {
             config = userConfig;
         }
 
         public User? SelectUserByName(string? name)
         {
-            if (string.IsNullOrWhiteSpace(name)) 
+            if (string.IsNullOrWhiteSpace(name))
                 return null;
             return AllUsers.FirstOrDefault(u => u.Name == name);
         }
@@ -37,7 +37,7 @@ namespace SQLight_Database
         public void Add(User user)
         {
             allUsers ??= [];
-            if (allUsers.FirstOrDefault(u => u.Name == user.Name) == null)
+            if (SelectUserByName(user.Name) == null)
             {
                 allUsers.Add(user);
                 Save();
@@ -46,18 +46,20 @@ namespace SQLight_Database
 
         public void Remove(User user)
         {
-            if (allUsers != null && allUsers.FirstOrDefault(u => u.Name == user.Name) != null)
+            var _user = SelectUserByName(user.Name);
+            if (allUsers != null && _user != null)
             {
-                allUsers.Remove(allUsers.FirstOrDefault(u => u.Name == user.Name));
+                allUsers.Remove(_user);
                 Save();
-            }  
+            }
         }
 
         public void Modify(User user)
         {
-            if (allUsers != null && allUsers.FirstOrDefault(u => u.Name == user.Name) != null)
+            var _user = SelectUserByName(user.Name);
+            if (allUsers != null && _user != null)
             {
-                allUsers.Remove(allUsers.FirstOrDefault(u => u.Name == user.Name));
+                allUsers.Remove(_user);
             }
             Add(user);
             Save();

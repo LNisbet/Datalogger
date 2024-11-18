@@ -62,22 +62,27 @@ namespace SQLight_Database.Tables
         private protected override void ReadAllRows()
         {
             var sqlite_datareader = SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.ReadData(_config.Name, "*", false), SQL_Commands.CommandType.Reader) as SQLiteDataReader;
-            values.Clear();
+            Values.Clear();
 
             while (sqlite_datareader != null && sqlite_datareader.Read())
             {
-                values.Add(new ExerciseLog(sqlite_datareader, _exerciseTable));
+                Values.Add(new ExerciseLog(sqlite_datareader, _exerciseTable));
             }
         }
 
         private bool IsLogUnique(ExerciseLog log)
         {
-            return !(Values.Any(l => l.Date.Equals(log.Date)) &&
-                Values.Any(l => l.Exercise.Name.Equals(log.Exercise.Name)) &&
-                Values.Any(l => l.Value1.Equals(log.Value1)) &&
-                Values.Any(l => l.Value2.Equals(log.Value2)) &&
-                Values.Any(l => l.Value3.Equals(log.Value3)) &&
-                Values.Any(l => l.Value4.Equals(log.Value4)));
+            foreach (var l in Values)
+            {
+                if ((l.Date.Equals(log.Date) && 
+                    l.Exercise.Name.Equals(log.Exercise.Name) &&
+                    l.Value1.Equals(log.Value1) &&
+                    l.Value2.Equals(log.Value2) &&
+                    l.Value3.Equals(log.Value3) &&
+                    l.Value4.Equals(log.Value4))) 
+                { return false; }
+            }
+            return true;
         }
 
         public override ExerciseLog SelectByName(string name)
