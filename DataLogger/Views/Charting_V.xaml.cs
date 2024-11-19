@@ -27,20 +27,16 @@ namespace DataLogger.Views
             if (sender is not ListBox listBox || DataContext is not Charting_VM viewModel)
                 return;
 
-            foreach (var listItem in viewModel.ExerciseList)
+            foreach (string listItem in listBox.Items)
             {
-                if (listBox.SelectedItems.Contains(listItem) && !viewModel.SelectedExercises.Contains(listItem))
-                {
-                    viewModel.SelectedExercises.Add(listItem);
-                    break;
-                }
-                if (!listBox.SelectedItems.Contains(listItem) && viewModel.SelectedExercises.Contains(listItem))
-                {
-                    viewModel.SelectedExercises.Remove(listItem);
-                    break;
-                }
+                viewModel.AllSelectableExercises.First(o => o.Object.Name == listItem).IsSelected = false;
             }
-            viewModel.OnPropertyChanged(nameof(viewModel.SelectedExercises));
+            foreach (string listItem in listBox.SelectedItems)
+            {
+                viewModel.AllSelectableExercises.First(o => o.Object.Name == listItem).IsSelected = true;
+            }
+
+            viewModel.OnPropertyChanged(nameof(viewModel.AllSelectableExercises));
         }
     }
 }

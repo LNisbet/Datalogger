@@ -14,6 +14,7 @@ using LiveChartsCore.Kernel;
 using DataLogger.ViewModels.HelperClasses;
 using SQLight_Database.Tables.Interfaces;
 using SQLight_Database.Models;
+using DataLogger.Models;
 
 namespace DataLogger.ViewModels
 {
@@ -24,18 +25,30 @@ namespace DataLogger.ViewModels
         private readonly ITable<Exercise> _exerciseTable;
         private readonly ITable<ExerciseLog> _logsTable;
 
-        public ObservableCollection<string>? ExerciseTags => _tagsTable.Values;
-        
-        private string? selectedExerciseTag = null;
-        public string? SelectedExerciseTag {  get => selectedExerciseTag; set { selectedExerciseTag = value; OnPropertyChanged(nameof(ExerciseList)); } }
+        public ObservableCollection<SelectableObject<Exercise>> AllSelectableExercises { get; set; }
 
-        public List<string> ExerciseList => 
-            _exerciseTable.Values
-            .Where(e => SelectedExerciseTag == null || e.Tags.Contains(SelectedExerciseTag))
-            .Select(e => e.Name)
+        public ObservableCollection<string>? ExerciseTags { get; }
+        private string? selectedExerciseTag = null;
+        public string? SelectedExerciseTag 
+        {  
+            get => selectedExerciseTag; 
+            set 
+            { 
+                selectedExerciseTag = value; 
+                OnPropertyChanged(nameof(ExerciseList)); 
+            } 
+        }
+
+
+        public List<string> ExerciseList =>
+            AllSelectableExercises
+            .Where(e => SelectedExerciseTag == null || e.Object.Tags.Contains(SelectedExerciseTag))
+            .Select(e => e.Object.Name)
             .ToList();
 
-        public ObservableCollection<string> SelectedExercises { get; set; }
+        
+
+        public List<string> SelectedExercises => AllSelectableExercises.Where(e => e.IsSelected == true).Select(e => e.Object.Name).ToList();
 
         public ObservableCollection<ISeries> Series { get; set; }
         public List<Axis> XAxes { get; set; }
@@ -49,10 +62,14 @@ namespace DataLogger.ViewModels
             _tagsTable = tagsTable;
             _exerciseTable = exerciseTable;
             _logsTable = logsTable;
-
+            ExerciseTags = tagsTable.Values;
             Series = [];
-            SelectedExercises = [];
-            SelectedExercises.CollectionChanged += (s, e) => UpdateSeries();
+
+            AllSelectableExercises = [];
+            foreach (var value in exerciseTable.Values)
+                AllSelectableExercises.Add(new(value, false));
+
+            AllSelectableExercises.CollectionChanged += (s, e) => UpdateSeries();
 
             XAxes = [
                 new DateTimeAxis(TimeSpan.MinValue, date => date.ToString("dd/MM/yyyy"))
