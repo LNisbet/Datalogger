@@ -23,14 +23,20 @@ namespace DataLogger.Views
         {
             InitializeComponent();
         }
+
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is not ListBox listBox || DataContext is not Charting_VM viewModel)
                 return;
 
-            var selectable = viewModel.AllSelectableExercises.FirstOrDefault(o => o == listBox.SelectedItem);
-            if (selectable != null)
-                viewModel.AllSelectableExercises.FirstOrDefault(o => o == listBox.SelectedItem).IsSelected = !selectable.IsSelected;
+            foreach (var item in viewModel.AllSelectableExercises) 
+            { 
+                if (item ==listBox.SelectedItem)
+                {
+                    item.IsSelected = !item.IsSelected;
+                    break;
+                }
+            }
 
             viewModel.OnPropertyChanged(nameof(viewModel.AllSelectableExercises));
             viewModel.OnPropertyChanged(nameof(viewModel.ExerciseList));

@@ -25,7 +25,7 @@ namespace DataLogger.ViewModels
         #region Fields
         private readonly ITable<ExerciseLog> _logsTable;
 
-        private ObservableCollection<SelectableObject<Exercise>> allSelectableExercises;
+        private ObservableCollection<SelectableObject<Exercise>> allSelectableExercises = [];
         public ObservableCollection<SelectableObject<Exercise>> AllSelectableExercises 
         {
             get => allSelectableExercises;
