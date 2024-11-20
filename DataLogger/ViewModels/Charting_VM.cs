@@ -15,61 +15,62 @@ using DataLogger.ViewModels.HelperClasses;
 using SQLight_Database.Tables.Interfaces;
 using SQLight_Database.Models;
 using DataLogger.Models;
+using SQLight_Database.Tables;
+using System.Windows.Input;
 
 namespace DataLogger.ViewModels
 {
     internal class Charting_VM : Base_VM
     {
         #region Fields
-        private readonly ITable<string> _tagsTable;
-        private readonly ITable<Exercise> _exerciseTable;
         private readonly ITable<ExerciseLog> _logsTable;
 
-        public ObservableCollection<SelectableObject<Exercise>> AllSelectableExercises { get; set; }
+        private ObservableCollection<SelectableObject<Exercise>> allSelectableExercises;
+        public ObservableCollection<SelectableObject<Exercise>> AllSelectableExercises 
+        {
+            get => allSelectableExercises;
+            set
+            {
+                allSelectableExercises = value;
+                OnPropertyChanged(nameof(ExerciseList));
+            }
+        }
 
-        public ObservableCollection<string>? ExerciseTags { get; }
-        private string? selectedExerciseTag = null;
+        public ObservableCollection<string> ExerciseTags { get; }
+
+        private string? selectedExerciseTag;
         public string? SelectedExerciseTag 
         {  
             get => selectedExerciseTag; 
             set 
             { 
                 selectedExerciseTag = value; 
-                OnPropertyChanged(nameof(ExerciseList)); 
+                OnPropertyChanged(nameof(ExerciseList));
             } 
         }
 
-
-        public List<string> ExerciseList =>
-            AllSelectableExercises
-            .Where(e => SelectedExerciseTag == null || e.Object.Tags.Contains(SelectedExerciseTag))
-            .Select(e => e.Object.Name)
-            .ToList();
-
-        
-
-        public List<string> SelectedExercises => AllSelectableExercises.Where(e => e.IsSelected == true).Select(e => e.Object.Name).ToList();
+        public ObservableCollection<SelectableObject<Exercise>> ExerciseList =>
+            new(AllSelectableExercises
+            .Where(e => string.IsNullOrEmpty(SelectedExerciseTag) || e.Object.Tags.Contains(SelectedExerciseTag)));
 
         public ObservableCollection<ISeries> Series { get; set; }
         public List<Axis> XAxes { get; set; }
         public List<Axis> YAxes { get; set; }
 
-        private readonly ObservableCollection<Exercise.Units> yAxisLabels = [];
+        private readonly ObservableCollection<Exercise.Units> yAxisLabels;
         #endregion
 
         public Charting_VM(ITable<string> tagsTable, ITable<Exercise> exerciseTable, ITable<ExerciseLog> logsTable)
         {
-            _tagsTable = tagsTable;
-            _exerciseTable = exerciseTable;
             _logsTable = logsTable;
             ExerciseTags = tagsTable.Values;
+            ExerciseTags.Add("");
+            yAxisLabels = [];
             Series = [];
 
             AllSelectableExercises = [];
             foreach (var value in exerciseTable.Values)
                 AllSelectableExercises.Add(new(value, false));
-
-            AllSelectableExercises.CollectionChanged += (s, e) => UpdateSeries();
 
             XAxes = [
                 new DateTimeAxis(TimeSpan.MinValue, date => date.ToString("dd/MM/yyyy"))
@@ -80,6 +81,7 @@ namespace DataLogger.ViewModels
                     MinStep = TimeSpan.FromDays(1).TotalSeconds,    // Minimum step size as 1 day
                 }];
 
+            //Create all Y axes
             YAxes = [];
             foreach (var unit in (Exercise.Units[])Enum.GetValues(typeof(Exercise.Units)))
             {
@@ -91,19 +93,31 @@ namespace DataLogger.ViewModels
             UpdateSeries();
         }
 
+        #region Load Graph
+        private ICommand? loadGraphCommand;
+        public ICommand LoadGraphCommand
+        {
+            get
+            {
+                loadGraphCommand ??= new RelayCommand(p => UpdateSeries());
+                return loadGraphCommand;
+            }
+        }
+        #endregion
+
         private void UpdateSeries()
         {
             Series.Clear();
             yAxisLabels.Clear();
 
-            foreach (var exercise in _exerciseTable.Values)
+            foreach (var exercise in AllSelectableExercises)
             {
                 // Only include selected exercises
-                if (SelectedExercises.Contains(exercise.Name))
+                if (exercise.IsSelected)
                 {
                     // Map the logs into X (Date) and Y (Value1)
                     var chartPoints = _logsTable.Values
-                        .Where(log => log.Exercise == exercise)  // Filter by exercise
+                        .Where(log => log.Exercise == exercise.Object)  // Filter by exercise
                         .OrderByDescending(log => log.Date)
                         .Select(log => new DateTimePoint
                         {
@@ -116,14 +130,14 @@ namespace DataLogger.ViewModels
                     Series.Add(new LineSeries<DateTimePoint>
                     {
                         Values = chartPoints,  // Bind the chart points to the series
-                        Name = exercise.Name,   // Label the series by exercise name
+                        Name = exercise.Object.Name,   // Label the series by exercise name
                         Fill = new SolidColorPaint(),
-                        YToolTipLabelFormatter = point => $": {point.Coordinate.PrimaryValue:N2}{exercise.Unit1}",
-                        ScalesYAt = YAxes.FindIndex(axis => axis.Name == exercise.Unit1.ToString())
+                        YToolTipLabelFormatter = point => $": {point.Coordinate.PrimaryValue:N2}{exercise.Object.Unit1}",
+                        ScalesYAt = YAxes.FindIndex(axis => axis.Name == exercise.Object.Unit1.ToString())
                     });
 
-                    if (!yAxisLabels.Contains(exercise.Unit1))
-                        yAxisLabels.Add(exercise.Unit1);
+                    if (!yAxisLabels.Contains(exercise.Object.Unit1))
+                        yAxisLabels.Add(exercise.Object.Unit1);
                 }
             }
             UpdateYAxis();

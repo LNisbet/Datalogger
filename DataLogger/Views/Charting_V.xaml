@@ -18,9 +18,27 @@
             TooltipFindingStrategy="CompareAllTakeClosest">
         </lvc:CartesianChart>
         <StackPanel>
+            <Button Width="150" Content="Load Graph" Command="{Binding Path=LoadGraphCommand}"/>
             <ComboBox ItemsSource="{Binding ExerciseTags}" SelectedItem="{Binding SelectedExerciseTag}"/>
-            <ListBox ItemsSource="{Binding ExerciseList}" SelectionChanged="ListBox_SelectionChanged" SelectionMode="Multiple"/>
+            <ListBox ItemsSource="{Binding ExerciseList}" SelectionChanged="ListBox_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Style.Triggers>
+                                        <!-- DataTrigger to change Background when IsSelected is True -->
+                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="Background" Value="DodgerBlue"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <TextBlock Text="{Binding Object.Name}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
-        
     </StackPanel>
 </UserControl>

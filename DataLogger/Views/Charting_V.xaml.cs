@@ -1,4 +1,5 @@
 ﻿using DataLogger.ViewModels;
+using SQLight_Database.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,16 +28,12 @@ namespace DataLogger.Views
             if (sender is not ListBox listBox || DataContext is not Charting_VM viewModel)
                 return;
 
-            foreach (string listItem in listBox.Items)
-            {
-                viewModel.AllSelectableExercises.First(o => o.Object.Name == listItem).IsSelected = false;
-            }
-            foreach (string listItem in listBox.SelectedItems)
-            {
-                viewModel.AllSelectableExercises.First(o => o.Object.Name == listItem).IsSelected = true;
-            }
+            var selectable = viewModel.AllSelectableExercises.FirstOrDefault(o => o == listBox.SelectedItem);
+            if (selectable != null)
+                viewModel.AllSelectableExercises.FirstOrDefault(o => o == listBox.SelectedItem).IsSelected = !selectable.IsSelected;
 
             viewModel.OnPropertyChanged(nameof(viewModel.AllSelectableExercises));
+            viewModel.OnPropertyChanged(nameof(viewModel.ExerciseList));
         }
     }
 }
