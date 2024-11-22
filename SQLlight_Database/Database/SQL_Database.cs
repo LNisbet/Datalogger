@@ -34,10 +34,5 @@ namespace SQLight_Database.Database
                 File.Delete($"{_databaseConnectionStore.CurrentUser.Name}.db");
             }
         }
-
-        private void CreateTable(string tableName, List<ColumnDescription> tableDescription)
-        {
-            SQL_Commands.ExecuteSQLString(_databaseConnectionStore.SQLite_conn, SQL_Strings.CreateTable(tableName, tableDescription), SQL_Commands.CommandType.NonQuery);
-        }
     }
 }

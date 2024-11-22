@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSV_Exporter", "CSV_Exporte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLogger", "DataLogger\DataLogger.csproj", "{75CF56E9-ADA9-4DCB-9E9D-A62BD8B082E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLogger.Test", "DataLogger.Test\DataLogger.Test.csproj", "{D85518D5-02BD-4EDD-873B-2B3A9D69FDE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLight_Database.Test", "SQLight_Database.Test\SQLight_Database.Test.csproj", "{6F0E67BF-27D7-41B1-BA88-6475FD0687A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{75CF56E9-ADA9-4DCB-9E9D-A62BD8B082E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75CF56E9-ADA9-4DCB-9E9D-A62BD8B082E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75CF56E9-ADA9-4DCB-9E9D-A62BD8B082E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D85518D5-02BD-4EDD-873B-2B3A9D69FDE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D85518D5-02BD-4EDD-873B-2B3A9D69FDE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D85518D5-02BD-4EDD-873B-2B3A9D69FDE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D85518D5-02BD-4EDD-873B-2B3A9D69FDE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F0E67BF-27D7-41B1-BA88-6475FD0687A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F0E67BF-27D7-41B1-BA88-6475FD0687A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F0E67BF-27D7-41B1-BA88-6475FD0687A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F0E67BF-27D7-41B1-BA88-6475FD0687A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

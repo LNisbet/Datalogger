@@ -1,77 +1,54 @@
-﻿using SQLight_Database.Exceptions;
-using System.Data.SQLite;
+﻿using SQLight_Database.Database.Wrappers;
+using SQLight_Database.Exceptions;
+using System.Data;
 
 namespace SQLight_Database.HelperMethods
 {
     static internal class SQL_Commands
     {
-
-        internal static SQLiteConnection CreateConnection(string dbName, bool DbExists)
+        internal static IDbConnectionWrapper CreateConnection(string dbName, bool DbExists)
         {
-            string newConnectionString = SQL_Strings.CreateConnection(dbName, 3, true, true);
-            string ExistingConnectionString = SQL_Strings.CreateConnection(dbName, 3, false, true);
-
-            // Create a new database connection
-            SQLiteConnection conn;
-
-            if (DbExists)
-                conn = new SQLiteConnection(newConnectionString);
-            else
-                conn = new SQLiteConnection(ExistingConnectionString);
-
-            // Open the connection:
-            try
-            {
-                conn.Open();
-            }
-            catch
-            {
-                conn = new SQLiteConnection(ExistingConnectionString);
-                conn.Open();
-                throw;
-            }
+            string connectionString = SQL_Strings.CreateConnection(dbName, 3, DbExists, true);
+            var conn = new SQLiteConnectionWrapper(connectionString);
+            conn.Open();
             return conn;
         }
 
-        internal static SQLiteConnection CloseConnection(SQLiteConnection conn)
+        internal static IDbConnectionWrapper CloseConnection(IDbConnectionWrapper conn)
         {
-            // close the connection:
             conn.Close();
             return conn;
         }
 
-        internal static object? ExecuteSQLString(SQLiteConnection? sqlite_conn, string sqlString, CommandType commandType)
+        internal static object? ExecuteSQLString(IDbConnectionWrapper? connWrapper, string sqlString, CommandType commandType)
         {
-            if (sqlite_conn == null)
+            if (connWrapper == null)
                 throw new NoOpenSQLConnection();
 
             switch (commandType)
             {
                 case CommandType.NonQuery:
-                    ExecuteNonQueryCommand(sqlite_conn, sqlString);
+                    ExecuteNonQueryCommand(connWrapper, sqlString);
                     return null;
                 case CommandType.Reader:
-                    return ExecuteReader(sqlite_conn, sqlString);
+                    return ExecuteReader(connWrapper, sqlString);
                 default:
                     throw new NotImplementedException(commandType.ToString());
-
             }
         }
 
-        private static void ExecuteNonQueryCommand(SQLiteConnection conn, string command)
+        private static void ExecuteNonQueryCommand(IDbConnectionWrapper connWrapper, string command)
         {
-            using SQLiteCommand sqlite_cmd = conn.CreateCommand();
+            var sqlite_cmd = connWrapper.CreateCommand();
             sqlite_cmd.CommandText = command;
             sqlite_cmd.ExecuteNonQuery();
-
         }
-        private static SQLiteDataReader? ExecuteReader(SQLiteConnection conn, string command)
-        {
-            using SQLiteCommand sqlite_cmd = conn.CreateCommand();
-            sqlite_cmd.CommandText = command;
-            SQLiteDataReader? sqlite_datareader = sqlite_cmd.ExecuteReader();
 
-            return sqlite_datareader;
+        private static IDataReader? ExecuteReader(IDbConnectionWrapper connWrapper, string command)
+        {
+            var sqlite_cmd = connWrapper.CreateCommand();
+            sqlite_cmd.CommandText = command;
+            return sqlite_cmd.ExecuteReader();
         }
 
         internal enum CommandType

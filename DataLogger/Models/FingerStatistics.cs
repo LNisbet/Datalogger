@@ -25,7 +25,7 @@ namespace DataLogger.Models
         internal BasicStatistics IndexFingerOpen { get;}
         internal BasicStatistics IndexFingerHalf { get;}
 
-        internal FingerStatistics(BasicStatisticsStore basicStatisticsList, Hand hand, DateOnly startDate, DateOnly endDate) 
+        public FingerStatistics(BasicStatisticsStore basicStatisticsList, Hand hand, DateOnly startDate, DateOnly endDate) 
         {
             SetHand = hand;
             StartDate = startDate;
@@ -75,13 +75,13 @@ namespace DataLogger.Models
         }
 
         #region Enums
-        internal enum Hand
+        public enum Hand
         {
             Left,
             Right
         }
 
-        internal enum Fingers
+        public enum Fingers
         {
             Little,
             Ring,
@@ -89,7 +89,7 @@ namespace DataLogger.Models
             Index
         }
 
-        internal enum Crimp
+        public enum Crimp
         {
             Half,
             Open

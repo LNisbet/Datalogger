@@ -8,7 +8,7 @@ using DataLogger.ViewModels.HelperClasses;
 
 namespace DataLogger.ViewModels
 {
-    internal class HandStatisticsOverview_VM : Base_VM
+    public class HandStatisticsOverview_VM : Base_VM
     {
         #region Fileds
         private readonly FingerStatisticsStore _fingerStatisticsStore;

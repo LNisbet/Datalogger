@@ -20,7 +20,7 @@ using System.Windows.Input;
 
 namespace DataLogger.ViewModels
 {
-    internal class Charting_VM : Base_VM
+    public class Charting_VM : Base_VM
     {
         #region Fields
         private readonly ITable<ExerciseLog> _logsTable;

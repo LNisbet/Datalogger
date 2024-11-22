@@ -11,7 +11,7 @@ using SQLight_Database.Database.Interfaces;
 
 namespace DataLogger.ViewModels
 {
-    internal class Debug_VM : Base_VM
+    public class Debug_VM : Base_VM
     {
         private readonly IUsersTable _usersTable;
         private readonly IDatabaseConnectionService _databaseConnection;

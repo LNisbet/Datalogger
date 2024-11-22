@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace DataLogger.ViewModels
 {
-    internal class NavigationBar_VM : Base_VM
+    public class NavigationBar_VM : Base_VM
     {
         private readonly INavigationService _navigationService;
         private readonly DatabaseConnectionStore _databaseConnectionStore;

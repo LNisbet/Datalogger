@@ -10,7 +10,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace DataLogger.ViewModels
 {
-    internal class HandStatistics_VM : Base_VM
+    public class HandStatistics_VM : Base_VM
     {
         #region Fileds
         private FingerStatistics.Hand hand;
